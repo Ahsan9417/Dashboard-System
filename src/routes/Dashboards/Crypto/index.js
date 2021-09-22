@@ -10,7 +10,7 @@ import RecentPayments from './RecentPayments';
 import Calculator from './Calculator';
 import CryptoNews from './CryptoNews';
 import DownloadApps from '../../../@jumbo/components/Common/DownloadApps';
-import OrderHistory from './OrderHistory';
+import OrderHistory from './CountryMasterTable';
 import Box from '@material-ui/core/Box';
 import InviteFriend from './InviteFriend';
 import GridContainer from '../../../@jumbo/components/GridContainer';

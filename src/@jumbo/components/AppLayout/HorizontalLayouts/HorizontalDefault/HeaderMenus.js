@@ -14,22 +14,35 @@ const HeaderMenus = () => {
           name: <IntlMessages id={'pages.samplePage'} />,
           icon: <PostAdd />,
           type: 'item',
-          link: '/sample-page',
+          link: '/country-master',
         },
-      ],
-    },
-      {
-      name: <IntlMessages id={'sidebar.main'} />,
-      type: 'collapse',
-      children: [
         {
           name: <IntlMessages id={'pages.testing'} />,
           icon: <PostAdd />,
           type: 'item',
-          link: '/sample-testing',
+          link: '/province-master',
+        },
+        {
+          name: <IntlMessages id={'pages.cityMaster'} />,
+          icon: <PostAdd />,
+          type: 'item',
+          link: '/city-master',
+        },
+        {
+          name: <IntlMessages id={'pages.hotelType'} />,
+          icon: <PostAdd />,
+          type: 'item',
+          link: '/hotel-type-master',
+        },
+        {
+          name: <IntlMessages id={'pages.users'} />,
+          icon: <PostAdd />,
+          type: 'item',
+          link: '/users',
         },
       ],
     },
+      
   ];
 
   return <CmtHorizontal menuItems={navigationMenus} />;

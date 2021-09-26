@@ -64,8 +64,8 @@ const useStyles = makeStyles(theme => ({
 //variant = 'default', 'standard', 'bgColor'
 const SignUp = ({ method = CurrentAuthMethod, variant = 'default', wrapperVariant = 'default' }) => {
   const [name, setName] = useState('Demo User');
-  const [email, setEmail] = useState('demo@example.com');
-  const [password, setPassword] = useState('demo#123');
+  const [email, setEmail] = useState('admin@gmail.com');
+  const [password, setPassword] = useState('Admin@123');
   const dispatch = useDispatch();
   const classes = useStyles({ variant });
 

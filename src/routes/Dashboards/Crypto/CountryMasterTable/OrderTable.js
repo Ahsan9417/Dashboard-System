@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,17 +6,25 @@ import TableHeading from './TableHeading';
 import TableItem from './TableItem';
 import Box from '@material-ui/core/Box';
 
-const OrderTable = ({ tableData }) => {
+const OrderTable = ({ tableData, state, changeEditStateTrue, changeUpdateStatusToTrue, updateState }) => {
+  const [filterData, setFilterData] = useState({})
+  // if(updateState) {
+  //   setFilterData(tableData)
+  // }
+
   return (
     <Box className="Cmt-table-responsive">
       <Table>
         <TableHead>
-          <TableHeading />
+          <TableHeading state={state} />
         </TableHead>
         <TableBody>
-          {tableData.map((row, index) => (
-            <TableItem row={row} key={index} />
-          ))}
+          {tableData.map((row, index) =>
+            <>
+              
+              <TableItem  changeUpdateStatusToTrue={changeUpdateStatusToTrue} row={row} key={index} state={state} changeEditStateTrue={changeEditStateTrue} />
+            </>
+          )}
         </TableBody>
       </Table>
     </Box>

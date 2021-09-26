@@ -11,6 +11,8 @@ import Register from './Auth/Register';
 import ForgotPasswordPage from './Auth/ForgotPassword';
 import HotelTypeMaster from './Pages/HotelTypeMaster/index.js';
 import Users from "./Pages/Users";
+import ChangePassowrd from './Pages/ChangePassword/index.js';
+import UserPrivilege from './Pages/UserPrivilege/index.js';
 
 const RestrictedRoute = ({ component: Component, ...rest }) => {
   const { authUser } = useSelector(({ auth }) => auth);
@@ -51,6 +53,8 @@ const Routes = () => {
         <Route path="/city-master" component={CityMaster} />
         <Route path="/hotel-type-master" component={HotelTypeMaster} />
         <Route path="/users" component={Users} />
+        <Route path="/change-password" component={ChangePassowrd} />
+        <Route path="/user-privilege" component={UserPrivilege} />
         <Route path="/signin" component={Login} />
         <Route path="/signup" component={Register} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />

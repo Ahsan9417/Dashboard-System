@@ -6,17 +6,14 @@ import CmtCardContent from '../../../../@coremat/CmtCard/CmtCardContent';
 import OrderTable from './OrderTable';
 import { crypto } from '../../../../@fake-db';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { getTodayDate, getYesterdayDate } from '../../../../@jumbo/utils/dateHelper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import MenuIcon from '@material-ui/icons/Menu';
-import { Box, fade, TablePagination } from '@material-ui/core';
+import { Box, Checkbox, fade, FormControlLabel, Menu, MenuItem, TablePagination } from '@material-ui/core';
 import CmtSearch from '@coremat/CmtSearch';
-// import TablePagination from '@material-ui/core/TablePagination';
-
-
+import FilterListIcon from '@material-ui/icons/FilterList';
+import AddRow from "./AddRow"
 
 const useStyles = makeStyles(theme => ({
 
@@ -69,7 +66,7 @@ const useStyles = makeStyles(theme => ({
     top: 2,
     zIndex: 1,
   },
- 
+
 }));
 
 function createData(name, calories, fat, carbs, protein) {
@@ -98,8 +95,31 @@ const UsersTable = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  
- 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [state, setState] = React.useState({
+    checked2: true,
+    checked3: true,
+    checked4: true,
+    checked5: true,
+    checked6: true,
+  });
+
+  const [add, setAdd] = useState(false)
+  const [update, setUpdate] = useState(false)
+
+
+  const handleChange = event => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -108,74 +128,110 @@ const UsersTable = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  // const filterTableData = event => {
-  //   switch (event.value) {
-  //     case getTodayDate(): {
-  //       return setTableData(crypto.orders.filter(item => item.date === event.value));
-  //     }
-  //     case getYesterdayDate(): {
-  //       return setTableData(crypto.orders.filter(item => item.date === event.value));
-  //     }
-  //     case 'this_week': {
-  //       return setTableData(crypto.orders.filter(item => item.date !== getTodayDate() && item.date !== getYesterdayDate()));
-  //     }
-  //     default:
-  //       return setTableData(crypto.orders);
-  //   }
-  // };
+
+  const changeHandlerFalse = () => {
+    setAdd(false)
+    setUpdate(false)
+
+  }
+  const changeUpdateStatusToTrue = () => {
+    setUpdate(true)
+  }
+  const changeHandlerTrue = () => {
+    setAdd(true)
+  }
+
 
   return (
-    <CmtCard>
+    <>
+      {add &&
+        <CmtCard style={{ marginBottom: 30, }} >
+          <CmtCardContent className={classes.cardContentRoot}>
+            <PerfectScrollbar className={classes.scrollbarRoot}>
+              <AddRow updateState={update} changeAddState={changeHandlerFalse} />
+            </PerfectScrollbar>
+          </CmtCardContent>
+        </CmtCard>
+      }
+      <CmtCard>
         <CmtCardHeader
-        className={classes.headerRoot}
-        title={
-          <Box display="flex" alignItems={{ md: 'center' }} flexDirection={{ xs: 'column', md: 'row' }}>
-             <IconButton  aria-label="edit" className={classes.backgroundEditColorChange}>
-          <AddIcon />
-            </IconButton>
-            <IconButton  aria-label="edit" className={classes.backgroundEditColorChange}>
-          <RefreshIcon />
-            </IconButton>
-            <IconButton  aria-label="edit" className={classes.backgroundEditColorChange}>
-          <MenuIcon />
-            </IconButton>
+          className={classes.headerRoot}
+          title={
+            <Box display="flex" alignItems={{ md: 'center' }} flexDirection={{ xs: 'column', md: 'row' }}>
+              {!add &&
+                <IconButton aria-label="edit" onClick={() => setAdd(!add)} className={classes.backgroundEditColorChange} >
+                  <AddIcon />
+                </IconButton>
+              }
+              <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
+                <RefreshIcon />
+              </IconButton>
+              <Box>
+                <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                  <FilterListIcon />
+                </IconButton>
+                <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
 
-          </Box>
-        }
-        actionsPos="top-corner"
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked2} onChange={handleChange} name="checked2" color="primary" />}
+                    label="User Name"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked3} onChange={handleChange} name="checked3" color="primary" />}
+                    label="Created By"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked4} onChange={handleChange} name="checked4" color="primary" />}
+                    label="Created On"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked5} onChange={handleChange} name="checked5" color="primary" />}
+                    label="Updated By"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked6} onChange={handleChange} name="checked6" color="primary" />}
+                    label="Updated On"
+                  /></MenuItem>
+                </Menu>
+              </Box>
+
+            </Box>
+          }
+          actionsPos="top-corner"
         >
-        <Box className={classes.searchAction}>
-          <Box className={classes.searchActionBar}>
-          <CmtSearch
-            border={true} 
-            onlyIcon={false} 
-            iconPosition="right"
-            align="right"
-            placeholder="Search"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
+          <Box className={classes.searchAction}>
+            <Box className={classes.searchActionBar}>
+              <CmtSearch
+                border={true}
+                onlyIcon={false}
+                iconPosition="right"
+                align="right"
+                placeholder="Search"
+                value={value}
+                onChange={e => setValue(e.target.value)} />
+            </Box>
           </Box>
-        </Box>
-      </CmtCardHeader>
-      
-      <CmtCardContent className={classes.cardContentRoot}>
-        <PerfectScrollbar className={classes.scrollbarRoot}>
-          <OrderTable tableData={tableData} />
-        </PerfectScrollbar>
-      </CmtCardContent>
-      <CmtCardFooter> 
-      <TablePagination
-      
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </CmtCardFooter>
-    </CmtCard>
+        </CmtCardHeader>
+
+        <CmtCardContent className={classes.cardContentRoot}>
+          <PerfectScrollbar className={classes.scrollbarRoot}>
+            <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={tableData} state={state} changeEditStateTrue={changeHandlerTrue} />
+          </PerfectScrollbar>
+        </CmtCardContent>
+        <CmtCardFooter>
+          <TablePagination
+
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </CmtCardFooter>
+      </CmtCard>
+    </>
   );
 };
 

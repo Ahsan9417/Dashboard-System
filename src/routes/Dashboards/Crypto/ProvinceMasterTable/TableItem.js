@@ -6,6 +6,13 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import { fade } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { Box } from '@material-ui/core';
 
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -27,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#eb6b34",
     color: "white"
   },
- 
+
   tableRowRoot: {
     position: 'relative',
     transition: 'all .2s',
@@ -72,23 +79,60 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TableItem = ({ row }) => {
+const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, }) => {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const [editData, setEditData] = React.useState({});
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const changeStatus = (e) => {
+    console.log("row event", e);
+    setEditData(e)
+    changeEditStateTrue(e)
+    changeUpdateStatusToTrue()
+  }
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <TableRow className={classes.tableRowRoot}>
-      <TableCell className={classes.tableCellRoot}>{row.currency}</TableCell>
-      <TableCell className={classes.tableCellRoot}>{row.rate}</TableCell>
-      <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>
-      <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>
-      <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>
-      <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>
-      <TableCell className={classes.tableCellRoot}> 
-      <IconButton  aria-label="edit" className={classes.backgroundEditColorChange}>
+      {state && state.checked1 && <TableCell className={classes.tableCellRoot}>{row.currency}</TableCell>}
+      {state && state.checked2 && <TableCell className={classes.tableCellRoot}>{row.rate}</TableCell>}
+      {state && state.checked3 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
+      {state && state.checked4 && <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>}
+      {state && state.checked5 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
+      {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
+      <TableCell className={classes.tableCellRoot}>
+        <IconButton aria-label="edit" onClick={() => changeStatus(row)} className={classes.backgroundEditColorChange}>
           <EditIcon />
-      </IconButton>
-      <IconButton aria-label="delete" className={classes.backgroundDeleteColorChange}>
-          <DeleteIcon />
-      </IconButton>
+        </IconButton>
+        <IconButton aria-label="delete" onClick={handleClickOpen} className={classes.backgroundDeleteColorChange}>
+          <DeleteIcon  />
+        </IconButton>
+        <Box>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description">
+            <DialogTitle id="alert-dialog-title">Confirmation Alert.</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure, you are deleting a record.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                No
+              </Button>
+              <Button onClick={handleClose} color="primary" autoFocus>
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
       </TableCell>
     </TableRow>
   );

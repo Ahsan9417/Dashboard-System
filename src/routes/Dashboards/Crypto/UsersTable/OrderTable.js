@@ -6,17 +6,15 @@ import TableHeading from './TableHeading';
 import TableItem from './TableItem';
 import Box from '@material-ui/core/Box';
 
-const OrderTable = ({ tableData }) => {
+const OrderTable = ({ tableData,state }) => {
   return (
     <Box className="Cmt-table-responsive">
       <Table>
         <TableHead>
-          <TableHeading />
+          <TableHeading state={state} />
         </TableHead>
         <TableBody>
-          {tableData.map((row, index) => (
-            <TableItem row={row} key={index} />
-          ))}
+            <TableItem  />
         </TableBody>
       </Table>
     </Box>

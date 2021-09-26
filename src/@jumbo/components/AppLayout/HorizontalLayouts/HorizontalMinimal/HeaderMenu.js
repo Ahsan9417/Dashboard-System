@@ -40,6 +40,18 @@ const HeaderMenu = () => {
           type: 'item',
           link: '/users',
         },
+        {
+          name: <IntlMessages id={'pages.changePassword'} />,
+          icon: <PostAdd />,
+          type: 'item',
+          link: '/change-password',
+        },
+        {
+          name: <IntlMessages id={'pages.userPrivilege'} />,
+          icon: <PostAdd />,
+          type: 'item',
+          link: '/user-privilege',
+        },
       ],
     },
     // {

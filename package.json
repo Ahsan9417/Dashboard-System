@@ -44,6 +44,7 @@
     "react-app-polyfill": "^2.0.0",
     "react-bottom-scroll-listener": "^4.0.0",
     "react-chartjs-2": "^2.10.0",
+    "react-checkbox-tree": "^1.7.2",
     "react-ckeditor-component": "^1.1.0",
     "react-color": "^2.18.1",
     "react-countup": "^4.3.3",
@@ -99,7 +100,11 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [ ">0.2%", "not dead", "not op_mini all" ],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "ie 11",
       "last 1 chrome version",
@@ -136,7 +141,11 @@
     }
   },
   "lint-staged": {
-    "*.+(js|jsx)": [ "eslint --fix" ],
-    "*.+(js|jsx|json|css|md)": [ "prettier --write" ]
+    "*.+(js|jsx)": [
+      "eslint --fix"
+    ],
+    "*.+(js|jsx|json|css|md)": [
+      "prettier --write"
+    ]
   }
 }

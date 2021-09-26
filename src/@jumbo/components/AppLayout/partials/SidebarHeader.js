@@ -66,9 +66,9 @@ const SidebarHeader = () => {
         <Box className="pointer" display="flex" justifyContent="space-between" alignItems="flex-end">
           <Box mr={2}>
             <Typography className={classes.userTitle} component="h3" variant="h6">
-              Robert Johnson
+             Admin
             </Typography>
-            <Typography className={classes.userSubTitle}>robert.johnson@gmail.com</Typography>
+            <Typography className={classes.userSubTitle}>admin@gmail.com</Typography>
           </Box>
           <ArrowDropDownIcon />
         </Box>
@@ -94,10 +94,7 @@ const SidebarHeader = () => {
                 <PersonIcon />
                 <Box ml={2}>Profile</Box>
               </MenuItem>
-              <MenuItem onClick={handlePopoverClose}>
-                <SettingsIcon />
-                <Box ml={2}>Settings</Box>
-              </MenuItem>
+            
               <MenuItem onClick={onLogoutClick}>
                 <ExitToAppIcon />
                 <Box ml={2}>Logout</Box>

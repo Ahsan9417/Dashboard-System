@@ -26,16 +26,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TableHeading = () => {
+const TableHeading = (props) => {
   const classes = useStyles();
   return (
     <TableRow className={classes.tableHeading}>
-      <TableCell className={classes.tableCellRoot}>Province Name</TableCell>
-      <TableCell className={classes.tableCellRoot}>Country Name</TableCell>
-      <TableCell className={classes.tableCellRoot}>Created by</TableCell>
-      <TableCell className={classes.tableCellRoot}>Created on</TableCell>
-      <TableCell className={classes.tableCellRoot}>Updated by</TableCell>
-      <TableCell className={classes.tableCellRoot}>Updated on</TableCell>
+       {props && props.state.checked1 && <TableCell className={classes.tableCellRoot}>Province Name</TableCell>}
+      {props && props.state.checked2 && <TableCell className={classes.tableCellRoot}>City Name</TableCell>}
+      {props && props.state.checked3 && <TableCell className={classes.tableCellRoot}>Created by</TableCell>}
+      {props && props.state.checked4 && <TableCell className={classes.tableCellRoot}>Created on</TableCell>}
+      {props && props.state.checked5 && <TableCell className={classes.tableCellRoot}>Updated by</TableCell>}
+      {props && props.state.checked6 && <TableCell className={classes.tableCellRoot}>Updated on</TableCell>}
       <TableCell className={classes.tableCellRoot}>Action</TableCell>
     </TableRow>
   );

@@ -1,9 +1,9 @@
-/*import Firebase from './firebase';
-import JWTAuth from './jwt';*/
+// import Firebase from './firebase';
 import BasicAuth from './Basic';
+import JWTAuth from './jwt';
 
 export const AuhMethods = {
-  /*firebase: Firebase,
-  jwtAuth: JWTAuth,*/
+  // firebase: Firebase,
+  jwtAuth: JWTAuth,
   basic: BasicAuth,
 };

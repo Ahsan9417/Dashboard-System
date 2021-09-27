@@ -2,6 +2,8 @@ import { SEND_FORGET_PASSWORD_EMAIL, UPDATE_AUTH_USER, UPDATE_LOAD_USER } from '
 
 export const setAuthUser = user => {
   return dispatch => {
+    console.log('setAuthUser', user);
+    console.log('action', UPDATE_AUTH_USER);
     dispatch({
       type: UPDATE_AUTH_USER,
       payload: user,

@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SidebarHeader = () => {
-  const history = useHistory();
+  const history = useHistory()
 
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const SidebarHeader = () => {
     handlePopoverClose();
     await dispatch(AuhMethods[CurrentAuthMethod].onLogout());
     console.log('history', history);
-    history.push('/signin');
+    //history.push('/signin');
   };
 
   return (

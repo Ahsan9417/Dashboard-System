@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import IntlMessages from '../../../utils/IntlMessages';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { Box, fade } from '@material-ui/core';
 import { AuhMethods } from '../../../../services/auth';
@@ -47,16 +47,15 @@ const useStyles = makeStyles(theme => ({
   titleRoot: {
     marginBottom: 14,
     color: theme.palette.text.primary,
-    textAlign: "center",
-    justifyContent: "center"
+    textAlign: 'center',
+    justifyContent: 'center',
   },
   submitBtn: {
     width: '100%',
-    borderRadius: 25
+    borderRadius: 25,
   },
   logoWidth: {
-    width: "252px",
-
+    width: '252px',
   },
   textFieldRoot: {
     '& .MuiOutlinedInput-notchedOutline': {
@@ -73,8 +72,15 @@ const useStyles = makeStyles(theme => ({
 }));
 //variant = 'default', 'standard'
 const SignIn = ({ method = CurrentAuthMethod, variant = 'default', wrapperVariant = 'default' }) => {
+  console.log('Sign in');
   const [email, setEmail] = useState('admin@gmail.com');
   const [password, setPassword] = useState('Admin@123');
+
+  // // const { dynamicMenu } = useSelector(({ dynamicMenu }) => dynamicMenu);
+  // const { loadUser } = useSelector(({ auth }) => auth); //fetches state.auth property LoadUser
+  // const loadUser1 = useSelector((state) => state); //fetches state
+  // const testSelector = useSelector((state) => state.auth.dynamicMenu)
+
   const dispatch = useDispatch();
   const classes = useStyles({ variant });
   const [values, setValues] = React.useState({
@@ -85,7 +91,7 @@ const SignIn = ({ method = CurrentAuthMethod, variant = 'default', wrapperVarian
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = event => {
     event.preventDefault();
   };
 
@@ -130,7 +136,7 @@ const SignIn = ({ method = CurrentAuthMethod, variant = 'default', wrapperVarian
               variant="outlined"
               className={classes.textFieldRoot}
             /> */}
-            <FormControl fullWidth className={clsx(classes.margin)} variant="outlined" >
+            <FormControl fullWidth className={clsx(classes.margin)} variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
@@ -145,25 +151,23 @@ const SignIn = ({ method = CurrentAuthMethod, variant = 'default', wrapperVarian
                   <InputAdornment position="end">
                     <IconButton
                       style={{
-                        backgroundColor: "#287cbc", borderRadius: "0px",
-                        height: "50px",
-                        color: "white",
+                        backgroundColor: '#287cbc',
+                        borderRadius: '0px',
+                        height: '50px',
+                        color: 'white',
                       }}
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
+                      edge="end">
                       {values.showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 }
                 labelWidth={70}
               />
-
             </FormControl>
           </Box>
-
 
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={5}>
             <Button className={classes.submitBtn} onClick={onSubmit} variant="contained" color="primary">

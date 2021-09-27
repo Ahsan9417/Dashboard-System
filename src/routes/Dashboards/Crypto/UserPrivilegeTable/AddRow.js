@@ -12,7 +12,7 @@ import CmtCard from '@coremat/CmtCard';
 import CmtCardContent from '@coremat/CmtCard/CmtCardContent';
 import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-
+import CheckedBoxTree from "./CheckedBoxTree";
 
 const nodes = [{
     value: 'mars',
@@ -49,8 +49,7 @@ const useStyles = makeStyles(theme => ({
 const AddRow = (props) => {
     const classes = useStyles();
     const [cityName, setCityName] = useState("")
-    const [checked, setChecked] = useState([]);
-    const [expanded, setExpanded] = useState([]);
+    
 
     return (
         <TableRow className={classes.tableRowRoot}>
@@ -59,8 +58,8 @@ const AddRow = (props) => {
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
                         <Box sx={{ display: 'flex', marginBottom: 10 }}>
-                            <TextField id="outlined-basic" label="Menu Rights Name" variant="outlined" value={cityName} />
-                            
+                            <TextField style={{marginRight: 20}} id="outlined-basic" label="Menu Rights Name" variant="outlined" value={cityName} />
+                            <CheckedBoxTree />
                         </Box>
                     </PerfectScrollbar>
                 </CmtCardContent>

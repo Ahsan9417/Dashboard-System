@@ -39,9 +39,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = (props) => {
+    console.log('selectedCountry', props.selectedCountry)
     const classes = useStyles();
-    const [countryName, setCountryName] = useState("")
-    const [countryCode, setCountryCode] = useState("")
+    const [countryName, setCountryName] = useState(props.selectedCountry ? props.selectedCountry["country-name"] : "")
+    const [countryCode, setCountryCode] = useState(props.selectedCountry ? props.selectedCountry["country-code"] : "")
+    const [countryISO, setCountryISO] = useState(props.selectedCountry ? props.selectedCountry["country-iso"] : "")
+    const [currencyCode, setCurrencyCode] = useState(props.selectedCountry ? props.selectedCountry["currency-code"] : "")
 
     return (
         <TableRow className={classes.tableRowRoot}>
@@ -52,16 +55,18 @@ const AddRow = (props) => {
                         <Box sx={{ display: 'flex', marginBottom: 10 }}>
                             <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Country Code" defaultValue="admin" variant="outlined" value={countryCode} onChange={(e) => setCountryCode(e.target.value)} />
                             <TextField id="outlined-basic" label="Country Name" variant="outlined" value={countryName} onChange={(e) => setCountryName(e.target.value)} />
+                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Country ISO" defaultValue="admin" variant="outlined" value={countryISO} onChange={(e) => setCountryISO(e.target.value)} />
+                            <TextField id="outlined-basic" label="Currency Code" variant="outlined" value={currencyCode} onChange={(e) => setCurrencyCode(e.target.value)} />
                         </Box>
                     </PerfectScrollbar>
                 </CmtCardContent>
                 <CmtCardFooter>
                     <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                        {props && !props.updateState && <Button onClick={(e) => props.addCountry({countryName,countryCode})} style={{ marginRight: 10 }} variant="contained" color="primary">
+                        {props && !props.updateState && <Button onClick={(e) => props.addCountry({ countryName, countryCode , countryISO,currencyCode })} style={{ marginRight: 10 }} variant="contained" color="primary">
                             Save
                         </Button>}
-                        {props.updateState && <Button onClick={(e) => props.updateCountry(e)} style={{ marginRight: 10 }} variant="contained" color="primary">
+                        {props.updateState && <Button onClick={(e) => props.updateCountry({ countryName, countryCode , countryISO,currencyCode })} style={{ marginRight: 10 }} variant="contained" color="primary">
                             Update
                         </Button>}
                         <Button onClick={(e) => props.changeAddState(e)} variant="contained" >

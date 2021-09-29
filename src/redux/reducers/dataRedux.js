@@ -42,9 +42,9 @@ export default (state = INIT_STATE, action) => {
             }
 
         case 'UPDATE_COUNTRY_BY_KEY':
-            let index = state.countriesList.findIndex(x => x.id !== action.payload);
+            let index = state.countriesList.findIndex(x => x["country-key"] === action.payload.key);
             let newArray = [...state.countriesList];
-            newArray[index].completed = true
+            newArray[index] = action.payload.country
             return {
                 ...state,
                 countriesList: newArray,

@@ -93,8 +93,7 @@ const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, 
     console.log("row event", e);
     setEditData(e)
     changeEditStateTrue(e)
-    // setUpdateObj({ countryCode: e.currency, countryName: e.rate })
-    changeUpdateStatusToTrue()
+    changeUpdateStatusToTrue(e)
   }
   const handleClose = (value) => {
 

@@ -1,6 +1,6 @@
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { AddCountry, setAllCountries, updateCountryByKey ,setAllFilteredCountries,deleteCountryByKey} from '../../../redux/actions/Data';
+import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey } from '../../../redux/actions/Data';
 import axios from './config';
 
 const countryMaster = {
@@ -45,10 +45,10 @@ const countryMaster = {
         return dispatch => {
             console.log('save country')
             let obj = {
-                "country-iso": "test12apiISO",
+                "country-iso": country.countryISO,
                 "country-code": country.countryCode,
                 "country-name": country.countryName,
-                "currency-code": "eur"
+                "currency-code": country.currencyCode
             }
 
             dispatch(fetchStart());
@@ -57,7 +57,7 @@ const countryMaster = {
             axios
                 .post('/save', obj)
                 .then(({ data }) => {
-                    if (data.data && data.dataException.err_code) {
+                    if (data.data && data.dataException.err_code == 200) {
                         dispatch(AddCountry(data.data));
 
                         dispatch(fetchSuccess());
@@ -72,17 +72,25 @@ const countryMaster = {
     },
 
 
-    UpdateCountry: (updatedCountry) => {
+    UpdateCountry: (key, updatedCountry) => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
+            let obj = {
+                "country-iso": country.countryISO,
+                "country-code": country.countryCode,
+                "country-name": country.countryName,
+                "currency-code": country.currencyCode
+                "country-key" : key
+            }
             axios
-                .post('/update', updatedCountry)
+                .post('/update', obj)
                 .then(({ data }) => {
-                    if (data.data && data.data.countries) {
-                        dispatch(updateCountryByKey(data.data.countries));
+                    if (data.data && data.dataException.err_code == 200) {
+                        console.log(data)
+                        // dispatch(updateCountryByKey({country : data.data , key : key}));
 
                         dispatch(fetchSuccess());
                     } else {
@@ -111,7 +119,7 @@ const countryMaster = {
                     if (data.data && data.dataException.err_code) {
                         dispatch(deleteCountryByKey(data.data["country-key"]));
                         dispatch(fetchSuccess());
-                       
+
                     } else {
                         dispatch(fetchError(data.error));
                     }

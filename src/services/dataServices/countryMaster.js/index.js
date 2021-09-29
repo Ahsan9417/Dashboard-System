@@ -82,7 +82,7 @@ const countryMaster = {
                 "country-iso": country.countryISO,
                 "country-code": country.countryCode,
                 "country-name": country.countryName,
-                "currency-code": country.currencyCode
+                "currency-code": country.currencyCode,
                 "country-key" : key
             }
             axios

@@ -93,6 +93,7 @@ const rows = [
 const CountryMasterTable = () => {
   const [tableData, setTableData] = useState(crypto.orders);
   const [value, setValue] = useState('');
+  const [updateObj, setUpdateObj] = useState();
   const classes = useStyles();
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -145,7 +146,7 @@ const CountryMasterTable = () => {
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} updateObj={updateObj} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
         </CmtCard>
@@ -215,7 +216,7 @@ const CountryMasterTable = () => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={tableData} state={state} changeEditStateTrue={changeHandlerTrue} />
+            <OrderTable setUpdateObj={setUpdateObj} updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={tableData} state={state} changeEditStateTrue={changeHandlerTrue} />
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>

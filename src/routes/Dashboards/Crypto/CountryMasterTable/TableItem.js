@@ -78,19 +78,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, key }) => {
+const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, key, setUpdateObj }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [editData, setEditData] = React.useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const changeStatus = (e) => {
-    console.log("row event",e);
-    setEditData(e)
     changeEditStateTrue(e)
+    setUpdateObj({ countryCode: e.currency, countryName: e.rate })
     changeUpdateStatusToTrue()
   }
   const handleClose = () => {
@@ -105,11 +103,11 @@ const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, 
       {state && state.checked5 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
       {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
       <TableCell className={classes.tableCellRoot}>
-        <IconButton aria-label="edit" onClick={()=>changeStatus(row)}  className={classes.backgroundEditColorChange}>
+        <IconButton aria-label="edit" onClick={() => changeStatus(row)} className={classes.backgroundEditColorChange}>
           <EditIcon />
         </IconButton>
         <IconButton aria-label="delete" className={classes.backgroundDeleteColorChange} onClick={handleClickOpen}>
-          <DeleteIcon  />
+          <DeleteIcon />
         </IconButton>
         <Box>
           <Dialog

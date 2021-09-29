@@ -27,17 +27,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TableHeading = (props) => {
+  console.log(props.hideColumns);
+  let columnNames = props?.columnNames ? props.columnNames : [];
   const classes = useStyles();
   return (
-    <TableRow className={classes.tableHeading}>
-      {props && props.state.checked1 && <TableCell className={classes.tableCellRoot}>Country Code</TableCell>}
-      {props && props.state.checked2 && <TableCell className={classes.tableCellRoot}>Country Name</TableCell>}
-      {props && props.state.checked3 && <TableCell className={classes.tableCellRoot}>Created by</TableCell>}
-      {props && props.state.checked4 && <TableCell className={classes.tableCellRoot}>Created on</TableCell>}
-      {props && props.state.checked5 && <TableCell className={classes.tableCellRoot}>Updated by</TableCell>}
-      {props && props.state.checked6 && <TableCell className={classes.tableCellRoot}>Updated on</TableCell>}
-      <TableCell className={classes.tableCellRoot}>Action</TableCell>
-    </TableRow>
+
+    <>
+      {columnNames.length ?
+        <TableRow className={classes.tableHeading}>
+          {
+            columnNames.map(name => {
+              return props.hideColumns.indexOf(name) === -1 ?  <TableCell className={classes.tableCellRoot}>{name.toString().replaceAll('-', ' ')}</TableCell> : undefined
+            })}
+          <TableCell className={classes.tableCellRoot}>Action</TableCell>
+        </TableRow>
+        : ""}
+    </>
   );
 };
 

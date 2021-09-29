@@ -72,14 +72,9 @@ const useStyles = makeStyles(theme => ({
 }));
 //variant = 'default', 'standard'
 const SignIn = ({ method = CurrentAuthMethod, variant = 'default', wrapperVariant = 'default' }) => {
-  console.log('Sign in');
+ 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // // const { dynamicMenu } = useSelector(({ dynamicMenu }) => dynamicMenu);
-  // const { loadUser } = useSelector(({ auth }) => auth); //fetches state.auth property LoadUser
-  // const loadUser1 = useSelector((state) => state); //fetches state
-  // const testSelector = useSelector((state) => state.auth.dynamicMenu)
 
   const dispatch = useDispatch();
   const classes = useStyles({ variant });

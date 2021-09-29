@@ -42,30 +42,29 @@ const AddRow = (props) => {
     const classes = useStyles();
     const [countryName, setCountryName] = useState("")
     const [countryCode, setCountryCode] = useState("")
+
     return (
         <TableRow className={classes.tableRowRoot}>
 
             <CmtCard style={{ marginBottom: 30, marginRight: 10, marginTop: 10, marginLeft: 10, }} >
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
-                        <Box sx={{ display: 'flex', margin: 10 }}>
-                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Country Code" defaultValue="admin" variant="outlined"
-                                value={props.updateState && props.updateObj ? props.updateObj.countryCode : countryCode} />
-                            <TextField id="outlined-basic" label="Country Name" variant="outlined"
-                                value={props.updateState && props.updateObj ? props.updateObj.countryName : countryName} />
+                        <Box sx={{ display: 'flex', marginBottom: 10 }}>
+                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Country Code" defaultValue="admin" variant="outlined" value={countryCode} onChange={(e) => setCountryCode(e.target.value)} />
+                            <TextField id="outlined-basic" label="Country Name" variant="outlined" value={countryName} onChange={(e) => setCountryName(e.target.value)} />
                         </Box>
                     </PerfectScrollbar>
                 </CmtCardContent>
                 <CmtCardFooter>
                     <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                        {props && !props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
+                        {props && !props.updateState && <Button onClick={(e) => props.addCountry({countryName,countryCode})} style={{ marginRight: 10 }} variant="contained" color="primary">
                             Save
                         </Button>}
-                        {props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
+                        {props.updateState && <Button onClick={(e) => props.updateCountry(e)} style={{ marginRight: 10 }} variant="contained" color="primary">
                             Update
                         </Button>}
-                        <Button onClick={() => props.changeAddState()} variant="contained" >
+                        <Button onClick={(e) => props.changeAddState(e)} variant="contained" >
                             Clear
                         </Button>
                     </Box>

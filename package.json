@@ -90,8 +90,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.+(js|jsx|json|css)\"",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"

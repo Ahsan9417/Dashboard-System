@@ -6,19 +6,22 @@ import TableHeading from './TableHeading';
 import TableItem from './TableItem';
 import Box from '@material-ui/core/Box';
 
-const OrderTable = ({ tableData, state, changeEditStateTrue, changeUpdateStatusToTrue, setUpdateObj }) => {
+const OrderTable = ({ tableData, state, changeEditStateTrue, changeUpdateStatusToTrue, updateState ,hideColumns = [] }) => {
+  const [filterData, setFilterData] = useState({})
+  // if(updateState) {
+  //   setFilterData(tableData)
+  // }
+
   return (
     <Box className="Cmt-table-responsive">
       <Table>
         <TableHead>
-          <TableHeading state={state} />
+          <TableHeading hideColumns={hideColumns} columnNames={Object.keys(tableData[0])} state={state} />
         </TableHead>
         <TableBody>
-          {tableData.map((row, index) =>
-            <>
-
-              <TableItem setUpdateObj={setUpdateObj} changeUpdateStatusToTrue={changeUpdateStatusToTrue} row={row} key={index} state={state} changeEditStateTrue={changeEditStateTrue} />
-            </>
+          {tableData.map((row, index) =>{            
+              return <TableItem key={index} hideColumns={hideColumns} changeUpdateStatusToTrue={changeUpdateStatusToTrue} row={row} key={index} state={state} changeEditStateTrue={changeEditStateTrue} />
+          }
           )}
         </TableBody>
       </Table>

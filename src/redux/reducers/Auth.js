@@ -14,8 +14,7 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
-  console.log('reducers', action.type);
-  console.log('reducers payload', action.payload);
+
   switch (action.type) {
     case UPDATE_AUTH_USER: {
       return {

@@ -32,7 +32,7 @@ const JWTAuth = {
   onLogin: ({ email, password }) => {
     return dispatch => {
       try {
-        console.log('on login jwt', email, password);
+       
         dispatch(fetchStart());
         axios
           .post('api/admin/user/validate-login', {
@@ -40,7 +40,7 @@ const JWTAuth = {
             Password: password,
           })
           .then(({ data }) => {
-            console.log('login response', data);
+    
             if (data && data.dataException.err_code == 200) {
               localStorage.setItem('token', data.data.key);
               axios.defaults.headers.common['AuthorizationKey'] = data.data.key;
@@ -48,6 +48,7 @@ const JWTAuth = {
               localStorage.setItem('user', data.data.userMenu[0]['child-key']);
               dispatch(JWTAuth.getAuthUser(true, data.data.key));
             } else {
+              
               dispatch(fetchError(data.dataException.err_msg));
             }
           })
@@ -65,16 +66,16 @@ const JWTAuth = {
 
       setTimeout(
         data => {
-          console.log('logout api', data);
           // axios
           //   .post('auth/logout')
           //   .then(({ data }) => {
           if (data.result) {
             dispatch(fetchSuccess());
             localStorage.removeItem('token');
+            localStorage.removeItem('user');
 
             dispatch(setAuthUser(null));
-            console.log('logout out');
+          
           } else {
             dispatch(fetchError(data.error));
           }
@@ -91,8 +92,6 @@ const JWTAuth = {
 
   getAuthUser: (loaded = false, token) => {
     return dispatch => {
-      console.log('get user by key', user_key);
-
       let user_key = localStorage.getItem('user');
       if (!token) {
         const token = localStorage.getItem('token');
@@ -100,29 +99,32 @@ const JWTAuth = {
       }
 
       if (user_key) {
-        console.log('token', token);
-        console.log('user_key', user_key);
+
         dispatch(fetchStart());
         dispatch(updateLoadUser(loaded));
         axios
           .post('admin/get-by-key', { 'user-key': user_key })
           .then(({ data }) => {
-            console.log('get user by key api', data);
+        
             if (data.data) {
               let user = data.data;
               dispatch(fetchSuccess());
               dispatch(setAuthUser(user));
-            } else {
-              console.log('get by keyerror');
+            } else {       
+              dispatch(JWTAuth.onLogout())
               dispatch(updateLoadUser(true));
             }
           })
           .catch(error => {
             console.log('get by key catch', error);
             dispatch(updateLoadUser(true));
+            
+            dispatch(JWTAuth.onLogout())
           });
       } else {
         dispatch(updateLoadUser(true));
+        
+        dispatch(JWTAuth.onLogout())
       }
     };
   },

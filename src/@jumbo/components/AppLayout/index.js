@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AppLayout = ({ children }) => {
-  console.log('App layout', children);
+ 
   const [isTemplateLoaded, setTemplateLoading] = useState(false);
   const { layout, layoutStyle, themeType, updateThemeType } = useContext(AppContext);
   const { loadUser } = useSelector(({ auth }) => auth);

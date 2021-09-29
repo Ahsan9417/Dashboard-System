@@ -16,11 +16,6 @@ import UserPrivilege from './Pages/UserPrivilege/index.js';
 
 const RestrictedRoute = ({ component: Component, ...rest }) => {
   const { authUser } = useSelector(({ auth }) => auth);
-
-  console.log('authUser', authUser);
-  // const { authUser } = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : ''
-
-  console.log(authUser);
   return (
     <Route
       {...rest}
@@ -42,8 +37,6 @@ const RestrictedRoute = ({ component: Component, ...rest }) => {
 
 const Routes = () => {
   const { authUser } = useSelector(({ auth }) => auth);
-
-  console.log('authUser', authUser);
   const location = useLocation();
 
   if (location.pathname === '' || location.pathname === '/') {

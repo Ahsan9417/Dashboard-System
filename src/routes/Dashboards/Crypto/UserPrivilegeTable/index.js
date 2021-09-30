@@ -169,7 +169,7 @@ const UserPrivilegeTable = () => {
             <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
               <RefreshIcon />
             </IconButton>
-            <Box>
+            {/* <Box>
               <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                 <FilterListIcon />
               </IconButton>
@@ -196,7 +196,7 @@ const UserPrivilegeTable = () => {
                   label="Updated On"
                 /></MenuItem>
               </Menu>
-            </Box>
+            </Box> */}
 
           </Box>
         }

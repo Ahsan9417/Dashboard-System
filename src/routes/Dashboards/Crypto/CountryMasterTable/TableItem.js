@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, key,hideColumns = []  }) => {
+const TableItem = ({ row,  changeUpdateStatusToTrue, key,hideColumns = []  }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   let dispatch = useDispatch()

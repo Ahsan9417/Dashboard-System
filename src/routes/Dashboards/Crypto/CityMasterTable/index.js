@@ -214,7 +214,7 @@ const CityMasterTable = () => {
               <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
                 <RefreshIcon />
               </IconButton>
-              <Box>
+              {/* <Box>
                 <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                   <FilterListIcon />
                 </IconButton>
@@ -244,7 +244,7 @@ const CityMasterTable = () => {
                     label="Updated On"
                   /></MenuItem>
                 </Menu>
-              </Box>
+              </Box> */}
 
             </Box>
           }

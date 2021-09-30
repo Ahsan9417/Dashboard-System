@@ -92,57 +92,7 @@ const TableItem = ({ row, state }) => {
   };
   return (
     <>
-      <TableRow className={classes.tableRowRoot}>
-        <TableCell className={classes.tableCellRoot}>
-          <Typography> Admin</Typography>
-        </TableCell>
-        <TableCell className={classes.tableCellRoot}>
-          <Typography> tadm</Typography>
-        </TableCell>
-        <TableCell className={classes.tableCellRoot}>
-          <Typography> 26.09.2021</Typography>
-        </TableCell>
-        <TableCell className={classes.tableCellRoot}>
-          <Typography> </Typography>
-        </TableCell>
-        <TableCell className={classes.tableCellRoot}>
-          <Typography> </Typography>
-        </TableCell>
-        {/* {state && state.checked3 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked4 && <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>}
-      {state && state.checked5 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>} */}
-        <TableCell className={classes.tableCellRoot}>
-          <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
-            <EditIcon />
-          </IconButton>
-          <IconButton aria-label="delete" className={classes.backgroundDeleteColorChange}>
-            <DeleteIcon onClick={handleClickOpen} />
-          </IconButton>
-          <Box>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description">
-              <DialogTitle id="alert-dialog-title">Confirmation Alert.</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Are you sure, you are deleting a record.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                  No
-                </Button>
-                <Button onClick={handleClose} color="primary" autoFocus>
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Box>
-        </TableCell>
-      </TableRow>
+      
       <TableRow className={classes.tableRowRoot}>
         <TableCell className={classes.tableCellRoot}>
           <CmtSearch
@@ -197,6 +147,57 @@ const TableItem = ({ row, state }) => {
 
         <TableCell className={classes.tableCellRoot}>
 
+        </TableCell>
+      </TableRow>
+      <TableRow className={classes.tableRowRoot}>
+        <TableCell className={classes.tableCellRoot}>
+          <Typography> Admin</Typography>
+        </TableCell>
+        <TableCell className={classes.tableCellRoot}>
+          <Typography> tadm</Typography>
+        </TableCell>
+        <TableCell className={classes.tableCellRoot}>
+          <Typography> 26.09.2021</Typography>
+        </TableCell>
+        <TableCell className={classes.tableCellRoot}>
+          <Typography> </Typography>
+        </TableCell>
+        <TableCell className={classes.tableCellRoot}>
+          <Typography> </Typography>
+        </TableCell>
+        {/* {state && state.checked3 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
+      {state && state.checked4 && <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>}
+      {state && state.checked5 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
+      {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>} */}
+        <TableCell className={classes.tableCellRoot}>
+          <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="delete" className={classes.backgroundDeleteColorChange}>
+            <DeleteIcon onClick={handleClickOpen} />
+          </IconButton>
+          <Box>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description">
+              <DialogTitle id="alert-dialog-title">Confirmation Alert.</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure, you are deleting a record.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  No
+                </Button>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
         </TableCell>
       </TableRow>
     </>

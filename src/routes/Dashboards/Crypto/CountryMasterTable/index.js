@@ -97,12 +97,16 @@ const CountryMasterTable = (props) => {
   let countries = useSelector(({ country }) => country.countriesList)
   let filteredList = useSelector(({ country }) => country.filteredList)
 
+  console.log(countries.length);
+
+  // [ "row-number", "country-iso","country-code","country-name","currency-code","is-active", "active-status", "last-update-by", "last-update-on"]
   let hideColumns = ["row-number", "country-iso", "country-key", "currency-code", "is-active", "active-status"]
+  // const [tableData, setTableData] = useState(props?.countries ? props.countries : []);
   const [search, setValue] = useState('');
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
   const [state, setState] = React.useState({
     checked1: true,
     checked2: true,
@@ -116,42 +120,43 @@ const CountryMasterTable = (props) => {
   const [selectedCountry, setSelectedCountry] = useState("")
   let dispatch = useDispatch();
 
-  const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+  // const handleChange = event => {
+  //   setState({ ...state, [event.target.name]: event.target.checked });
+  // };
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = event => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
 
   const handleChangePage = (event, newPage) => {
 
     setPage(newPage);
 
-    dispatch(DataMethods['countryService'].getAllCountries(search, newPage, rowsPerPage))
+    dispatch(DataMethods['countryService'].getAllCountries(search,newPage,rowsPerPage))
 
   };
 
   const handleChangeRowsPerPage = event => {
+    console.log('no. of record', event);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
 
-    dispatch(DataMethods['countryService'].getAllCountries(search, 0, parseInt(event.target.value, 10)))
+    dispatch(DataMethods['countryService'].getAllCountries(search,0,parseInt(event.target.value, 10)))
 
   };
 
 
   const changeHandlerFalse = () => {
     update ? setUpdate(false) : setAdd(false)
-
+    
   }
 
-
+  
   // changeUpdateStatusToTrue(e)
   const changeUpdateStatusToTrue = (countryToUpdate) => {
     console.log(countryToUpdate);
@@ -184,25 +189,21 @@ const CountryMasterTable = (props) => {
 
   function SearchRecords(text = "") {
     setValue(text);
-    if (text) dispatch(DataMethods['countryService'].getAllCountries(text, page, rowsPerPage))
-  }
-
-  function LoadTable() {
-    dispatch(DataMethods['countryService'].getAllCountries(search, page, rowsPerPage))
+    if (text) dispatch(DataMethods['countryService'].getAllCountries(text,page,rowsPerPage))
   }
 
   useEffect(() => {
     console.log('use Effect country');
-    LoadTable()
+    dispatch(DataMethods['countryService'].getAllCountries(search,page,rowsPerPage))
   }, []);
 
   return (
     <>
-      {(add || update) ?
+      {(add || update) ? 
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} pdateCountry={updateCountry} addCountry={addCountry} u selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} updateCountry={updateCountry} addCountry={addCountry} selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
         </CmtCard> : ""
@@ -217,10 +218,10 @@ const CountryMasterTable = (props) => {
                   <AddIcon />
                 </IconButton>
               }
-              <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
+              <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
                 <RefreshIcon />
               </IconButton>
-              <Box>
+              {/* <Box>
                 <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                   <FilterListIcon />
                 </IconButton>
@@ -250,7 +251,7 @@ const CountryMasterTable = (props) => {
                     label="Updated On"
                   /></MenuItem>
                 </Menu>
-              </Box>
+              </Box> */}
 
             </Box>
           }

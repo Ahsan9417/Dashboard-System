@@ -63,12 +63,10 @@ const AddRow = (props) => {
                 <CmtCardFooter>
                     <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                        {props && !props.updateState && <Button onClick={(e) => props.addCountry({ countryName, countryCode , countryISO,currencyCode })} style={{ marginRight: 10 }} variant="contained" color="primary">
-                            Save
-                        </Button>}
-                        {props.updateState && <Button onClick={(e) => props.updateCountry({ countryName, countryCode , countryISO,currencyCode })} style={{ marginRight: 10 }} variant="contained" color="primary">
-                            Update
-                        </Button>}
+                        <Button onClick={(e) => props.addCountry({ countryName, countryCode , countryISO,currencyCode })} style={{ marginRight: 10 }} variant="contained" color="primary">
+                        {props.updateState ? 'Update' : 'Save'  }
+                        </Button>
+                      
                         <Button onClick={(e) => props.changeAddState(e)} variant="contained" >
                             Clear
                         </Button>

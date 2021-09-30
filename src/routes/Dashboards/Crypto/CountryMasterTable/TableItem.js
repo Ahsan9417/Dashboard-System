@@ -83,23 +83,19 @@ const useStyles = makeStyles(theme => ({
 const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, key,hideColumns = []  }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [editData, setEditData] = React.useState({});
   let dispatch = useDispatch()
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const changeStatus = (e) => {
-    console.log("row event", e);
-    setEditData(e)
-    changeEditStateTrue(e)
     changeUpdateStatusToTrue(e)
   }
-  const handleClose = (value) => {
 
-    console.log('close',value);
-    if(value)     dispatch(DataMethods['countryService'].DeleteCountry(row))
-    setOpen(value);
+
+  const handleClose = (value) => {
+    if(value)dispatch(DataMethods['countryService'].DeleteCountry(row))
+    setOpen(false);
   };
 
 
@@ -131,7 +127,7 @@ const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, 
         <Box>
           <Dialog
             open={open}
-            onClose={handleClose}
+            onClose={(e)=>handleClose(false)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description">
             <DialogTitle id="alert-dialog-title">Confirmation Alert.</DialogTitle>

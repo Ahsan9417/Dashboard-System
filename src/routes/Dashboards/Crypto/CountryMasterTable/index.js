@@ -100,7 +100,7 @@ const CountryMasterTable = (props) => {
   console.log(countries.length);
 
   // [ "row-number", "country-iso","country-code","country-name","currency-code","is-active", "active-status", "last-update-by", "last-update-on"]
-  let hideColumns = ["row-number", "country-iso", "currency-code", "is-active", "active-status"]
+  let hideColumns = ["row-number", "country-iso", "country-key", "currency-code", "is-active", "active-status"]
   // const [tableData, setTableData] = useState(props?.countries ? props.countries : []);
   const [search, setValue] = useState('');
   const classes = useStyles();
@@ -144,18 +144,22 @@ const CountryMasterTable = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+
   const changeHandlerFalse = () => {
-
-    console.log('add');
-    setAdd(false)
-    setUpdate(false)
-
+    update ? setUpdate(false) : setAdd(false)
+    
   }
+
+  
+  // changeUpdateStatusToTrue(e)
   const changeUpdateStatusToTrue = (countryToUpdate) => {
     console.log(countryToUpdate);
     setSelectedCountry(countryToUpdate)
     setUpdate(true)
   }
+
+  // changeEditStateTrue(e)
   const changeHandlerTrue = () => {
     setAdd(true)
   }
@@ -163,11 +167,19 @@ const CountryMasterTable = (props) => {
 
   const addCountry = (country) => {
 
+    changeHandlerFalse()
     dispatch(DataMethods['countryService'].AddCountry(country))
+
+    console.log('add country');
+
   }
   const updateCountry = (country) => {
+    changeHandlerFalse()
 
     dispatch(DataMethods['countryService'].UpdateCountry(selectedCountry["country-key"], country))
+    console.log('update country');
+    setSelectedCountry("")
+
   }
 
   function SearchRecords(text = "") {
@@ -182,14 +194,14 @@ const CountryMasterTable = (props) => {
 
   return (
     <>
-      {add &&
+      {(add || update) ? 
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
               <AddRow updateState={update} updateCountry={updateCountry} addCountry={addCountry} selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
-        </CmtCard>
+        </CmtCard> : ""
       }
       <CmtCard>
         <CmtCardHeader
@@ -256,7 +268,7 @@ const CountryMasterTable = (props) => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && countries.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : countries} state={state} changeEditStateTrue={changeHandlerTrue} hideColumns={hideColumns} /> : ""}
+            {((!search && countries.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : countries} state={state} hideColumns={hideColumns} /> : ""}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>

@@ -79,10 +79,10 @@ const countryMaster = {
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
-                "country-iso": country.countryISO,
-                "country-code": country.countryCode,
-                "country-name": country.countryName,
-                "currency-code": country.currencyCode,
+                "country-iso": updatedCountry.countryISO,
+                "country-code": updatedCountry.countryCode,
+                "country-name": updatedCountry.countryName,
+                "currency-code": updatedCountry.currencyCode,
                 "country-key" : key
             }
             axios

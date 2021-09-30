@@ -8,6 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
+import { DataMethods } from 'services/dataServices';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   backgroundDeleteColorChange: {
@@ -46,6 +48,7 @@ const TableItem = ({ row }) => {
 
   const [userName, setUserName] = useState("")
   const [oldPassword, setOldPassword] = useState("")
+  let dispatch = useDispatch()
   const [newPassword, setNewPassword] = useState("")
   const [reEnterPassword, setReEnterPassword] = useState("")
 
@@ -58,6 +61,15 @@ const TableItem = ({ row }) => {
 
   const handlerSubmit = () => {
     console.log("yes here is change password api work");
+    let obj = {
+      "UserName": userName,
+      "OldPassword": oldPassword,
+      "NewPassword": newPassword,
+      "ConfirmPassword": reEnterPassword
+    }
+    dispatch(DataMethods['userService'].changePassword(obj))
+
+
   }
 
   return (

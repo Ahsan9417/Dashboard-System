@@ -42,7 +42,7 @@ export default (state = INIT_STATE, action) => {
         case 'ADD_CITY':
             return {
                 ...state,
-                citiesList: [...state.citiesList, action.payload]
+                citiesList: [action.payload,...state.citiesList, ]
             }
 
         case 'UPDATE_CITY_BY_KEY':

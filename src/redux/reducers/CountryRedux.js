@@ -41,7 +41,8 @@ export default (state = INIT_STATE, action) => {
         case 'ADD_COUNTRY':
             return {
                 ...state,
-                countriesList: [...state.countriesList, action.payload]
+                // countriesList: [...state.countriesList, action.payload] //Append
+                countriesList: [action.payload,...state.countriesList ] //prepend
             }
 
         case 'UPDATE_COUNTRY_BY_KEY':

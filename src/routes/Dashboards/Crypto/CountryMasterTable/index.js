@@ -190,12 +190,12 @@ const CountryMasterTable = (props) => {
     }
   }
 
-  const SearchRecordsDebounce = debounce(Search, 3000)
+  const SearchRecordsDebounce = debounce(Search, 2000)
 
 
   function Search(e){
     setValue(e)
-    LoadTable(e)
+    if(e) LoadTable(e)
   }
 
 
@@ -276,7 +276,7 @@ const CountryMasterTable = (props) => {
                 iconPosition="right"
                 align="right"
                 placeholder="Search"
-                value={search}
+                // value={search}
                 onChange={e => SearchRecordsDebounce(e.target.value)} />
             </Box>
           </Box>

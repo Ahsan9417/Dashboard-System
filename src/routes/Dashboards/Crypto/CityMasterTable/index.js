@@ -186,12 +186,12 @@ const CityMasterTable = () => {
   }
 
 
-  const SearchRecordsDebounce = debounce(Search, 3000)
+  const SearchRecordsDebounce = debounce(Search, 2000)
 
 
   function Search(e){
     setValue(e)
-    LoadTable(e)
+    if(e) LoadTable(e)
   }
 
   function LoadTable(searchText="") {

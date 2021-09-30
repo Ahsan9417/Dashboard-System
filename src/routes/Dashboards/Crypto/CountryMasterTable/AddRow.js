@@ -68,7 +68,7 @@ const AddRow = (props) => {
                         </Button>
                       
                         <Button onClick={(e) => props.changeAddState(e)} variant="contained" >
-                            Clear
+                            Cancel
                         </Button>
                     </Box>
                 </CmtCardFooter>

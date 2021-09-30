@@ -94,8 +94,8 @@ const rows = [
 
 const CountryMasterTable = (props) => {
 
-  let countries = useSelector(({ data }) => data.countriesList)
-  let filteredList = useSelector(({ data }) => data.filteredList)
+  let countries = useSelector(({ country }) => country.countriesList)
+  let filteredList = useSelector(({ country }) => country.filteredList)
 
   console.log(countries.length);
 
@@ -104,7 +104,7 @@ const CountryMasterTable = (props) => {
   // const [tableData, setTableData] = useState(props?.countries ? props.countries : []);
   const [search, setValue] = useState('');
   const classes = useStyles();
-  const [page, setPage] = React.useState(2);
+  const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [state, setState] = React.useState({
@@ -132,17 +132,22 @@ const CountryMasterTable = (props) => {
     setAnchorEl(null);
   };
 
+
   const handleChangePage = (event, newPage) => {
-    console.log('event', event);
-    console.log('newPage', newPage);
 
     setPage(newPage);
+
+    dispatch(DataMethods['countryService'].getAllCountries(search,newPage,rowsPerPage))
+
   };
 
   const handleChangeRowsPerPage = event => {
     console.log('no. of record', event);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+
+    dispatch(DataMethods['countryService'].getAllCountries(search,0,parseInt(event.target.value, 10)))
+
   };
 
 
@@ -184,12 +189,12 @@ const CountryMasterTable = (props) => {
 
   function SearchRecords(text = "") {
     setValue(text);
-    if (text) dispatch(DataMethods['countryService'].getAllCountries(text))
+    if (text) dispatch(DataMethods['countryService'].getAllCountries(text,page,rowsPerPage))
   }
 
   useEffect(() => {
     console.log('use Effect country');
-    dispatch(DataMethods['countryService'].getAllCountries())
+    dispatch(DataMethods['countryService'].getAllCountries(search,page,rowsPerPage))
   }, []);
 
   return (

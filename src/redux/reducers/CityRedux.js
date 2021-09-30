@@ -1,8 +1,8 @@
 
 const INIT_STATE = {
-    countriesList: [],
+    citiesList: [],
     filteredList: [],
-    selectedCountry: {},
+    selectedCity: {},
     searchText: '',
     loading: false,
 };
@@ -13,13 +13,11 @@ export default (state = INIT_STATE, action) => {
 
         case "GET_ALL":
             return state;
-
-
-
+            
         case 'SET_ALL': {
             return {
                 ...state,
-                countriesList: action.payload
+                citiesList: action.payload
             }
         }
         case "GET_ALL_FILTERED":
@@ -32,28 +30,28 @@ export default (state = INIT_STATE, action) => {
             }
         }
 
-        case 'GET_COUNTRY_BY_KEY':
-            return { ...state, selectedCountry: action.payload };
+        case 'GET_CITY_BY_KEY':
+            return { ...state, selectedCity: action.payload };
 
-        case 'ADD_COUNTRY':
+        case 'ADD_CITY':
             return {
                 ...state,
-                countriesList: [...state.countriesList, action.payload]
+                citiesList: [...state.citiesList, action.payload]
             }
 
-        case 'UPDATE_COUNTRY_BY_KEY':
-            let index = state.countriesList.findIndex(x => x["country-key"] === action.payload.key);
-            let newArray = [...state.countriesList];
-            newArray[index] = action.payload.country
+        case 'UPDATE_CITY_BY_KEY':
+            let index = state.citiesList.findIndex(x => x["CITY-key"] === action.payload.key);
+            let newArray = [...state.citiesList];
+            newArray[index] = action.payload.CITY
             return {
                 ...state,
-                countriesList: newArray,
+                citiesList: newArray,
             }
 
-        case 'DELETE_COUNTRY_BY_KEY':
+        case 'DELETE_CITY_BY_KEY':
             return {
                 ...state,
-                countriesList: state.countriesList.filter(x => (x["country-key"] !== action.payload))
+                citiesList: state.citiesList.filter(x => (x["CITY-key"] !== action.payload))
             }
 
         default:

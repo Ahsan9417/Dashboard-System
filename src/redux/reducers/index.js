@@ -3,12 +3,14 @@ import { connectRouter } from 'connected-react-router';
 
 import Common from './Common';
 import Auth from './Auth';
-import Data from './dataRedux';
+import Country from './CountryRedux'
+import CityRedux from './CityRedux';
 
 export default history =>
   combineReducers({
     router: connectRouter(history),
     common: Common,
     auth: Auth,
-    data: Data,
+    country: Country,
+    city: CityRedux,
   });

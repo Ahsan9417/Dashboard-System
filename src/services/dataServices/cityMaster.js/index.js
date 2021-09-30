@@ -3,7 +3,7 @@ import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
 import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey } from '../../../redux/actions/Data';
 import axios from './config';
 
-const countryMaster = {
+const cityMaster = {
     getAllCountries: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
 
         return dispatch => {
@@ -134,4 +134,4 @@ const countryMaster = {
 
 };
 
-export default countryMaster;
+export default cityMaster;

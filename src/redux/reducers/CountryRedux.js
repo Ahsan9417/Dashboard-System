@@ -13,7 +13,7 @@ export default (state = INIT_STATE, action) => {
 
         case "GET_ALL":
             return state;
-            
+
         case 'SET_ALL': {
             return {
                 ...state,
@@ -27,6 +27,12 @@ export default (state = INIT_STATE, action) => {
             return {
                 ...state,
                 filteredList: action.payload
+            }
+        }
+        case 'SET_SELECTED_COUNTRY': {
+            return {
+                ...state,
+                selectedCountry: action.payload
             }
         }
 

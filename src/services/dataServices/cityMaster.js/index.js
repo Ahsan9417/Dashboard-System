@@ -1,16 +1,15 @@
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey } from '../../../redux/actions/Data';
+import { AddCity, setAllCities, updateCityByKey, setAllFilteredCities, deleteCityByKey, setSelectedCity } from '../../../redux/actions/City';
 import axios from './config';
 
 const cityMaster = {
-    getAllCountries: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
+    getAllCities: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-            console.log('calling country api');
 
             axios
                 .post('/get', {
@@ -21,8 +20,8 @@ const cityMaster = {
                     "search-text": searchText
                 })
                 .then(({ data }) => {
-                    if (data.data && data.data.countries) {
-                        dispatch(searchText ? setAllFilteredCountries(data.data.countries) : setAllCountries(data.data.countries));
+                    if (data.data && data.data.cities) {
+                        dispatch(searchText ? setAllFilteredCities(data.data.cities) : setAllCities(data.data.cities));
                         dispatch(fetchSuccess());
 
                     } else {
@@ -38,17 +37,75 @@ const cityMaster = {
         };
     },
 
-
-
-    AddCountry: (country) => {
+    getCityByKey: (key) => {
 
         return dispatch => {
-            console.log('save country')
+            dispatch(fetchStart());
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['AuthorizationKey'] = token;
+        
+            axios
+                .post('/get-by-key', {
+                    "city-key": key,
+                   
+                })
+                .then(({ data }) => {
+                    if (data.data && data.data.cities) {
+                        dispatch(setSelectedCity(data.data))
+                        dispatch(fetchSuccess());
+
+                    } else {
+                        dispatch(fetchError(data.error));
+
+                    }
+
+                })
+                .catch(function (error) {
+                    dispatch(fetchError(error.message));
+
+                });
+        };
+    },
+
+    getCityByCountryKey: (key) => {
+
+        return dispatch => {
+            dispatch(fetchStart());
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['AuthorizationKey'] = token;
+        
+            axios
+                .post('/get-by-key', {
+                    "country-key": key,
+                   
+                })
+                .then(({ data }) => {
+                    if (data.data && data.data.cities) {
+                        // dispatch(setSelectedCity(data.data))
+                        dispatch(fetchSuccess());
+
+                    } else {
+                        dispatch(fetchError(data.error));
+
+                    }
+
+                })
+                .catch(function (error) {
+                    dispatch(fetchError(error.message));
+
+                });
+        };
+    },
+
+    AddCity: (city) => {
+
+        return dispatch => {
+            console.log('save city')
             let obj = {
-                "country-iso": country.countryISO,
-                "country-code": country.countryCode,
-                "country-name": country.countryName,
-                "currency-code": country.currencyCode
+                "city-iso": city.cityISO,
+                "city-code": city.cityCode,
+                "city-name": city.cityName,
+                "currency-code": city.currencyCode
             }
 
             dispatch(fetchStart());
@@ -58,7 +115,7 @@ const cityMaster = {
                 .post('/save', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(AddCountry(data.data));
+                        dispatch(AddCity(data.data));
 
                         dispatch(fetchSuccess());
                     } else {
@@ -72,25 +129,25 @@ const cityMaster = {
     },
 
 
-    UpdateCountry: (key, updatedCountry) => {
+    UpdateCity: (key, updatedCity) => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
-                "country-iso": updatedCountry.countryISO,
-                "country-code": updatedCountry.countryCode,
-                "country-name": updatedCountry.countryName,
-                "currency-code": updatedCountry.currencyCode,
-                "country-key" : key
+                "city-iso": updatedCity.cityISO,
+                "city-code": updatedCity.cityCode,
+                "city-name": updatedCity.cityName,
+                "currency-code": updatedCity.currencyCode,
+                "city-key" : key
             }
             axios
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         console.log(data)
-                        // dispatch(updateCountryByKey({country : data.data , key : key}));
+                        dispatch(updateCityByKey({city : data.data , key : key}));
 
                         dispatch(fetchSuccess());
                     } else {
@@ -104,20 +161,20 @@ const cityMaster = {
     },
 
 
-    DeleteCountry: (country) => {
+    DeleteCity: (city) => {
 
         return dispatch => {
-            console.log('delete country api');
+            console.log('delete city api');
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {
-                    "country-key": country["country-key"]
+                    "city-key": city["city-key"]
                 })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code) {
-                        dispatch(deleteCountryByKey(data.data["country-key"]));
+                        dispatch(deleteCityByKey(data.data["city-key"]));
                         dispatch(fetchSuccess());
 
                     } else {

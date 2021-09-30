@@ -11,7 +11,7 @@ const breadcrumbs = [
   { label: 'City Master ', isActive: true },
 ];
 
-const ProvinceMaster = () => {
+const CityMaster = () => {
   return (
     <PageContainer heading={<IntlMessages id="pages.cityMaster" />} breadcrumbs={breadcrumbs}>
       <GridContainer>
@@ -26,4 +26,4 @@ const ProvinceMaster = () => {
   );
 };
 
-export default ProvinceMaster;
+export default CityMaster;

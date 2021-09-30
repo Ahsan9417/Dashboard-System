@@ -97,11 +97,7 @@ const CountryMasterTable = (props) => {
   let countries = useSelector(({ country }) => country.countriesList)
   let filteredList = useSelector(({ country }) => country.filteredList)
 
-  console.log(countries.length);
-
-  // [ "row-number", "country-iso","country-code","country-name","currency-code","is-active", "active-status", "last-update-by", "last-update-on"]
   let hideColumns = ["row-number", "country-iso", "country-key", "currency-code", "is-active", "active-status"]
-  // const [tableData, setTableData] = useState(props?.countries ? props.countries : []);
   const [search, setValue] = useState('');
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
@@ -137,26 +133,25 @@ const CountryMasterTable = (props) => {
 
     setPage(newPage);
 
-    dispatch(DataMethods['countryService'].getAllCountries(search,newPage,rowsPerPage))
+    dispatch(DataMethods['countryService'].getAllCountries(search, newPage, rowsPerPage))
 
   };
 
   const handleChangeRowsPerPage = event => {
-    console.log('no. of record', event);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
 
-    dispatch(DataMethods['countryService'].getAllCountries(search,0,parseInt(event.target.value, 10)))
+    dispatch(DataMethods['countryService'].getAllCountries(search, 0, parseInt(event.target.value, 10)))
 
   };
 
 
   const changeHandlerFalse = () => {
     update ? setUpdate(false) : setAdd(false)
-    
+
   }
 
-  
+
   // changeUpdateStatusToTrue(e)
   const changeUpdateStatusToTrue = (countryToUpdate) => {
     console.log(countryToUpdate);
@@ -189,21 +184,25 @@ const CountryMasterTable = (props) => {
 
   function SearchRecords(text = "") {
     setValue(text);
-    if (text) dispatch(DataMethods['countryService'].getAllCountries(text,page,rowsPerPage))
+    if (text) dispatch(DataMethods['countryService'].getAllCountries(text, page, rowsPerPage))
+  }
+
+  function LoadTable() {
+    dispatch(DataMethods['countryService'].getAllCountries(search, page, rowsPerPage))
   }
 
   useEffect(() => {
     console.log('use Effect country');
-    dispatch(DataMethods['countryService'].getAllCountries(search,page,rowsPerPage))
+    LoadTable()
   }, []);
 
   return (
     <>
-      {(add || update) ? 
+      {(add || update) ?
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} updateCountry={updateCountry} addCountry={addCountry} selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} pdateCountry={updateCountry} addCountry={addCountry} u selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
         </CmtCard> : ""
@@ -218,7 +217,7 @@ const CountryMasterTable = (props) => {
                   <AddIcon />
                 </IconButton>
               }
-              <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
+              <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
                 <RefreshIcon />
               </IconButton>
               <Box>

@@ -25,6 +25,15 @@ export const setAllFilteredCountries = data => {
     };
 };
 
+export const setSelectedCountry = data => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_SELECTED_COUNTRY',
+            payload: data,
+        });
+    };
+};
+
 export const AddCountry = data => {
     return dispatch => {
         console.log('AddCountry', data);

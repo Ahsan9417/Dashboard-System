@@ -29,6 +29,12 @@ export default (state = INIT_STATE, action) => {
                 filteredList: action.payload
             }
         }
+        case 'SET_SELECTED_CITY': {
+            return {
+                ...state,
+                selectedCity: action.payload
+            }
+        }
 
         case 'GET_CITY_BY_KEY':
             return { ...state, selectedCity: action.payload };

@@ -23,6 +23,15 @@ export const setAllFilteredCities = data => {
     };
 };
 
+export const setSelectedCity = data => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_SELECTED_CITY',
+            payload: data,
+        });
+    };
+};
+
 export const AddCity = data => {
     return dispatch => {
         dispatch({
@@ -31,6 +40,9 @@ export const AddCity = data => {
         });
     };
 };
+
+
+
 export const getCityyByKey = data => {
     return dispatch => {
         dispatch({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CmtCard from '../../../../@coremat/CmtCard';
 import CmtCardHeader from '../../../../@coremat/CmtCard/CmtCardHeader';
 import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
@@ -16,6 +16,8 @@ import { Box, Checkbox, fade, FormControlLabel, Menu, MenuItem, TablePagination 
 import CmtSearch from '@coremat/CmtSearch';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AddRow from './AddRow';
+import { DataMethods } from 'services/dataServices';
+import { useDispatch, useSelector } from 'react-redux';
 
 // import TablePagination from '@material-ui/core/TablePagination';
 
@@ -72,7 +74,7 @@ const useStyles = makeStyles(theme => ({
     top: 2,
     zIndex: 1,
   },
- 
+
 }));
 
 function createData(name, calories, fat, carbs, protein) {
@@ -96,10 +98,14 @@ const rows = [
 
 
 const CityMasterTable = () => {
-  const [tableData, setTableData] = useState(crypto.orders);
-  const [value, setValue] = useState('');
+  let cities = useSelector(({ city }) => city.citiesList)
+  let filteredList = useSelector(({ city }) => city.filteredList)
+  let hideColumns = ["row-number", "city-iso", "country-key", "currency-code", "is-active", "active-status"]
+
+  const [search, setValue] = useState('');
+
   const classes = useStyles();
-  const [page, setPage] = React.useState(2);
+  const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [state, setState] = React.useState({
@@ -113,6 +119,9 @@ const CityMasterTable = () => {
 
   const [add, setAdd] = useState(false)
   const [update, setUpdate] = useState(false)
+  const [selectedCity, setSelectedCity] = useState("")
+  let dispatch = useDispatch();
+
 
 
   const handleChange = event => {
@@ -129,118 +138,150 @@ const CityMasterTable = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    dispatch(DataMethods['cityService'].getAllCities(search, newPage, rowsPerPage))
+
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+    dispatch(DataMethods['cityService'].getAllCities(search, 0, parseInt(event.target.value, 10)))
+
   };
 
   const changeHandlerFalse = () => {
-    setAdd(false)
-    setUpdate(false)
+    update ? setUpdate(false) : setAdd(false)
+
 
   }
-  const changeUpdateStatusToTrue = () => {
+  const changeUpdateStatusToTrue = (city) => {
+    setSelectedCity(city)
     setUpdate(true)
   }
   const changeHandlerTrue = () => {
     setAdd(true)
   }
-  
 
+
+  const addCity = (city) => {
+
+    changeHandlerFalse()
+    dispatch(DataMethods['cityService'].AddCity(city))
+
+  }
+  const updateCity = (city) => {
+    changeHandlerFalse()
+
+    dispatch(DataMethods['cityService'].UpdateCity(selectedCity["city-key"], city))
+    setSelectedCity("")
+
+  }
+
+  function SearchRecords(text = "") {
+    setValue(text);
+    if (text) dispatch(DataMethods['cityService'].getAllCities(text, page, rowsPerPage))
+  }
+
+  function LoadTable() {
+    dispatch(DataMethods['cityService'].getAllCities(search, page, rowsPerPage))
+  }
+
+  useEffect(() => {
+    console.log('use Effect country');
+    LoadTable()
+  }, []);
   return (
     <>
-    {add &&
-      <CmtCard style={{ marginBottom: 30, }} >
-        <CmtCardContent className={classes.cardContentRoot}>
-          <PerfectScrollbar className={classes.scrollbarRoot}>
-            <AddRow updateState={update} changeAddState={changeHandlerFalse} />
-          </PerfectScrollbar>
-        </CmtCardContent>
-      </CmtCard>
-    }
-    <CmtCard>
+      {(add || update) ?
+        <CmtCard style={{ marginBottom: 30, }} >
+          <CmtCardContent className={classes.cardContentRoot}>
+            <PerfectScrollbar className={classes.scrollbarRoot}>
+              <AddRow updateState={update} updateCity={updateCity} addCity={addCity} changeAddState={changeHandlerFalse} />
+            </PerfectScrollbar>
+          </CmtCardContent>
+        </CmtCard> : ""
+      }
+      <CmtCard>
         <CmtCardHeader
-        className={classes.headerRoot}
-        title={
-          <Box display="flex" alignItems={{ md: 'center' }} flexDirection={{ xs: 'column', md: 'row' }}>
-             {!add &&
+          className={classes.headerRoot}
+          title={
+            <Box display="flex" alignItems={{ md: 'center' }} flexDirection={{ xs: 'column', md: 'row' }}>
+              {!add &&
                 <IconButton aria-label="edit" onClick={() => setAdd(!add)} className={classes.backgroundEditColorChange} >
                   <AddIcon />
                 </IconButton>
               }
-            <IconButton  aria-label="edit" className={classes.backgroundEditColorChange}>
-          <RefreshIcon />
-            </IconButton>
-            <Box>
-              <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                <FilterListIcon />
+              <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
+                <RefreshIcon />
               </IconButton>
-              <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem >  <FormControlLabel
-                  control={<Checkbox checked={state.checked1} onChange={handleChange} name="checked1" color="primary" />}
-                  label="Province Name"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked2} onChange={handleChange} name="checked2" color="primary" />}
-                  label="Country Name"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked3} onChange={handleChange} name="checked3" color="primary" />}
-                  label="Created By"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked4} onChange={handleChange} name="checked4" color="primary" />}
-                  label="Created On"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked5} onChange={handleChange} name="checked5" color="primary" />}
-                  label="Updated By"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked6} onChange={handleChange} name="checked6" color="primary" />}
-                  label="Updated On"
-                /></MenuItem>
-              </Menu>
-            </Box>
+              <Box>
+                <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                  <FilterListIcon />
+                </IconButton>
+                <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+                  <MenuItem >  <FormControlLabel
+                    control={<Checkbox checked={state.checked1} onChange={handleChange} name="checked1" color="primary" />}
+                    label="Province Name"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked2} onChange={handleChange} name="checked2" color="primary" />}
+                    label="Country Name"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked3} onChange={handleChange} name="checked3" color="primary" />}
+                    label="Created By"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked4} onChange={handleChange} name="checked4" color="primary" />}
+                    label="Created On"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked5} onChange={handleChange} name="checked5" color="primary" />}
+                    label="Updated By"
+                  /></MenuItem>
+                  <MenuItem > <FormControlLabel
+                    control={<Checkbox checked={state.checked6} onChange={handleChange} name="checked6" color="primary" />}
+                    label="Updated On"
+                  /></MenuItem>
+                </Menu>
+              </Box>
 
-          </Box>
-        }
-        actionsPos="top-corner"
+            </Box>
+          }
+          actionsPos="top-corner"
         >
-        <Box className={classes.searchAction}>
-          <Box className={classes.searchActionBar}>
-          <CmtSearch
-            border={true} 
-            onlyIcon={false} 
-            iconPosition="right"
-            align="right"
-            placeholder="Search"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
+          <Box className={classes.searchAction}>
+            <Box className={classes.searchActionBar}>
+              <CmtSearch
+                border={true}
+                onlyIcon={false}
+                iconPosition="right"
+                align="right"
+                placeholder="Search"
+                value={search}
+                onChange={e => SearchRecords(e.target.value)} />
+            </Box>
           </Box>
-        </Box>
-      </CmtCardHeader>
-      
-      <CmtCardContent className={classes.cardContentRoot}>
-        <PerfectScrollbar className={classes.scrollbarRoot}>
-          <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={tableData} state={state} changeEditStateTrue={changeHandlerTrue} />
-        </PerfectScrollbar>
-      </CmtCardContent>
-      <CmtCardFooter> 
-      <TablePagination
-      
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </CmtCardFooter>
-    </CmtCard>
+        </CmtCardHeader>
+
+        <CmtCardContent className={classes.cardContentRoot}>
+          <PerfectScrollbar className={classes.scrollbarRoot}>
+          {((!search && cities.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : cities} state={state} hideColumns={hideColumns} /> : ""}
+          </PerfectScrollbar>
+        </CmtCardContent>
+        <CmtCardFooter>
+          <TablePagination
+
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </CmtCardFooter>
+      </CmtCard>
     </>
   );
 };

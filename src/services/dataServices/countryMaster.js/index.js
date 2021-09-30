@@ -1,6 +1,6 @@
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey } from '../../../redux/actions/Data';
+import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey, setSelectedCountry } from '../../../redux/actions/Country';
 import axios from './config';
 
 const countryMaster = {
@@ -23,6 +23,36 @@ const countryMaster = {
                 .then(({ data }) => {
                     if (data.data && data.data.countries) {
                         dispatch(searchText ? setAllFilteredCountries(data.data.countries) : setAllCountries(data.data.countries));
+                        dispatch(fetchSuccess());
+
+                    } else {
+                        dispatch(fetchError(data.error));
+
+                    }
+
+                })
+                .catch(function (error) {
+                    dispatch(fetchError(error.message));
+
+                });
+        };
+    },
+
+    getCountryByKey: (key) => {
+
+        return dispatch => {
+            dispatch(fetchStart());
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['AuthorizationKey'] = token;
+        
+            axios
+                .post('/get-by-key', {
+                    "country-key": key,
+                   
+                })
+                .then(({ data }) => {
+                    if (data.data && data.data.countries) {
+                        dispatch(setSelectedCountry(data.data))
                         dispatch(fetchSuccess());
 
                     } else {
@@ -90,7 +120,7 @@ const countryMaster = {
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         console.log(data)
-                        // dispatch(updateCountryByKey({country : data.data , key : key}));
+                        dispatch(updateCountryByKey({country : data.data , key : key}));
 
                         dispatch(fetchSuccess());
                     } else {

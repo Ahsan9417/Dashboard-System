@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import MaterialTableDemo from '../../../@fake-db/mui-components/table/MaterialTableDemo';
 import CustomizedTables from '@fake-db/mui-components/table/CustomizedTables';
 import { DataMethods } from '../../../services/dataServices';
-import { getAllCountries } from 'redux/actions/Data';
+import { getAllCountries } from 'redux/actions/Country';
 
 const breadcrumbs = [
   { label: 'Country-Master', link: '/' },

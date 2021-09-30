@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TableHeading = (props) => {
-  console.log(props.hideColumns);
   let columnNames = props?.columnNames ? props.columnNames : [];
   const classes = useStyles();
   return (

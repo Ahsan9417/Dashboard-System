@@ -8,7 +8,7 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
-    console.log('in DataRedux');
+    
     switch (action.type) {
 
         case "GET_ALL":

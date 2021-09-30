@@ -39,8 +39,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = (props) => {
+
+    console.log(props);
     const classes = useStyles();
-    const [cityName, setCityName] = useState("")
+    const [cityName, setCityName] = useState(props.selectedCity ? props.selectedCity["city-name"] : "")
+    const [countryCode, setCountryCode] = useState(props.selectedCity ? props.selectedCity["country-code"] : "")
+    const [provinceCode, setProvinceCode] = useState(props.selectedCity ? props.selectedCity["province-code"] : "")
+
     return (
         <TableRow className={classes.tableRowRoot}>
 
@@ -48,21 +53,20 @@ const AddRow = (props) => {
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
                         <Box sx={{ display: 'flex', marginBottom: 10 }}>
-                            <TextField id="outlined-basic" label="City Name" variant="outlined" value={cityName} />
+                            <TextField id="outlined-basic" label="City Name" variant="outlined" value={cityName} onChange={(e) => setCityName(e.target.value)} />
+                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Contry" defaultValue="" variant="outlined" value={countryCode} onChange={(e) => setCountryCode(e.target.value)} />
+                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Province" defaultValue="" variant="outlined" value={provinceCode} onChange={(e) => setProvinceCode(e.target.value)} />
                         </Box>
                     </PerfectScrollbar>
                 </CmtCardContent>
                 <CmtCardFooter>
                     <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                        {props && !props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
-                            Save
-                        </Button>}
-                        {props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
-                            Update
-                        </Button>}
+                        <Button onClick={(e) => props[props.updateState ? "updateCity" : "addCity"]({ cityName,countryCode , provinceCode  })} style={{ marginRight: 10 }} variant="contained" color="primary">
+                            {props.updateState ? 'Update' : 'Save'}
+                        </Button>
                         <Button onClick={() => props.changeAddState()} variant="contained" >
-                            Clear
+                            Cancel
                         </Button>
                     </Box>
                 </CmtCardFooter>

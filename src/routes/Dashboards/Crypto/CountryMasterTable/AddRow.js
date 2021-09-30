@@ -39,7 +39,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = (props) => {
-    console.log('selectedCountry', props.selectedCountry)
     const classes = useStyles();
     const [countryName, setCountryName] = useState(props.selectedCountry ? props.selectedCountry["country-name"] : "")
     const [countryCode, setCountryCode] = useState(props.selectedCountry ? props.selectedCountry["country-code"] : "")

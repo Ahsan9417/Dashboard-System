@@ -159,7 +159,6 @@ const CountryMasterTable = (props) => {
   
   // changeUpdateStatusToTrue(e)
   const changeUpdateStatusToTrue = (countryToUpdate) => {
-    console.log(countryToUpdate);
     setSelectedCountry(countryToUpdate)
     setUpdate(true)
   }
@@ -175,21 +174,33 @@ const CountryMasterTable = (props) => {
     changeHandlerFalse()
     dispatch(DataMethods['countryService'].AddCountry(country))
 
-    console.log('add country');
-
   }
   const updateCountry = (country) => {
     changeHandlerFalse()
 
     dispatch(DataMethods['countryService'].UpdateCountry(selectedCountry["country-key"], country))
-    console.log('update country');
     setSelectedCountry("")
 
   }
+  function debounce(func, wait) {
+    let timeout
+    return (...args) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => func(...args), wait)
+    }
+  }
 
-  function SearchRecords(text = "") {
-    setValue(text);
-    if (text) dispatch(DataMethods['countryService'].getAllCountries(text,page,rowsPerPage))
+  const SearchRecordsDebounce = debounce(Search, 3000)
+
+
+  function Search(e){
+    setValue(e)
+    LoadTable(e)
+  }
+
+
+  function LoadTable(searchText="") {
+    dispatch(DataMethods['countryService'].getAllCountries(searchText, page, rowsPerPage))
   }
 
   useEffect(() => {
@@ -203,7 +214,7 @@ const CountryMasterTable = (props) => {
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} updateCountry={updateCountry} addCountry={addCountry} selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} pdateCountry={updateCountry} addCountry={addCountry} selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
         </CmtCard> : ""
@@ -266,7 +277,7 @@ const CountryMasterTable = (props) => {
                 align="right"
                 placeholder="Search"
                 value={search}
-                onChange={e => SearchRecords(e.target.value)} />
+                onChange={e => SearchRecordsDebounce(e.target.value)} />
             </Box>
           </Box>
         </CmtCardHeader>

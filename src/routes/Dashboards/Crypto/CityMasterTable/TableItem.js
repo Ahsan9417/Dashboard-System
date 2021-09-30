@@ -15,6 +15,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Box } from '@material-ui/core';
 
 import EditIcon from '@material-ui/icons/Edit';
+import { useDispatch } from 'react-redux';
+import { DataMethods } from 'services/dataServices';
 
 const useStyles = makeStyles(theme => ({
   backgroundDeleteColorChange: {
@@ -79,43 +81,49 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, }) => {
+const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, key, hideColumns = [] }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [editData, setEditData] = React.useState({});
-  
+  let dispatch = useDispatch()
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const changeStatus = (e) => {
-    console.log("row event", e);
-    setEditData(e)
-    changeEditStateTrue(e)
-    changeUpdateStatusToTrue()
+
+    changeUpdateStatusToTrue(e)
   }
-  const handleClose = () => {
+  const handleClose = (value) => {
+    if (value) dispatch(DataMethods['countryService'].DeleteCountry(row))
     setOpen(false);
   };
   return (
     <TableRow className={classes.tableRowRoot}>
-      {state && state.checked1 && <TableCell className={classes.tableCellRoot}>{row.currency}</TableCell>}
+
+
+      {
+        Object.keys(row).map((col, index) => {
+          return hideColumns.indexOf(col) === -1 ? <TableCell className={classes.tableCellRoot} key={index} name={col}>{row[col]}</TableCell> : ""
+        })
+      }
+      {/* {state && state.checked1 && <TableCell className={classes.tableCellRoot}>{row.currency}</TableCell>}
       {state && state.checked2 && <TableCell className={classes.tableCellRoot}>{row.rate}</TableCell>}
       {state && state.checked3 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
       {state && state.checked4 && <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>}
       {state && state.checked5 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
+      {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>} */}
       <TableCell className={classes.tableCellRoot}>
         <IconButton aria-label="edit" onClick={() => changeStatus(row)} className={classes.backgroundEditColorChange}>
           <EditIcon />
         </IconButton>
-        <IconButton aria-label="delete"  onClick={handleClickOpen} className={classes.backgroundDeleteColorChange}>
+        <IconButton aria-label="delete" onClick={handleClickOpen} className={classes.backgroundDeleteColorChange}>
           <DeleteIcon />
         </IconButton>
         <Box>
           <Dialog
             open={open}
-            onClose={handleClose}
+            onClose={(e)=>handleClose(false)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description">
             <DialogTitle id="alert-dialog-title">Confirmation Alert.</DialogTitle>
@@ -125,10 +133,10 @@ const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, 
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={(e)=>handleClose(false)} color="primary">
                 No
               </Button>
-              <Button onClick={handleClose} color="primary" autoFocus>
+              <Button onClick={(e)=>handleClose(true)} color="primary" autoFocus>
                 Yes
               </Button>
             </DialogActions>

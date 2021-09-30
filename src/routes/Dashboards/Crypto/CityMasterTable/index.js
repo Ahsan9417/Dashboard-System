@@ -18,6 +18,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import AddRow from './AddRow';
 import { DataMethods } from 'services/dataServices';
 import { useDispatch, useSelector } from 'react-redux';
+import Search from '@material-ui/icons/Search';
 
 // import TablePagination from '@material-ui/core/TablePagination';
 
@@ -100,7 +101,7 @@ const rows = [
 const CityMasterTable = () => {
   let cities = useSelector(({ city }) => city.citiesList)
   let filteredList = useSelector(({ city }) => city.filteredList)
-  let hideColumns = ["row-number", "city-iso", "country-key", "currency-code", "is-active", "active-status"]
+  let hideColumns = ["row-number", "city-key", "country-key", "province-key"]
 
   const [search, setValue] = useState('');
 
@@ -176,14 +177,26 @@ const CityMasterTable = () => {
     setSelectedCity("")
 
   }
-
-  function SearchRecords(text = "") {
-    setValue(text);
-    if (text) dispatch(DataMethods['cityService'].getAllCities(text, page, rowsPerPage))
+  function debounce(func, wait) {
+    let timeout
+    return (...args) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => func(...args), wait)
+    }
   }
 
-  function LoadTable() {
-    dispatch(DataMethods['cityService'].getAllCities(search, page, rowsPerPage))
+
+  const SearchRecordsDebounce = debounce(Search, 3000)
+
+
+  function Search(e){
+    setValue(e)
+    LoadTable(e)
+  }
+
+  function LoadTable(searchText="") {
+    
+    dispatch(DataMethods['cityService'].getAllCities(searchText, page, rowsPerPage))
   }
 
   useEffect(() => {
@@ -196,7 +209,7 @@ const CityMasterTable = () => {
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} updateCity={updateCity} addCity={addCity} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} updateCity={updateCity} addCity={addCity} selectedCity={selectedCity} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
         </CmtCard> : ""
@@ -258,15 +271,16 @@ const CityMasterTable = () => {
                 iconPosition="right"
                 align="right"
                 placeholder="Search"
-                value={search}
-                onChange={e => SearchRecords(e.target.value)} />
+                // value={search}
+                // onChange={function (e) { setValue(e.target.value); SearchRecordsDebounce(e.target.value) }} />
+                onChange={(e)=>SearchRecordsDebounce(e.target.value)} />
             </Box>
           </Box>
         </CmtCardHeader>
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-          {((!search && cities.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : cities} state={state} hideColumns={hideColumns} /> : ""}
+            {((!search && cities.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : cities} state={state} hideColumns={hideColumns} /> : ""}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>

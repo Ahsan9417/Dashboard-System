@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 const TableItem = ({ row }) => {
   const classes = useStyles();
   const [changePasswordForm, setChangePasswordForm] = useState({
-    userName: "Admin",
+    userName: "admin",
     oldPassword: "",
     newPassword: "",
     reEnterPassword: ""
@@ -75,8 +75,8 @@ const TableItem = ({ row }) => {
   return (
     <TableRow className={classes.tableRowRoot}>
       <TableCell >
-        <Box sx={{ display: 'flex', marginBottom: 10 }}>
-          <TextField style={{ marginRight: 10, width: "25%" }} id="outlined-basic" label="User Id" variant="outlined" value={userName} onChange={(e) => setUserName(e.target.value)} />
+        <Box sx={{ display: 'flex', margin: 10 }}>
+          <TextField style={{ marginRight: 10, width: "25%" }} id="outlined-basic" label="User Name" variant="outlined" value={userName} onChange={(e) => setUserName(e.target.value)} />
           <TextField style={{ marginRight: 10, width: "25%" }} id="outlined-basic" label="Old Password" variant="outlined" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
           <TextField style={{ marginRight: 10, width: "25%" }} id="outlined-basic" label="New Password" variant="outlined" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
           <TextField style={{ marginRight: 10, width: "25%" }} id="outlined-basic" label="Re-Enter Password" variant="outlined" value={reEnterPassword} onChange={(e) => setReEnterPassword(e.target.value)} />

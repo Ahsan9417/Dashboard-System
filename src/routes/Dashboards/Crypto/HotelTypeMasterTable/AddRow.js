@@ -47,7 +47,7 @@ const AddRow = (props) => {
             <CmtCard style={{ marginBottom: 30, marginRight: 10, marginTop: 10, marginLeft: 10, }} >
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
-                        <Box sx={{ display: 'flex', marginBottom: 10 }}>
+                        <Box sx={{ display: 'flex', margin: 10 }}>
                             <TextField id="outlined-basic" label="Hotel Type" variant="outlined" value={hoteType} />
                         </Box>
                     </PerfectScrollbar>

@@ -52,8 +52,8 @@ const AddRow = (props) => {
             <CmtCard style={{ marginBottom: 30, marginRight: 10, marginTop: 10, marginLeft: 10, }} >
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
-                        <Box sx={{ display: 'flex', marginBottom: 10 }}>
-                            <TextField id="outlined-basic" label="City Name" variant="outlined" value={cityName} onChange={(e) => setCityName(e.target.value)} />
+                        <Box sx={{ display: 'flex', margin: 10 }}>
+                            <TextField  style={{ marginRight: 10 }} id="outlined-basic" label="City Name" variant="outlined" value={cityName} onChange={(e) => setCityName(e.target.value)} />
                             <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Contry" defaultValue="" variant="outlined" value={countryCode} onChange={(e) => setCountryCode(e.target.value)} />
                             <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Province" defaultValue="" variant="outlined" value={provinceCode} onChange={(e) => setProvinceCode(e.target.value)} />
                         </Box>

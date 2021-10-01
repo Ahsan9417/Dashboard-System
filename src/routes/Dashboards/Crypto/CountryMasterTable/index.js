@@ -284,7 +284,7 @@ const CountryMasterTable = (props) => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && countries.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : countries} state={state} hideColumns={hideColumns} /> : ""}
+            {((!search && countries.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : countries} state={state} hideColumns={hideColumns} /> : "Record Not Found"}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>

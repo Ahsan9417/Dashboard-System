@@ -54,7 +54,7 @@ const AddRow = (props) => {
                         <Box sx={{ display: 'flex', margin: 10 }}>
                             <TextField style={{ marginRight: 7 }} id="outlined-basic" label="Country Code" defaultValue="admin" variant="outlined" value={countryCode} onChange={(e) => setCountryCode(e.target.value)} />
                             <TextField style={{ marginRight: 7 }} id="outlined-basic" label="Country Name" variant="outlined" value={countryName} onChange={(e) => setCountryName(e.target.value)} />
-                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Country ISO" defaultValue="admin" variant="outlined" value={countryISO} onChange={(e) => setCountryISO(e.target.value)} />
+                            <TextField style={{ marginRight: 7 }} id="outlined-basic" label="Country ISO" defaultValue="admin" variant="outlined" value={countryISO} onChange={(e) => setCountryISO(e.target.value)} />
                             <TextField id="outlined-basic" label="Currency Code" variant="outlined" value={currencyCode} onChange={(e) => setCurrencyCode(e.target.value)} />
                         </Box>
                     </PerfectScrollbar>

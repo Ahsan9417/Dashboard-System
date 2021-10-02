@@ -12,7 +12,9 @@ import CmtCard from '@coremat/CmtCard';
 import CmtCardContent from '@coremat/CmtCard/CmtCardContent';
 import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 
 const useStyles = makeStyles(theme => ({
@@ -40,7 +42,20 @@ const useStyles = makeStyles(theme => ({
 
 const AddRow = (props) => {
     const classes = useStyles();
-    const [hoteType, setHotelType] = useState("")
+    const [hotelType, setHotelType] = useState({
+        name: '',
+        key: '',
+    })
+    const handleChange = event => {
+        console.log("event target value", event.target.value);
+        const name = event.target.name;
+        console.log("event target name", name);
+
+        setHotelType({
+            ...hotelType,
+            [name]: event.target.value,
+        });
+    };
     return (
         <TableRow className={classes.tableRowRoot}>
 
@@ -48,7 +63,23 @@ const AddRow = (props) => {
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
                         <Box sx={{ display: 'flex', margin: 10 }}>
-                            <TextField id="outlined-basic" label="Hotel Type" variant="outlined" value={hoteType} />
+                            <FormControl variant="outlined" >
+                                <InputLabel htmlFor="outlined-age-native-simple">Hotel Type</InputLabel>
+                                <Select
+                                    native
+                                    value={hotelType.name}
+                                    onChange={handleChange}
+                                    label="Hotel Type"
+                                    inputProps={{
+                                        name: 'name',
+                                        id: 'outlined-age-native-simple',
+                                    }}>
+                                    <option aria-label="None" value="" />
+                                    <option value={10}>Pakistan</option>
+                                    <option value={20}>India</option>
+                                    <option value={30}>Singapore</option>
+                                </Select>
+                            </FormControl>
                         </Box>
                     </PerfectScrollbar>
                 </CmtCardContent>

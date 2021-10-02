@@ -10,9 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
 import { DataMethods } from 'services/dataServices';
 import { useDispatch, useSelector } from 'react-redux';
-import { AuhMethods } from 'services/auth';
-import { CurrentAuthMethod } from '@jumbo/constants/AppConstants';
-import ContentLoader from '@jumbo/components/ContentLoader';
 
 const useStyles = makeStyles(theme => ({
   backgroundDeleteColorChange: {
@@ -70,13 +67,12 @@ const TableItem = ({ row }) => {
       "NewPassword": newPassword,
       "ConfirmPassword": reEnterPassword
     }
-    dispatch(AuhMethods[CurrentAuthMethod].changePassword(obj))
+    dispatch(DataMethods['userService'].changePassword(obj))
 
 
   }
 
   return (
- 
     <TableRow className={classes.tableRowRoot}>
       <TableCell >
         <Box sx={{ display: 'flex', margin: 10 }}>

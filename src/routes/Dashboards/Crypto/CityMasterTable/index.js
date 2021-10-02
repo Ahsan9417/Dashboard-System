@@ -108,15 +108,15 @@ const CityMasterTable = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [state, setState] = React.useState({
-    checked1: true,
-    checked2: true,
-    checked3: true,
-    checked4: true,
-    checked5: true,
-    checked6: true,
-  });
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const [state, setState] = React.useState({
+  //   checked1: true,
+  //   checked2: true,
+  //   checked3: true,
+  //   checked4: true,
+  //   checked5: true,
+  //   checked6: true,
+  // });
 
   const [add, setAdd] = useState(false)
   const [update, setUpdate] = useState(false)
@@ -125,16 +125,16 @@ const CityMasterTable = () => {
 
 
 
-  const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleChange = event => {
+  //   setState({ ...state, [event.target.name]: event.target.checked });
+  // };
+  // const handleClick = event => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
 
   const handleChangePage = (event, newPage) => {
@@ -159,6 +159,8 @@ const CityMasterTable = () => {
     setSelectedCity(city)
     setUpdate(true)
   }
+
+
   const changeHandlerTrue = () => {
     setAdd(true)
   }
@@ -280,7 +282,7 @@ const CityMasterTable = () => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && cities.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : cities} state={state} hideColumns={hideColumns} /> : ""}
+            {((!search && cities.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : cities}  hideColumns={hideColumns} /> : ""}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>

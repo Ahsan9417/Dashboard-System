@@ -98,18 +98,18 @@ const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, 
   };
   return (
     <TableRow className={classes.tableRowRoot}>
-      {state && state.checked1 && <TableCell className={classes.tableCellRoot}>{row.currency}</TableCell>}
-      {state && state.checked2 && <TableCell className={classes.tableCellRoot}>{row.rate}</TableCell>}
-      {state && state.checked3 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked4 && <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>}
-      {state && state.checked5 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
+      <TableCell className={classes.tableCellRoot}>{row.currency}</TableCell>
+      <TableCell className={classes.tableCellRoot}>{row.rate}</TableCell>
+      <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>
+      <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>
+      <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>
+      <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>
       <TableCell className={classes.tableCellRoot}>
         <IconButton aria-label="edit" onClick={() => changeStatus(row)} className={classes.backgroundEditColorChange}>
           <EditIcon />
         </IconButton>
         <IconButton aria-label="delete" onClick={handleClickOpen} className={classes.backgroundDeleteColorChange}>
-          <DeleteIcon  />
+          <DeleteIcon />
         </IconButton>
         <Box>
           <Dialog

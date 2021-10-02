@@ -94,34 +94,36 @@ const rows = [
 
 
 const ProvinceMasterTable = () => {
+  
   const [tableData, setTableData] = useState(crypto.orders);
   const [value, setValue] = useState('');
   const classes = useStyles();
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [state, setState] = React.useState({
-    checked1: true,
-    checked2: true,
-    checked3: true,
-    checked4: true,
-    checked5: true,
-    checked6: true,
-  });
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const [state, setState] = React.useState({
+  //   checked1: true,
+  //   checked2: true,
+  //   checked3: true,
+  //   checked4: true,
+  //   checked5: true,
+  //   checked6: true,
+  // });
   const [add, setAdd] = useState(false)
   const [update, setUpdate] = useState(false)
+  const [selectedCity, setSelectedCity] = useState("")
 
 
-  const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleChange = event => {
+  //   setState({ ...state, [event.target.name]: event.target.checked });
+  // };
+  // const handleClick = event => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
 
   const handleChangePage = (event, newPage) => {
@@ -141,9 +143,21 @@ const ProvinceMasterTable = () => {
   const changeUpdateStatusToTrue = () => {
     setUpdate(true)
   }
+  
   const changeHandlerTrue = () => {
     setAdd(true)
   }
+
+  const addProvince = (Province) => {
+
+    
+
+  }
+  const updateCity = (Province) => {
+   
+
+  }
+
   return (
     <>
       {add &&
@@ -219,7 +233,7 @@ const ProvinceMasterTable = () => {
 
       <CmtCardContent className={classes.cardContentRoot}>
         <PerfectScrollbar className={classes.scrollbarRoot}>
-        <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={tableData} state={state} changeEditStateTrue={changeHandlerTrue} />
+        <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={tableData}  changeEditStateTrue={changeHandlerTrue} />
         </PerfectScrollbar>
       </CmtCardContent>
       <CmtCardFooter>

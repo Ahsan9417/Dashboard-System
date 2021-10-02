@@ -14,6 +14,10 @@ import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import CheckedBoxTree from "./CheckedBoxTree";
 
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+
 const nodes = [{
     value: 'mars',
     label: 'Mars',
@@ -48,8 +52,18 @@ const useStyles = makeStyles(theme => ({
 
 const AddRow = (props) => {
     const classes = useStyles();
-    const [cityName, setCityName] = useState("")
     
+    const [menuRightsName, setMenuRightsName] = React.useState({
+        name: '',
+        key: '',
+    });
+    const handleChange = event => {
+        const name = event.target.name;
+        setMenuRightsName({
+            ...menuRightsName,
+            [name]: event.target.value,
+        });
+    };
 
     return (
         <TableRow className={classes.tableRowRoot}>
@@ -58,7 +72,23 @@ const AddRow = (props) => {
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
                         <Box sx={{ display: 'flex', margin: 10 }}>
-                            <TextField style={{marginRight: 20}} id="outlined-basic" label="Menu Rights Name" variant="outlined" value={cityName} />
+                            <FormControl variant="outlined" style={{ width: "100%", marginRight: 20 }} >
+                                <InputLabel htmlFor="outlined-age-native-simple">Menu Rights</InputLabel>
+                                <Select
+                                    native
+                                    value={menuRightsName.name}
+                                    onChange={handleChange}
+                                    label="Menu Rights Name"
+                                    inputProps={{
+                                        name: 'name',
+                                        id: 'outlined-age-native-simple',
+                                    }}>
+                                    <option aria-label="None" value="" />
+                                    <option value={10}>Pakistan</option>
+                                    <option value={20}>India</option>
+                                    <option value={30}>Singapore</option>
+                                </Select>
+                            </FormControl>
                             <CheckedBoxTree />
                         </Box>
                     </PerfectScrollbar>

@@ -12,6 +12,10 @@ import CmtCard from '@coremat/CmtCard';
 import CmtCardContent from '@coremat/CmtCard/CmtCardContent';
 import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+
 const useStyles = makeStyles(theme => ({
     backgroundDeleteColorChange: {
         margin: theme.spacing(2),
@@ -33,41 +37,73 @@ const useStyles = makeStyles(theme => ({
     tableRowRoot: {
         marginLeft: 10
     },
+    formControl: {
+        // margin: theme.spacing(2),
+        // minWidth: 120,
+    },
 }));
 
 const AddRow = (props) => {
     const classes = useStyles();
-    const [countryName, setCountryName] = useState("")
     const [provinceName, setProvinceName] = useState("")
+    const [countryName, setCountryName] = React.useState({
+        name: '',
+        key: '',
+    });
+    const handleChange = event => {
+        const name = event.target.name;
+        setCountryName({
+            ...countryName,
+            [name]: event.target.value,
+        });
+    };
+
+    
     return (
 
         <TableRow className={classes.tableRowRoot}>
-           
-                <CmtCard style={{ marginBottom: 30,marginRight: 10,marginTop: 10,marginLeft: 10, }} >
-                    <CmtCardContent className={classes.cardContentRoot}>
-                        <PerfectScrollbar className={classes.scrollbarRoot}>
-                            <Box sx={{ display: 'flex', margin: 10 }}>
-                                <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Province Name" defaultValue="admin" variant="outlined" value={provinceName} />
-                                <TextField id="outlined-basic" label="Country Name" variant="outlined" value={countryName} />
-                            </Box>
-                        </PerfectScrollbar>
-                    </CmtCardContent>
-                    <CmtCardFooter>
-                        <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                            {props && !props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
-                                Save
-                            </Button>}
-                            {props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
-                                Update
-                            </Button>}
-                            <Button onClick={() => props.changeAddState()} variant="contained" >
-                                Clear
-                            </Button>
+            <CmtCard style={{ marginBottom: 30, marginRight: 10, marginTop: 10, marginLeft: 10, }} >
+                <CmtCardContent className={classes.cardContentRoot}>
+                    <PerfectScrollbar className={classes.scrollbarRoot}>
+                        <Box sx={{ display: 'flex', margin: 10 }}>
+                            <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Province Name" defaultValue="admin" variant="outlined" value={provinceName} />
+                            <FormControl variant="outlined" style={{width: "100%"}} >
+                                <InputLabel htmlFor="outlined-age-native-simple">Country Name</InputLabel>
+                                <Select
+                                    native
+                                    value={countryName.name}
+                                    onChange={handleChange}
+                                    label="Country Name"
+                                    inputProps={{
+                                        name: 'name',
+                                        id: 'outlined-age-native-simple',
+                                    }}>
+                                    <option aria-label="None" value="" />
+                                    <option value={10}>Pakistan</option>
+                                    <option value={20}>India</option>
+                                    <option value={30}>Singapore</option>
+                                </Select>
+                            </FormControl>
                         </Box>
-                    </CmtCardFooter>
-                </CmtCard>
-          
+                    </PerfectScrollbar>
+                </CmtCardContent>
+                <CmtCardFooter>
+                    <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
+
+                        {props && !props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
+                            Save
+                        </Button>}
+                        {props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
+                            Update
+                        </Button>}
+                        <Button onClick={() => props.changeAddState()} variant="contained" >
+                            Clear
+                        </Button>
+                    </Box>
+                </CmtCardFooter>
+            </CmtCard>
+
         </TableRow>
     );
 };

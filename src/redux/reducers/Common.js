@@ -12,7 +12,7 @@ export default (state = INIT_STATE, action) => {
       return { ...state, error: '', loading: true };
     }
     case FETCH_SUCCESS: {
-      return { ...state, error: '', loading: false };
+      return { ...state, error: action.payload, loading: false };
     }
     case FETCH_ERROR: {
       return { ...state, loading: false, error: action.payload };

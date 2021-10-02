@@ -1,17 +1,14 @@
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey, setSelectedCountry } from '../../../redux/actions/Country';
 import axios from './config';
 
-const countryMaster = {
-    getAllCountries: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
+const provinceService = {
+    getAllProvinces: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-            console.log('calling country api');
-
             axios
                 .post('/get', {
                     "display-length": rowCount,
@@ -21,8 +18,7 @@ const countryMaster = {
                     "search-text": searchText
                 })
                 .then(({ data }) => {
-                    if (data.data && data.data.countries) {
-                        dispatch(searchText ? setAllFilteredCountries(data.data.countries) : setAllCountries(data.data.countries));
+                    if (data.data && data.data.provinces) {
                         dispatch(fetchSuccess());
 
                     } else {
@@ -38,21 +34,20 @@ const countryMaster = {
         };
     },
 
-    getCountryByKey: (key) => {
+    getProvinceByKey: (key) => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-        
+
             axios
                 .post('/get-by-key', {
-                    "country-key": key,
-                   
+                    "province-key": key,
+
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.countries) {
-                        dispatch(setSelectedCountry(data.data))
                         dispatch(fetchSuccess());
 
                     } else {
@@ -68,15 +63,43 @@ const countryMaster = {
         };
     },
 
-    AddCountry: (country) => {
+
+    getProvinceByCountryKey: (key) => {
 
         return dispatch => {
-            console.log('save country')
+            dispatch(fetchStart());
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['AuthorizationKey'] = token;
+
+            axios
+                .post('/get-by-country-key', {
+                    "country-key": key,
+
+                })
+                .then(({ data }) => {
+                    if (data.data && data.data.provinces) {
+                        dispatch(fetchSuccess());
+
+                    } else {
+                        dispatch(fetchError(data.error));
+
+                    }
+
+                })
+                .catch(function (error) {
+                    dispatch(fetchError(error.message));
+
+                });
+        };
+    },
+
+    AddProvince: (obj) => {
+
+        return dispatch => {
             let obj = {
-                "country-iso": country.countryISO,
-                "country-code": country.countryCode,
-                "country-name": country.countryName,
-                "currency-code": country.currencyCode
+                "country-key": obj.countryKey,
+                "province-key": obj.provinceKey,
+
             }
 
             dispatch(fetchStart());
@@ -86,8 +109,6 @@ const countryMaster = {
                 .post('/save', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(AddCountry(data.data));
-
                         dispatch(fetchSuccess());
                     } else {
                         dispatch(fetchError(data.error));
@@ -99,27 +120,21 @@ const countryMaster = {
         };
     },
 
-
-    UpdateCountry: (key, updatedCountry) => {
+    UpdateProvince: (key, updatedProvince) => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
-                "country-iso": updatedCountry.countryISO,
-                "country-code": updatedCountry.countryCode,
-                "country-name": updatedCountry.countryName,
-                "currency-code": updatedCountry.currencyCode,
-                "country-key" : key
+                // "country-key": country.countryISO,
+                // "province-key": country.countryCode,
             }
             axios
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         console.log(data)
-                        dispatch(updateCountryByKey({country : data.data , key : key}));
-
                         dispatch(fetchSuccess());
                     } else {
                         dispatch(fetchError(data.error));
@@ -131,8 +146,7 @@ const countryMaster = {
         };
     },
 
-
-    DeleteCountry: (country) => {
+    DeleteProvince: (country) => {
 
         return dispatch => {
             console.log('delete country api');
@@ -141,11 +155,10 @@ const countryMaster = {
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {
-                    "country-key": country["country-key"]
+                    "province-key": country["country-key"]
                 })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(deleteCountryByKey(data.data["country-key"]));
                         dispatch(fetchSuccess());
 
                     } else {
@@ -162,4 +175,4 @@ const countryMaster = {
 
 };
 
-export default countryMaster;
+export default provinceService;

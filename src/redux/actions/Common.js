@@ -1,10 +1,12 @@
 import { FETCH_ERROR, FETCH_START, FETCH_SUCCESS } from '../../@jumbo/constants/ActionTypes';
 
-export const fetchSuccess = () => {
+export const fetchSuccess = (msg) => {
  
   return dispatch => {
     dispatch({
       type: FETCH_SUCCESS,
+      payload: msg,
+
     });
   };
 };

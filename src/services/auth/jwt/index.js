@@ -23,7 +23,7 @@ const JWTAuth = {
             dispatch(fetchError(data.error));
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           dispatch(fetchError(error.message));
         });
     };
@@ -32,7 +32,7 @@ const JWTAuth = {
   onLogin: ({ email, password }) => {
     return dispatch => {
       try {
-       
+
         dispatch(fetchStart());
         axios
           .post('api/admin/user/validate-login', {
@@ -40,7 +40,7 @@ const JWTAuth = {
             Password: password,
           })
           .then(({ data }) => {
-    
+
             if (data && data.dataException.err_code == 200) {
               localStorage.setItem('token', data.data.key);
               axios.defaults.headers.common['AuthorizationKey'] = data.data.key;
@@ -48,11 +48,11 @@ const JWTAuth = {
               localStorage.setItem('user', data.data.userMenu[0]['child-key']);
               dispatch(JWTAuth.getAuthUser(true, data.data.key));
             } else {
-              
+
               dispatch(fetchError(data.dataException.err_msg));
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             dispatch(fetchError(error.message));
           });
       } catch (error) {
@@ -75,7 +75,7 @@ const JWTAuth = {
             localStorage.removeItem('user');
 
             dispatch(setAuthUser(null));
-          
+
           } else {
             dispatch(fetchError(data.error));
           }
@@ -105,12 +105,12 @@ const JWTAuth = {
         axios
           .post('admin/get-by-key', { 'user-key': user_key })
           .then(({ data }) => {
-        
+
             if (data.data) {
               let user = data.data;
               dispatch(fetchSuccess());
               dispatch(setAuthUser(user));
-            } else {       
+            } else {
               dispatch(JWTAuth.onLogout())
               dispatch(updateLoadUser(true));
             }
@@ -118,12 +118,12 @@ const JWTAuth = {
           .catch(error => {
             console.log('get by key catch', error);
             dispatch(updateLoadUser(true));
-            
+
             dispatch(JWTAuth.onLogout())
           });
       } else {
         dispatch(updateLoadUser(true));
-        
+
         dispatch(JWTAuth.onLogout())
       }
     };
@@ -142,6 +142,29 @@ const JWTAuth = {
   getSocialMediaIcons: () => {
     return <React.Fragment> </React.Fragment>;
   },
+
+  changePassword: (obj) => {
+    return dispatch => {
+      dispatch(fetchStart());
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['AuthorizationKey'] = token;
+      axios
+        .post('api/admin/user/change-password', obj)
+        .then(({ data }) => {
+          if (data.data && data.dataException.err_code == 200) {
+            dispatch(fetchSuccess(data.dataException.err_msg));
+
+          } else {
+            dispatch(fetchError(data.dataException.err_msg));
+          }
+        })
+        .catch(function (error) {
+          dispatch(fetchError(error.message));
+
+        });
+    };
+  },
+
 };
 
 export default JWTAuth;

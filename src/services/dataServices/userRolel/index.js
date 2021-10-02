@@ -1,17 +1,14 @@
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey, setSelectedCountry } from '../../../redux/actions/Country';
 import axios from './config';
 
-const countryMaster = {
-    getAllCountries: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
+const userRole = {
+    getAllMenus: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-            console.log('calling country api');
-
             axios
                 .post('/get', {
                     "display-length": rowCount,
@@ -22,14 +19,12 @@ const countryMaster = {
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.countries) {
-                        dispatch(searchText ? setAllFilteredCountries(data.data.countries) : setAllCountries(data.data.countries));
                         dispatch(fetchSuccess());
 
                     } else {
                         dispatch(fetchError(data.error));
 
                     }
-
                 })
                 .catch(function (error) {
                     dispatch(fetchError(error.message));
@@ -38,21 +33,20 @@ const countryMaster = {
         };
     },
 
-    getCountryByKey: (key) => {
+    getMenuByKey: (key) => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-        
+
             axios
                 .post('/get-by-key', {
-                    "country-key": key,
-                   
+                    "menu-rights-mas-key": key,
+
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.countries) {
-                        dispatch(setSelectedCountry(data.data))
                         dispatch(fetchSuccess());
 
                     } else {
@@ -68,15 +62,15 @@ const countryMaster = {
         };
     },
 
-    AddCountry: (country) => {
+    AddMenu: (menu) => {
 
         return dispatch => {
             console.log('save country')
             let obj = {
-                "country-iso": country.countryISO,
-                "country-code": country.countryCode,
-                "country-name": country.countryName,
-                "currency-code": country.currencyCode
+                "country-iso": menu.countryISO,
+                "country-code": menu.countryCode,
+                "country-name": menu.countryName,
+                "currency-code": menu.currencyCode
             }
 
             dispatch(fetchStart());
@@ -86,8 +80,6 @@ const countryMaster = {
                 .post('/save', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(AddCountry(data.data));
-
                         dispatch(fetchSuccess());
                     } else {
                         dispatch(fetchError(data.error));
@@ -100,25 +92,24 @@ const countryMaster = {
     },
 
 
-    UpdateCountry: (key, updatedCountry) => {
+    UpdateMenu: (key, updatedMenu) => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
-                "country-iso": updatedCountry.countryISO,
-                "country-code": updatedCountry.countryCode,
-                "country-name": updatedCountry.countryName,
-                "currency-code": updatedCountry.currencyCode,
-                "country-key" : key
+                "country-iso": updatedMenu.countryISO,
+                "country-code": updatedMenu.countryCode,
+                "country-name": updatedMenu.countryName,
+                "currency-code": updatedMenu.currencyCode,
+                "country-key": key
             }
             axios
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         console.log(data)
-                        dispatch(updateCountryByKey({country : data.data , key : key}));
 
                         dispatch(fetchSuccess());
                     } else {
@@ -132,20 +123,18 @@ const countryMaster = {
     },
 
 
-    DeleteCountry: (country) => {
+    DeleteMenu: (menu) => {
 
         return dispatch => {
-            console.log('delete country api');
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {
-                    "country-key": country["country-key"]
+                    "menu-rights-mas-key": menu["menu-rights-mas-key"]
                 })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(deleteCountryByKey(data.data["country-key"]));
                         dispatch(fetchSuccess());
 
                     } else {
@@ -158,8 +147,6 @@ const countryMaster = {
         };
     },
 
-
-
 };
 
-export default countryMaster;
+export default userRole;

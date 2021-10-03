@@ -1,6 +1,6 @@
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey, setSelectedCountry } from '../../../redux/actions/Country';
+import { AddCountry, setAllCountries, updateCountryByKey, setAllFilteredCountries, deleteCountryByKey, setSelectedCountry, setRowsCount } from '../../../redux/actions/Country';
 import axios from './config';
 
 const countryMaster = {
@@ -15,13 +15,14 @@ const countryMaster = {
             axios
                 .post('/get', {
                     "display-length": rowCount,
-                    "display-start": pageNo * rowCount,
+                    "display-start": (pageNo * rowCount) + (pageNo ? 1 : 0),
                     "sort-column": sortBy,
                     "sort-direction": sortOrder,
                     "search-text": searchText
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.countries) {
+                        dispatch(setRowsCount(data.data["total-rows"]));
                         dispatch(searchText ? setAllFilteredCountries(data.data.countries) : setAllCountries(data.data.countries));
                         dispatch(fetchSuccess());
 

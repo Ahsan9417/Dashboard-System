@@ -1,10 +1,10 @@
 import countryMaster from "./countryMaster.js";
 import cityMaster from "./cityMaster.js"
 import userService from "./User/index.js";
-import hotelService from "./User/index.js";
 import provinceService from "./Province/index.js";
 import userRole from "./userRolel/index.js";
 import utilsService from "./utils/index.js";
+import hotelService from "./hotel/index.js"
 
 export const DataMethods = {
   countryService: countryMaster,

@@ -31,6 +31,14 @@ export const setSelectedCity = data => {
         });
     };
 };
+export const setRowsCount = data => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_ROWS_COUNT',
+            payload: data,
+        });
+    };
+};
 
 export const AddCity = data => {
     return dispatch => {

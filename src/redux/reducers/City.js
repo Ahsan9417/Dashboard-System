@@ -5,19 +5,26 @@ const INIT_STATE = {
     selectedCity: {},
     searchText: '',
     loading: false,
+    totalRecords: 0
 };
 
 export default (state = INIT_STATE, action) => {
-    
+
     switch (action.type) {
 
         case "GET_ALL":
             return state;
-            
+
         case 'SET_ALL': {
             return {
                 ...state,
                 citiesList: action.payload
+            }
+        }
+        case 'SET_ROWS_COUNT': {
+            return {
+                ...state,
+                totalRecords: action.payload
             }
         }
         case "GET_ALL_FILTERED":
@@ -42,7 +49,7 @@ export default (state = INIT_STATE, action) => {
         case 'ADD_CITY':
             return {
                 ...state,
-                citiesList: [action.payload,...state.citiesList, ]
+                citiesList: [action.payload, ...state.citiesList,]
             }
 
         case 'UPDATE_CITY_BY_KEY':

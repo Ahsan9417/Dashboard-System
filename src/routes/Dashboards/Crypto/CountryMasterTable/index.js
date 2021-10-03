@@ -96,6 +96,7 @@ const CountryMasterTable = (props) => {
 
   let countries = useSelector(({ country }) => country.countriesList)
   let filteredList = useSelector(({ country }) => country.filteredList)
+  let rowCount = useSelector(({ country }) => country.totalRecords)
 
   console.log(countries.length);
 
@@ -195,7 +196,7 @@ const CountryMasterTable = (props) => {
 
   function Search(e){
     setValue(e)
-    if(e) LoadTable(e)
+    LoadTable(e ? e : "")
   }
 
 
@@ -284,7 +285,7 @@ const CountryMasterTable = (props) => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && countries.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : countries} state={state} hideColumns={hideColumns} /> : "Record Not Found"}
+            {((!search && countries.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : countries} state={state} hideColumns={hideColumns} /> : "Records Not Found"}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>
@@ -292,7 +293,7 @@ const CountryMasterTable = (props) => {
 
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={rowCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}

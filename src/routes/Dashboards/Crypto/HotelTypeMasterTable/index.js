@@ -97,17 +97,20 @@ const rows = [
 
 
 const HotelTypeMasterTable = () => {
-  let provinces = useSelector(({ province }) => province.provincesList)
-  let filteredList = useSelector(({ province }) => province.filteredList)
-  let hideColumns = ["row-number", "province-key", "country-key"]
-  // const [state, setState] = React.useState({
-  //   checked1: true,
-  //   checked2: true,
-  //   checked3: true,
-  //   checked4: true,
-  //   checked5: true,
-  //   checked6: true,
-  // });
+  let hotels = useSelector(({ hotel }) => hotel.hotelsList)
+  let filteredList = useSelector(({ hotel }) => hotel.filteredList)
+  let rowCount = useSelector(({ hotel }) => hotel.totalRecords)
+
+
+  let hideColumns = ["row-number", "hotel-type-key"]
+  const [state, setState] = React.useState({
+    checked1: true,
+    checked2: true,
+    checked3: true,
+    checked4: true,
+    checked5: true,
+    checked6: true,
+  });
 
   const [search, setValue] = useState('');
 
@@ -125,7 +128,7 @@ const HotelTypeMasterTable = () => {
   // });
   const [add, setAdd] = useState(false)
   const [update, setUpdate] = useState(false)
-  const [selectedProvince, setSelectedProvince] = useState("")
+  const [selectedHotel, setSelectedHotel] = useState("")
   let dispatch = useDispatch();
 
   // const handleChange = event => {
@@ -142,13 +145,13 @@ const HotelTypeMasterTable = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    dispatch(DataMethods['provinceService'].getAllProvinces(search, newPage, rowsPerPage))
+    dispatch(DataMethods['hotelService'].getAllHotels(search, newPage, rowsPerPage))
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-    dispatch(DataMethods['provinceService'].getAllProvinces(search, 0, parseInt(event.target.value, 10)))
+    dispatch(DataMethods['hotelService'].getAllHotels(search, 0, parseInt(event.target.value, 10)))
 
   };
 
@@ -157,10 +160,8 @@ const HotelTypeMasterTable = () => {
 
 
   }
-  const changeUpdateStatusToTrue = (province) => {
-    setSelectedProvince(province)
-    //get Country of Province
-    // DataMethods['utilsService'].getCountryByKey(province["country-key"])
+  const changeUpdateStatusToTrue = (hotel) => {
+    setSelectedHotel(hotel)
     setUpdate(true)
   }
 
@@ -171,16 +172,16 @@ const HotelTypeMasterTable = () => {
 
 
 
-  const addProvince = (province) => {
+  const addHotel = (hotel) => {
     changeHandlerFalse()
-    dispatch(DataMethods['provinceService'].AddProvince(province))
+    dispatch(DataMethods['hotelService'].AddHotel(hotel))
 
   }
-  const updateProvince = (province) => {
+  const updateHotel = (hotel) => {
     changeHandlerFalse()
 
-    dispatch(DataMethods['provinceService'].UpdateProvince(selectedProvince["province-key"], province))
-    setSelectedProvince("")
+    dispatch(DataMethods['hotelService'].UpdateHotel(selectedHotel["hotel-type-key"], hotel))
+    setSelectedHotel("")
 
   }
   function debounce(func, wait) {
@@ -197,13 +198,13 @@ const HotelTypeMasterTable = () => {
 
   function Search(e) {
     setValue(e)
-    if (e) LoadTable(e)
+    LoadTable(e ? e : "")
   }
 
 
   function LoadTable(searchText = "") {
 
-    dispatch(DataMethods['provinceService'].getAllProvinces(searchText, page, rowsPerPage))
+    dispatch(DataMethods['hotelService'].getAllHotels(searchText, page, rowsPerPage))
   }
 
   useEffect(() => {
@@ -218,7 +219,7 @@ const HotelTypeMasterTable = () => {
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} updateProvince={updateProvince} addProvince={addProvince} selectedProvince={selectedProvince} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} updateHotel={updateHotel} addHotel={addHotel} selectedHotel={selectedHotel} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
         </CmtCard> : ""
@@ -287,7 +288,7 @@ const HotelTypeMasterTable = () => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && provinces.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : provinces}  hideColumns={hideColumns} /> : ""}
+            {((!search && hotels.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : hotels} hideColumns={hideColumns} /> : "Records Not Found"}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>
@@ -295,7 +296,7 @@ const HotelTypeMasterTable = () => {
 
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={rowCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}

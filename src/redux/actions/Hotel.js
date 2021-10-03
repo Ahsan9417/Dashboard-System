@@ -1,4 +1,4 @@
-export const getAllProvinces = () => {
+export const getAllHotels = () => {
     return dispatch => {
         dispatch({
             type: 'GET_ALL'
@@ -6,7 +6,7 @@ export const getAllProvinces = () => {
     };
 };
 
-export const setAllProvinces = data => {
+export const setAllHotels = data => {
     return dispatch => {
         dispatch({
             type: 'SET_ALL',
@@ -14,15 +14,7 @@ export const setAllProvinces = data => {
         });
     };
 };
-export const setSelectedProvinceCountry = data => {
-    return dispatch => {
-        dispatch({
-            type: 'SET_SELECTED_PROVINCE_COUNTRY',
-            payload: data,
-        });
-    };
-};
-export const setAllFilteredProvinces = data => {
+export const setAllFilteredHotels = data => {
     return dispatch => {
         dispatch({
             type: 'SET_ALL_FILTERED',
@@ -31,19 +23,29 @@ export const setAllFilteredProvinces = data => {
     };
 };
 
-export const setSelectedProvince = data => {
+export const setSelectedHotel = data => {
     return dispatch => {
         dispatch({
-            type: 'SET_SELECTED_PROVINCE',
+            type: 'SET_SELECTED_HOTEL',
             payload: data,
         });
     };
 };
 
-export const AddProvince = data => {
+export const addHotel = data => {
     return dispatch => {
+        console.log('AddHotel', data);
         dispatch({
-            type: 'ADD_PROVINCE',
+            type: 'ADD_HOTEL',
+            payload: data,
+        });
+    };
+};
+export const getHotelByKey = data => {
+    return dispatch => {
+        console.log('getHotelByKey', data);
+        dispatch({
+            type: 'GET_HOTEL_BY_KEY',
             payload: data,
         });
     };
@@ -57,27 +59,20 @@ export const setRowsCount = data => {
         });
     };
 };
-
-export const getProvinceyByKey = data => {
+export const deleteHotelByKey = data => {
     return dispatch => {
+        console.log('deleteHotelByKey', data);
         dispatch({
-            type: 'GET_PROVINCE_BY_KEY',
+            type: 'DELETE_HOTEL_BY_KEY',
             payload: data,
         });
     };
 };
-export const deleteProvinceByKey = data => {
+export const updateHotelByKey = data => {
     return dispatch => {
+        console.log('updateHotelByKey', data);
         dispatch({
-            type: 'DELETE_PROVINCE_BY_KEY',
-            payload: data,
-        });
-    };
-};
-export const updateProvinceByKey = data => {
-    return dispatch => {
-        dispatch({
-            type: 'UPDATE_PROVINCE_BY_KEY',
+            type: 'UPDATE_HOTEL_BY_KEY',
             payload: data,
         });
     };

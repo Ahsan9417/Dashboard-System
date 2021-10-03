@@ -1,6 +1,6 @@
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { AddCity, setAllCities, updateCityByKey, setAllFilteredCities, deleteCityByKey, setSelectedCity } from '../../../redux/actions/City';
+import { AddCity,setRowsCount, setAllCities, updateCityByKey, setAllFilteredCities, deleteCityByKey, setSelectedCity } from '../../../redux/actions/City';
 import axios from './config';
 
 const cityMaster = {
@@ -14,13 +14,15 @@ const cityMaster = {
             axios
                 .post('/get', {
                     "display-length": rowCount,
-                    "display-start": pageNo * rowCount,
+                    "display-start": (pageNo * rowCount) + (pageNo ? 1 : 0),
                     "sort-column": sortBy,
                     "sort-direction": sortOrder,
                     "search-text": searchText
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.cities) {
+                        dispatch(setRowsCount(data.data["total-rows"]));
+
                         dispatch(searchText ? setAllFilteredCities(data.data.cities) : setAllCities(data.data.cities));
                         dispatch(fetchSuccess());
 

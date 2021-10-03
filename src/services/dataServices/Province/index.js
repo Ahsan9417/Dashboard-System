@@ -1,4 +1,4 @@
-import { setAllProvinces, setSelectedProvinceCountry, AddProvince, deleteProvinceByKey, updateProvinceByKey, setAllFilteredProvinces } from 'redux/actions/Province';
+import { setAllProvinces,setRowsCount, setSelectedProvinceCountry, AddProvince, deleteProvinceByKey, updateProvinceByKey, setAllFilteredProvinces } from 'redux/actions/Province';
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
 import axios from './config';
@@ -15,13 +15,15 @@ const provinceService = {
             axios
                 .post('/get', {
                     "display-length": rowCount,
-                    "display-start": pageNo * rowCount,
+                    "display-start": (pageNo * rowCount) + (pageNo ? 1 : 0),
                     "sort-column": sortBy,
                     "sort-direction": sortOrder,
                     "search-text": searchText
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.Provinces) {
+                        dispatch(setRowsCount(data.data["total-rows"]));
+
                         dispatch(searchText ? setAllFilteredProvinces(data.data.Provinces) : setAllProvinces(data.data.Provinces));
 
                         dispatch(fetchSuccess());

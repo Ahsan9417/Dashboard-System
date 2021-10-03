@@ -33,7 +33,14 @@ export const setSelectedCountry = data => {
         });
     };
 };
-
+export const setRowsCount = data => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_ROWS_COUNT',
+            payload: data,
+        });
+    };
+};
 export const AddCountry = data => {
     return dispatch => {
         console.log('AddCountry', data);

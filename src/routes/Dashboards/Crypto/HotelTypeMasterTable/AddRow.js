@@ -47,34 +47,13 @@ const useStyles = makeStyles(theme => ({
 const AddRow = (props) => {
     console.log(props);
     const classes = useStyles();
-    const [hotels, SetHotelsDropdown] = useState([])
+    const [hotelName, setHotelName] = useState(props.selectedHotel ? props.selectedHotel["hotel-type-desc"] : "")
 
-    const [hotelName, setHotelName] = React.useState({
-        name: '',
-        key: '',
-    });
-    const handleChange = event => {
-        console.log(event.target.selectedOptions[0]);
-        setHotelName({
-            name: event.target.selectedOptions[0].text,
-            key: event.target.selectedOptions[0].value,
-        });
-
-    };
-
-    const getHotels = async () => {
-        SetHotelsDropdown(await DataMethods['utilsService'].getAllCountries("", 1, 100))
-    };
 
 
     useEffect(() => {
 
         console.log('hotel Table');
-        console.log('use Effect hotel');
-        // let a  =await DataMethods['utilsService'].getAllCountries("", 1, 100)
-        // console.log(a);
-        console.log(hotels);
-        getHotels()
 
     }, []);
 
@@ -87,28 +66,9 @@ const AddRow = (props) => {
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
                         <Box sx={{ display: 'flex', margin: 10 }}>
-                           
-                            <FormControl variant="outlined" style={{ width: "100%" }} >
-                                <InputLabel htmlFor="outlined-age-native-simple">Hotel Type</InputLabel>
-                                <Select
-                                    native
-                                    // value={countryName.name}
-                                    onChange={handleChange}
-                                    label="Hotel Type"
-                                    inputProps={{
-                                        name: 'name',
-                                        id: 'outlined-age-native-simple',
-                                    }}>
-                                        <option aria-label="None" value="" />
-                                    {
-                                        hotels.map((x, index) => {
-                                            // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}
-                                            return <option selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))} name={x["country-name"]} value={x["country-key"]}>{x["country-name"]}</option>
-                                        })
-                                    }
+                            <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Hotel Tyoe Name" variant="outlined" value={hotelName} onChange={(e) => setHotelName(e.target.value)} />
 
-                                </Select>
-                            </FormControl>
+
 
                         </Box>
                     </PerfectScrollbar>
@@ -116,7 +76,7 @@ const AddRow = (props) => {
                 <CmtCardFooter>
                     <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                        <Button onClick={(e) => props[props.updateState ? "updateProvince" : "addProvince"]({ countryKey: hotelName["key"],  })} style={{ marginRight: 10 }} variant="contained" color="primary">
+                        <Button onClick={(e) => props[props.updateState ? "updateHotel" : "addHotel"]({ hotelName })} style={{ marginRight: 10 }} variant="contained" color="primary">
                             {props.updateState ? 'Update' : 'Save'}
                         </Button>
                         <Button onClick={(e) => props.changeAddState(e)} variant="contained" >

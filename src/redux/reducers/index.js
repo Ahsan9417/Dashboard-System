@@ -6,6 +6,7 @@ import Auth from './Auth';
 import Country from './Country'
 import CityRedux from './City';
 import Province from './Province';
+import Hotel from './Hotel';
 
 export default history =>
   combineReducers({
@@ -14,5 +15,6 @@ export default history =>
     auth: Auth,
     country: Country,
     city: CityRedux,
-    province : Province
+    province : Province,
+    hotel : Hotel
   });

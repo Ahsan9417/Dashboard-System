@@ -5,6 +5,7 @@ const INIT_STATE = {
     selectedCountry: {},
     searchText: '',
     loading: false,
+    totalRecords: 0
 };
 
 export default (state = INIT_STATE, action) => {
@@ -34,6 +35,12 @@ export default (state = INIT_STATE, action) => {
                 selectedCountry: action.payload
             }
         }
+        case 'SET_ROWS_COUNT': {
+            return {
+                ...state,
+                totalRecords: action.payload
+            }
+        }
 
         case 'GET_COUNTRY_BY_KEY':
             return { ...state, selectedCountry: action.payload };
@@ -42,7 +49,7 @@ export default (state = INIT_STATE, action) => {
             return {
                 ...state,
                 // countriesList: [...state.countriesList, action.payload] //Append
-                countriesList: [action.payload,...state.countriesList ] //prepend
+                countriesList: [action.payload, ...state.countriesList] //prepend
             }
 
         case 'UPDATE_COUNTRY_BY_KEY':

@@ -103,6 +103,9 @@ const CityMasterTable = () => {
   let filteredList = useSelector(({ city }) => city.filteredList)
   let hideColumns = ["row-number", "city-key", "country-key", "province-key"]
 
+  let rowCount = useSelector(({ city }) => city.totalRecords)
+
+
   const [search, setValue] = useState('');
 
   const classes = useStyles();
@@ -193,7 +196,7 @@ const CityMasterTable = () => {
 
   function Search(e){
     setValue(e)
-    if(e) LoadTable(e)
+    LoadTable(e ? e : "")
   }
 
   function LoadTable(searchText="") {
@@ -282,7 +285,7 @@ const CityMasterTable = () => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && cities.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : cities}  hideColumns={hideColumns} /> : ""}
+            {((!search && cities.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : cities}  hideColumns={hideColumns} /> : "Records Not Found"}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>
@@ -290,7 +293,7 @@ const CityMasterTable = () => {
 
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={rowCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}

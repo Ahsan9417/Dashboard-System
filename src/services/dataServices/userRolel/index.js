@@ -12,7 +12,7 @@ const userRole = {
             axios
                 .post('/get', {
                     "display-length": rowCount,
-                    "display-start": pageNo * rowCount,
+                    "display-start": (pageNo * rowCount) + (pageNo ? 1 : 0),
                     "sort-column": sortBy,
                     "sort-direction": sortOrder,
                     "search-text": searchText

@@ -6,6 +6,7 @@ const INIT_STATE = {
     selectedProvinceCountry: {},
     searchText: '',
     loading: false,
+    totalRecords: 0
 };
 
 export default (state = INIT_STATE, action) => {
@@ -61,6 +62,12 @@ export default (state = INIT_STATE, action) => {
                 provincesList: newArray,
             }
 
+        case 'SET_ROWS_COUNT': {
+            return {
+                ...state,
+                totalRecords: action.payload
+            }
+        }
         case 'DELETE_PROVINCE_BY_KEY':
             return {
                 ...state,

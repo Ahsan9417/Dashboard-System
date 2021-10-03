@@ -99,6 +99,8 @@ const rows = [
 const ProvinceMasterTable = () => {
   let provinces = useSelector(({ province }) => province.provincesList)
   let filteredList = useSelector(({ province }) => province.filteredList)
+  let rowCount = useSelector(({ province }) => province.totalRecords)
+
   let hideColumns = ["row-number", "province-key", "country-key"]
   const [state, setState] = React.useState({
     checked1: true,
@@ -197,7 +199,7 @@ const ProvinceMasterTable = () => {
 
   function Search(e) {
     setValue(e)
-    if (e) LoadTable(e)
+    LoadTable(e ? e : "")
   }
 
 
@@ -287,7 +289,7 @@ const ProvinceMasterTable = () => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && provinces.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : provinces} state={state} hideColumns={hideColumns} /> : ""}
+            {((!search && provinces.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : provinces} state={state} hideColumns={hideColumns} /> : "Records Not Found"}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>
@@ -295,7 +297,7 @@ const ProvinceMasterTable = () => {
 
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={rowCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}

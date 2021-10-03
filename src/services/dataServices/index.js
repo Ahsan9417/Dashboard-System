@@ -4,6 +4,7 @@ import userService from "./User/index.js";
 import hotelService from "./User/index.js";
 import provinceService from "./Province/index.js";
 import userRole from "./userRolel/index.js";
+import utilsService from "./utils/index.js";
 
 export const DataMethods = {
   countryService: countryMaster,
@@ -11,6 +12,7 @@ export const DataMethods = {
   userService: userService,
   hotelService: hotelService,
   provinceService : provinceService,
-  userRoleService : userRole
+  userRoleService : userRole,
+  utilsService : utilsService
 
 };

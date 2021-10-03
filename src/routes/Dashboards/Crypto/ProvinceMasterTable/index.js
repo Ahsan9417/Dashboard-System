@@ -160,7 +160,7 @@ const ProvinceMasterTable = () => {
   const changeUpdateStatusToTrue = (province) => {
     setSelectedProvince(province)
     //get Country of Province
-    dispatch(DataMethods['provinceService'].getProvinceCountryByKey(province["country-key"]))
+    // DataMethods['utilsService'].getCountryByKey(province["country-key"])
     setUpdate(true)
   }
 
@@ -172,7 +172,6 @@ const ProvinceMasterTable = () => {
 
 
   const addProvince = (province) => {
-
     changeHandlerFalse()
     dispatch(DataMethods['provinceService'].AddProvince(province))
 

@@ -1,39 +1,11 @@
-import { setAllProvinces, setSelectedProvinceCountry, AddProvince, deleteProvinceByKey, updateProvinceByKey } from 'redux/actions/Province';
+import { setAllProvinces, setSelectedProvinceCountry, AddProvince, deleteProvinceByKey, updateProvinceByKey, setAllFilteredProvinces } from 'redux/actions/Province';
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
 import axios from './config';
 
 const provinceService = {
 
-    getProvinceCountryByKey: (key) => {
-
-        return dispatch => {
-            dispatch(fetchStart());
-            const token = localStorage.getItem('token');
-            axios.defaults.headers.common['AuthorizationKey'] = token;
-
-            axios
-                .post('/get-by-key', {
-                    "country-key": key,
-
-                })
-                .then(({ data }) => {
-                    if (data.data && data.data.countries) {
-                        dispatch(setSelectedProvinceCountry(data.data))
-                        dispatch(fetchSuccess());
-
-                    } else {
-                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
-
-                    }
-
-                })
-                .catch(function (error) {
-                    dispatch(fetchError(error.message));
-
-                });
-        };
-    },
+ 
     getAllProvinces: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
 
         return dispatch => {
@@ -50,7 +22,8 @@ const provinceService = {
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.Provinces) {
-                        dispatch(setAllProvinces(data.data.Provinces))
+                        dispatch(searchText ? setAllFilteredProvinces(data.data.Provinces) : setAllProvinces(data.data.Provinces));
+
                         dispatch(fetchSuccess());
                     } else {
                         dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
@@ -125,12 +98,12 @@ const provinceService = {
         };
     },
 
-    AddProvince: (obj) => {
+    AddProvince: (province) => {
 
         return dispatch => {
             let obj = {
-                "country-key": obj.countryKey,
-                "province-name": obj.provinceName,
+                "country-key": province.countryKey,
+                "province-name": province.provinceName,
             }
 
             dispatch(fetchStart());
@@ -160,9 +133,9 @@ const provinceService = {
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
-                "province-name":updatedProvince.provinceName,
-                "province-key":key,
-                "country-key":updatedProvince.countryKey   
+                "province-name": updatedProvince.provinceName,
+                "province-key": key,
+                "country-key": updatedProvince.countryKey
             }
             axios
                 .post('/update', obj)
@@ -208,6 +181,39 @@ const provinceService = {
     },
 
 
+    //Promises
+
+    getAllCountries: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
+
+        return new Promise(async(res, rej) => {
+                try {
+                const token = localStorage.getItem('token');
+                axios.defaults.headers.common['AuthorizationKey'] = token;
+                console.log('calling country api');
+
+                let results = await axios
+                    .post('/get', {
+                        "display-length": rowCount,
+                        "display-start": pageNo * rowCount,
+                        "sort-column": sortBy,
+                        "sort-direction": sortOrder,
+                        "search-text": searchText
+                    })
+                if (results) console.log(results);
+                if (results.data && results.data.countries) {
+                    res([]);
+
+                } else {
+                    res([])
+
+                }
+
+            } catch (error) {
+                res([])
+            }
+            })
+
+    }
 
 };
 

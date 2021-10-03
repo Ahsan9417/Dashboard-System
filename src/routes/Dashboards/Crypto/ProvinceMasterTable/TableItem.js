@@ -95,7 +95,7 @@ const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, 
     changeUpdateStatusToTrue(e)
   }
   const handleClose = (value) => {
-    if (value) dispatch(DataMethods['provinceService'].DeleteCountry(row))
+    if (value) dispatch(DataMethods['provinceService'].DeleteProvince(row))
     setOpen(false);
   };
   return (

@@ -214,7 +214,7 @@ const CountryMasterTable = (props) => {
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} pdateCountry={updateCountry} addCountry={addCountry} selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} updateCountry={updateCountry} addCountry={addCountry} selectedCountry={selectedCountry} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
         </CmtCard> : ""

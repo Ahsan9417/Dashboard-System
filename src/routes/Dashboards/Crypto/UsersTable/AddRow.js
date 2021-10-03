@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import clsx from 'clsx';
@@ -15,6 +15,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import { DataMethods } from 'services/dataServices';
 
 
 const useStyles = makeStyles(theme => ({
@@ -41,10 +42,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = (props) => {
+    console.log(props);
     const classes = useStyles();
-    const [userName, setUserName] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
+    const [users, setUsers] = useState([])
+
+    // const [countryKey, setCountryKey] = useState(props.selectedProvince ? props.selectedProvince["country-key"] : "")
+    const [userName, setUserName] = useState(props.selectedUser ? props.selectedUser["province-name"] : "")
+    const [password, setPassword] = useState(props.selectedUser ? props.selectedUser["province-name"] : "")
+    const [confirmPassword, setConfirmPassword] = useState(props.selectedUser ? props.selectedUser["province-name"] : "")
     const [company, setCompany] = React.useState({
         name: '',
         key: '',
@@ -53,25 +58,44 @@ const AddRow = (props) => {
         name: '',
         key: '',
     });
-    const [menuRghts, setMenuRghts] = React.useState({
+    const [menuRights, setMenuRights] = React.useState({
         name: '',
         key: '',
     });
+
     const handleChange = event => {
-        const name = event.target.name;
+        console.log(event.target.selectedOptions[0]);
         setCompany({
-            ...company,
-            [name]: event.target.value,
+            name: event.target.selectedOptions[0].text,
+            key: event.target.selectedOptions[0].value,
         });
         setCompanyBranch({
-            ...companyBranch,
-            [name]: event.target.value,
+            name: event.target.selectedOptions[0].text,
+            key: event.target.selectedOptions[0].value,
         });
-        setMenuRghts({
-            ...menuRghts,
-            [name]: event.target.value,
+        setMenuRights({
+            name: event.target.selectedOptions[0].text,
+            key: event.target.selectedOptions[0].value,
         });
+
     };
+
+    const getUsers = async () => {
+        setUsers(await DataMethods['utilsService'].getAllCountries("", 1, 100))
+    };
+
+
+    useEffect(() => {
+
+        console.log('user Table');
+        console.log('use Effect users');
+        // let a  =await DataMethods['utilsService'].getAllCountries("", 1, 100)
+        // console.log(a);
+        console.log(users);
+        getUsers()
+
+    }, []);
+
     return (
         <TableRow className={classes.tableRowRoot}>
 
@@ -79,18 +103,16 @@ const AddRow = (props) => {
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
                         <Box sx={{ display: 'flex', margin: 10 }}>
-                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="User Name" defaultValue="admin" variant="outlined" value={userName} />
-                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Password" variant="outlined" value={password} />
-                            <TextField style={{ marginRight: 10 }} id="outlined-basic" label="Confirm Password" variant="outlined" value={confirmPassword} />
-                            
-                            
+                            <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="User Name" defaultValue="admin" variant="outlined" value={userName} onChange={(e) => setUserName(e.target.value)} />
+                            <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Password" defaultValue="admin" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Confirm Password" defaultValue="admin" variant="outlined" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         </Box>
                         <Box sx={{ display: 'flex', margin: 10 }}>
-                        <FormControl variant="outlined" style={{ width: "100%", marginRight: 20 }} >
+                            <FormControl variant="outlined" style={{ marginRight: 7 }} >
                                 <InputLabel htmlFor="outlined-age-native-simple">Company</InputLabel>
                                 <Select
                                     native
-                                    value={company.name}
+                                    // value={countryName.name}
                                     onChange={handleChange}
                                     label="Company"
                                     inputProps={{
@@ -98,17 +120,20 @@ const AddRow = (props) => {
                                         id: 'outlined-age-native-simple',
                                     }}>
                                     <option aria-label="None" value="" />
-                                    <option value={10}>Pakistan</option>
-                                    <option value={20}>India</option>
-                                    <option value={30}>Singapore</option>
+                                    {
+                                        users.map((x, index) => {
+                                            // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}
+                                            return <option selected={(props.selectedUser && (x["country-key"] == props.selectedUser["country-key"]))} name={x["country-name"]} value={x["country-key"]}>{x["country-name"]}</option>
+                                        })
+                                    }
+
                                 </Select>
                             </FormControl>
-                          
-                            <FormControl variant="outlined" style={{ width: "100%", marginRight: 20 }} >
+                            <FormControl variant="outlined"  style={{ marginRight: 7 }} >
                                 <InputLabel htmlFor="outlined-age-native-simple">Company Branch</InputLabel>
                                 <Select
                                     native
-                                    value={companyBranch.name}
+                                    // value={countryName.name}
                                     onChange={handleChange}
                                     label="Company Branch"
                                     inputProps={{
@@ -116,17 +141,20 @@ const AddRow = (props) => {
                                         id: 'outlined-age-native-simple',
                                     }}>
                                     <option aria-label="None" value="" />
-                                    <option value={10}>Pakistan</option>
-                                    <option value={20}>India</option>
-                                    <option value={30}>Singapore</option>
+                                    {
+                                        users.map((x, index) => {
+                                            // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}
+                                            return <option selected={(props.selectedUser && (x["country-key"] == props.selectedUser["country-key"]))} name={x["country-name"]} value={x["country-key"]}>{x["country-name"]}</option>
+                                        })
+                                    }
+
                                 </Select>
                             </FormControl>
-                         
-                            <FormControl variant="outlined" style={{ width: "100%", marginRight: 20 }} >
+                            <FormControl variant="outlined"  style={{ marginRight: 7 }} >
                                 <InputLabel htmlFor="outlined-age-native-simple">Menu Rights</InputLabel>
                                 <Select
                                     native
-                                    value={menuRghts.name}
+                                    // value={countryName.name}
                                     onChange={handleChange}
                                     label="Menu Rights"
                                     inputProps={{
@@ -134,9 +162,13 @@ const AddRow = (props) => {
                                         id: 'outlined-age-native-simple',
                                     }}>
                                     <option aria-label="None" value="" />
-                                    <option value={10}>Pakistan</option>
-                                    <option value={20}>India</option>
-                                    <option value={30}>Singapore</option>
+                                    {
+                                        users.map((x, index) => {
+                                            // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}
+                                            return <option selected={(props.selectedUser && (x["country-key"] == props.selectedUser["country-key"]))} name={x["country-name"]} value={x["country-key"]}>{x["country-name"]}</option>
+                                        })
+                                    }
+
                                 </Select>
                             </FormControl>
                         </Box>
@@ -145,14 +177,11 @@ const AddRow = (props) => {
                 <CmtCardFooter>
                     <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                        {props && !props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
-                            Save
-                        </Button>}
-                        {props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
-                            Update
-                        </Button>}
-                        <Button onClick={() => props.changeAddState()} variant="contained" >
-                            Clear
+                        <Button onClick={(e) => props[props.updateState ? "updateProvince" : "addUsers"]({ countryKey: company["key"], countryKey: companyBranch["key"],countryKey: menuRights["key"], userName, password, confirmPassword })} style={{ marginRight: 10 }} variant="contained" color="primary">
+                            {props.updateState ? 'Update' : 'Save'}
+                        </Button>
+                        <Button onClick={(e) => props.changeAddState(e)} variant="contained" >
+                            Cancel
                         </Button>
                     </Box>
                 </CmtCardFooter>
@@ -163,3 +192,4 @@ const AddRow = (props) => {
 };
 
 export default AddRow;
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CmtCard from '../../../../@coremat/CmtCard';
 import CmtCardHeader from '../../../../@coremat/CmtCard/CmtCardHeader';
 import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
@@ -6,14 +6,21 @@ import CmtCardContent from '../../../../@coremat/CmtCard/CmtCardContent';
 import OrderTable from './OrderTable';
 import { crypto } from '../../../../@fake-db';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { getTodayDate, getYesterdayDate } from '../../../../@jumbo/utils/dateHelper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import MenuIcon from '@material-ui/icons/Menu';
 import { Box, Checkbox, fade, FormControlLabel, Menu, MenuItem, TablePagination } from '@material-ui/core';
 import CmtSearch from '@coremat/CmtSearch';
+// import TablePagination from '@material-ui/core/TablePagination';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import AddRow from "./AddRow"
+import AddRow from './AddRow';
+import { DataMethods } from 'services/dataServices';
+import { useDispatch, useSelector } from 'react-redux';
+
+
 
 const useStyles = makeStyles(theme => ({
 
@@ -89,14 +96,12 @@ const rows = [
 ];
 
 
-const UsersTable = () => {
-  const [tableData, setTableData] = useState(crypto.orders);
-  const [value, setValue] = useState('');
-  const classes = useStyles();
-  const [page, setPage] = React.useState(2);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const ProvinceMasterTable = () => {
+  let provinces = useSelector(({ province }) => province.provincesList)
+  let filteredList = useSelector(({ province }) => province.filteredList)
+  let hideColumns = ["row-number", "province-key", "country-key"]
   const [state, setState] = React.useState({
+    checked1: true,
     checked2: true,
     checked3: true,
     checked4: true,
@@ -104,54 +109,119 @@ const UsersTable = () => {
     checked6: true,
   });
 
+  const [search, setValue] = useState('');
+
+  const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const [state, setState] = React.useState({
+  //   checked1: true,
+  //   checked2: true,
+  //   checked3: true,
+  //   checked4: true,
+  //   checked5: true,
+  //   checked6: true,
+  // });
   const [add, setAdd] = useState(false)
   const [update, setUpdate] = useState(false)
+  const [selectedUser, setselectedUser] = useState("")
+  let dispatch = useDispatch();
 
+  // const handleChange = event => {
+  //   setState({ ...state, [event.target.name]: event.target.checked });
+  // };
+  // const handleClick = event => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    dispatch(DataMethods['provinceService'].getAllProvinces(search, newPage, rowsPerPage))
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+    dispatch(DataMethods['provinceService'].getAllProvinces(search, 0, parseInt(event.target.value, 10)))
+
   };
 
   const changeHandlerFalse = () => {
-    setAdd(false)
-    setUpdate(false)
+    update ? setUpdate(false) : setAdd(false)
+
 
   }
-  const changeUpdateStatusToTrue = () => {
+  const changeUpdateStatusToTrue = (province) => {
+    setselectedUser(province)
+    //get Country of Province
+    // DataMethods['utilsService'].getCountryByKey(province["country-key"])
     setUpdate(true)
   }
+
   const changeHandlerTrue = () => {
     setAdd(true)
   }
 
 
+
+
+  const addUsers = (province) => {
+    changeHandlerFalse()
+    dispatch(DataMethods['provinceService'].AddProvince(province))
+
+  }
+  const updateProvince = (province) => {
+    changeHandlerFalse()
+
+    dispatch(DataMethods['provinceService'].UpdateProvince(selectedUser["province-key"], province))
+    setselectedUser("")
+
+  }
+  function debounce(func, wait) {
+    let timeout
+    return (...args) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => func(...args), wait)
+    }
+  }
+
+
+  const SearchRecordsDebounce = debounce(Search, 2000)
+
+
+  function Search(e) {
+    setValue(e)
+    if (e) LoadTable(e)
+  }
+
+
+  function LoadTable(searchText = "") {
+
+    dispatch(DataMethods['provinceService'].getAllProvinces(searchText, page, rowsPerPage))
+  }
+
+  useEffect(() => {
+
+    console.log('user  Table');
+    console.log('use Effect user');
+    LoadTable()
+  }, []);
   return (
     <>
-      {add &&
+      {(add || update) ?
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} updateProvince={updateProvince} addUsers={addUsers} selectedUser={selectedUser} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
-        </CmtCard>
+        </CmtCard> : ""
       }
       <CmtCard>
         <CmtCardHeader
@@ -163,38 +233,40 @@ const UsersTable = () => {
                   <AddIcon />
                 </IconButton>
               }
-              <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
+              <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
                 <RefreshIcon />
               </IconButton>
               {/* <Box>
-                <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                  <FilterListIcon />
-                </IconButton>
-                <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-
-                  <MenuItem > <FormControlLabel
-                    control={<Checkbox checked={state.checked2} onChange={handleChange} name="checked2" color="primary" />}
-                    label="User Name"
-                  /></MenuItem>
-                  <MenuItem > <FormControlLabel
-                    control={<Checkbox checked={state.checked3} onChange={handleChange} name="checked3" color="primary" />}
-                    label="Created By"
-                  /></MenuItem>
-                  <MenuItem > <FormControlLabel
-                    control={<Checkbox checked={state.checked4} onChange={handleChange} name="checked4" color="primary" />}
-                    label="Created On"
-                  /></MenuItem>
-                  <MenuItem > <FormControlLabel
-                    control={<Checkbox checked={state.checked5} onChange={handleChange} name="checked5" color="primary" />}
-                    label="Updated By"
-                  /></MenuItem>
-                  <MenuItem > <FormControlLabel
-                    control={<Checkbox checked={state.checked6} onChange={handleChange} name="checked6" color="primary" />}
-                    label="Updated On"
-                  /></MenuItem>
-                </Menu>
-              </Box> */}
-
+              <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                <FilterListIcon />
+              </IconButton>
+              <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+                <MenuItem >  <FormControlLabel
+                  control={<Checkbox checked={state.checked1} onChange={handleChange} name="checked1" color="primary" />}
+                  label="Province Name"
+                /></MenuItem>
+                <MenuItem > <FormControlLabel
+                  control={<Checkbox checked={state.checked2} onChange={handleChange} name="checked2" color="primary" />}
+                  label="Country Name"
+                /></MenuItem>
+                <MenuItem > <FormControlLabel
+                  control={<Checkbox checked={state.checked3} onChange={handleChange} name="checked3" color="primary" />}
+                  label="Created By"
+                /></MenuItem>
+                <MenuItem > <FormControlLabel
+                  control={<Checkbox checked={state.checked4} onChange={handleChange} name="checked4" color="primary" />}
+                  label="Created On"
+                /></MenuItem>
+                <MenuItem > <FormControlLabel
+                  control={<Checkbox checked={state.checked5} onChange={handleChange} name="checked5" color="primary" />}
+                  label="Updated By"
+                /></MenuItem>
+                <MenuItem > <FormControlLabel
+                  control={<Checkbox checked={state.checked6} onChange={handleChange} name="checked6" color="primary" />}
+                  label="Updated On"
+                /></MenuItem>
+              </Menu>
+            </Box> */}
             </Box>
           }
           actionsPos="top-corner"
@@ -207,15 +279,15 @@ const UsersTable = () => {
                 iconPosition="right"
                 align="right"
                 placeholder="Search"
-                value={value}
-                onChange={e => setValue(e.target.value)} />
+                onChange={(e) => SearchRecordsDebounce(e.target.value)} />
+
             </Box>
           </Box>
         </CmtCardHeader>
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={tableData} state={state} changeEditStateTrue={changeHandlerTrue} />
+            {((!search && provinces.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : provinces} state={state} hideColumns={hideColumns} /> : ""}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>
@@ -235,4 +307,4 @@ const UsersTable = () => {
   );
 };
 
-export default UsersTable;
+export default ProvinceMasterTable;

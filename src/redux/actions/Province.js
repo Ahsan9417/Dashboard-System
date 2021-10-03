@@ -14,6 +14,14 @@ export const setAllProvinces = data => {
         });
     };
 };
+export const setSelectedProvinceCountry = data => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_SELECTED_PROVINCE_COUNTRY',
+            payload: data,
+        });
+    };
+};
 export const setAllFilteredProvinces = data => {
     return dispatch => {
         dispatch({

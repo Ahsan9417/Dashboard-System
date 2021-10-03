@@ -45,7 +45,8 @@ const useStyles = makeStyles(theme => ({
 
 const AddRow = (props) => {
     const classes = useStyles();
-    const [provinceName, setProvinceName] = useState("")
+    // const [countryKey, setCountryKey] = useState(props.selectedProvince ? props.selectedProvince["country-key"] : "")
+    const [provinceName, setProvinceName] = useState(props.selectedProvince ? props.selectedProvince["province-name"] : "")
     const [countryName, setCountryName] = React.useState({
         name: '',
         key: '',
@@ -58,7 +59,7 @@ const AddRow = (props) => {
         });
     };
 
-    
+
     return (
 
         <TableRow className={classes.tableRowRoot}>
@@ -68,7 +69,7 @@ const AddRow = (props) => {
                     <PerfectScrollbar className={classes.scrollbarRoot}>
                         <Box sx={{ display: 'flex', margin: 10 }}>
                             <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Province Name" defaultValue="admin" variant="outlined" value={provinceName} />
-                            <FormControl variant="outlined" style={{width: "100%"}} >
+                            <FormControl variant="outlined" style={{ width: "100%" }} >
                                 <InputLabel htmlFor="outlined-age-native-simple">Country Name</InputLabel>
                                 <Select
                                     native
@@ -85,20 +86,18 @@ const AddRow = (props) => {
                                     <option value={30}>Singapore</option>
                                 </Select>
                             </FormControl>
+
                         </Box>
                     </PerfectScrollbar>
                 </CmtCardContent>
                 <CmtCardFooter>
                     <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                        {props && !props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
-                            Save
-                        </Button>}
-                        {props.updateState && <Button style={{ marginRight: 10 }} variant="contained" color="primary">
-                            Update
-                        </Button>}
+                        <Button onClick={(e) => props[props.updateState ? "updateProvince" : "addProvince"]({ countryKey : countryName["key"], provinceName })} style={{ marginRight: 10 }} variant="contained" color="primary">
+                            {props.updateState ? 'Update' : 'Save'}
+                        </Button>
                         <Button onClick={() => props.changeAddState()} variant="contained" >
-                            Clear
+                            Cancel
                         </Button>
                     </Box>
                 </CmtCardFooter>

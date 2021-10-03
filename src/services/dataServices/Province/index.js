@@ -1,8 +1,39 @@
+import { setAllProvinces, setSelectedProvinceCountry, AddProvince, deleteProvinceByKey, updateProvinceByKey } from 'redux/actions/Province';
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
 import axios from './config';
 
 const provinceService = {
+
+    getProvinceCountryByKey: (key) => {
+
+        return dispatch => {
+            dispatch(fetchStart());
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['AuthorizationKey'] = token;
+
+            axios
+                .post('/get-by-key', {
+                    "country-key": key,
+
+                })
+                .then(({ data }) => {
+                    if (data.data && data.data.countries) {
+                        dispatch(setSelectedProvinceCountry(data.data))
+                        dispatch(fetchSuccess());
+
+                    } else {
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
+
+                    }
+
+                })
+                .catch(function (error) {
+                    dispatch(fetchError(error.message));
+
+                });
+        };
+    },
     getAllProvinces: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
 
         return dispatch => {
@@ -18,11 +49,11 @@ const provinceService = {
                     "search-text": searchText
                 })
                 .then(({ data }) => {
-                    if (data.data && data.data.provinces) {
+                    if (data.data && data.data.Provinces) {
+                        dispatch(setAllProvinces(data.data.Provinces))
                         dispatch(fetchSuccess());
-
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -48,10 +79,11 @@ const provinceService = {
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.countries) {
+
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -81,7 +113,7 @@ const provinceService = {
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -98,8 +130,7 @@ const provinceService = {
         return dispatch => {
             let obj = {
                 "country-key": obj.countryKey,
-                "province-key": obj.provinceKey,
-
+                "province-name": obj.provinceName,
             }
 
             dispatch(fetchStart());
@@ -109,9 +140,11 @@ const provinceService = {
                 .post('/save', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(fetchSuccess());
+
+                        dispatch(AddProvince(data.data))
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -127,17 +160,19 @@ const provinceService = {
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
-                // "country-key": country.countryISO,
-                // "province-key": country.countryCode,
+                "province-name":updatedProvince.provinceName,
+                "province-key":key,
+                "country-key":updatedProvince.countryKey   
             }
             axios
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         console.log(data)
-                        dispatch(fetchSuccess());
+                        dispatch(updateProvinceByKey({ province: data.data, key: key }))
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -146,7 +181,7 @@ const provinceService = {
         };
     },
 
-    DeleteProvince: (country) => {
+    DeleteProvince: (province) => {
 
         return dispatch => {
             console.log('delete country api');
@@ -155,14 +190,15 @@ const provinceService = {
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {
-                    "province-key": country["country-key"]
+                    "province-key": province["province-key"]
                 })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(fetchSuccess());
+                        dispatch(deleteProvinceByKey(data.data["province-key"]))
+                        dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {

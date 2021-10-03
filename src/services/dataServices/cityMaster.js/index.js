@@ -25,7 +25,7 @@ const cityMaster = {
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -43,11 +43,11 @@ const cityMaster = {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-        
+
             axios
                 .post('/get-by-key', {
                     "city-key": key,
-                   
+
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.cities) {
@@ -55,7 +55,7 @@ const cityMaster = {
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -73,11 +73,11 @@ const cityMaster = {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-        
+
             axios
                 .post('/get-by-key', {
                     "country-key": key,
-                   
+
                 })
                 .then(({ data }) => {
                     if (data.data && data.data.cities) {
@@ -85,7 +85,7 @@ const cityMaster = {
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -117,9 +117,9 @@ const cityMaster = {
                     if (data.data && data.dataException.err_code == 200) {
                         dispatch(AddCity(data.data));
 
-                        dispatch(fetchSuccess());
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -140,18 +140,18 @@ const cityMaster = {
                 "city-code": updatedCity.cityCode,
                 "city-name": updatedCity.cityName,
                 "currency-code": updatedCity.currencyCode,
-                "city-key" : key
+                "city-key": key
             }
             axios
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         console.log(data)
-                        dispatch(updateCityByKey({city : data.data , key : key}));
+                        dispatch(updateCityByKey({ city: data.data, key: key }));
 
-                        dispatch(fetchSuccess());
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -175,10 +175,10 @@ const cityMaster = {
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code) {
                         dispatch(deleteCityByKey(data.data["city-key"]));
-                        dispatch(fetchSuccess());
+                        dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {

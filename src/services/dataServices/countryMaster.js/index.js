@@ -26,7 +26,7 @@ const countryMaster = {
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -56,7 +56,7 @@ const countryMaster = {
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -88,9 +88,9 @@ const countryMaster = {
                     if (data.data && data.dataException.err_code == 200) {
                         dispatch(AddCountry(data.data));
 
-                        dispatch(fetchSuccess());
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -120,9 +120,9 @@ const countryMaster = {
                         console.log(data)
                         dispatch(updateCountryByKey({country : data.data , key : key}));
 
-                        dispatch(fetchSuccess());
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -146,10 +146,10 @@ const countryMaster = {
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         dispatch(deleteCountryByKey(data.data["country-key"]));
-                        dispatch(fetchSuccess());
+                        dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {

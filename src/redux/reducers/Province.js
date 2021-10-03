@@ -1,23 +1,24 @@
 
 const INIT_STATE = {
-    citiesList: [],
+    provincesList: [],
     filteredList: [],
-    selectedCity: {},
+    selectedProvince: {},
+    selectedProvinceCountry: {},
     searchText: '',
     loading: false,
 };
 
 export default (state = INIT_STATE, action) => {
-    
+
     switch (action.type) {
 
         case "GET_ALL":
             return state;
-            
+
         case 'SET_ALL': {
             return {
                 ...state,
-                citiesList: action.payload
+                provincesList: action.payload
             }
         }
         case "GET_ALL_FILTERED":
@@ -29,35 +30,41 @@ export default (state = INIT_STATE, action) => {
                 filteredList: action.payload
             }
         }
-        case 'SET_SELECTED_CITY': {
+        case 'SET_SELECTED_PROVINCE': {
             return {
                 ...state,
-                selectedCity: action.payload
+                selectedProvince: action.payload
+            }
+        }
+        case 'SET_SELECTED_PROVINCE_COUNTRY': {
+            return {
+                ...state,
+                selectedProvinceCountry: action.payload
             }
         }
 
-        case 'GET_CITY_BY_KEY':
-            return { ...state, selectedCity: action.payload };
+        case 'GET_PROVINCE_BY_KEY':
+            return { ...state, selectedProvince: action.payload };
 
-        case 'ADD_CITY':
+        case 'ADD_PROVINCE':
             return {
                 ...state,
-                citiesList: [action.payload,...state.citiesList, ]
+                provincesList: [action.payload, ...state.provincesList,]
             }
 
-        case 'UPDATE_CITY_BY_KEY':
-            let index = state.citiesList.findIndex(x => x["CITY-key"] === action.payload.key);
-            let newArray = [...state.citiesList];
-            newArray[index] = action.payload.CITY
+        case 'UPDATE_PROVINCE_BY_KEY':
+            let index = state.provincesList.findIndex(x => x["province-key"] === action.payload.key);
+            let newArray = [...state.provincesList];
+            newArray[index] = action.payload.province
             return {
                 ...state,
-                citiesList: newArray,
+                provincesList: newArray,
             }
 
-        case 'DELETE_CITY_BY_KEY':
+        case 'DELETE_PROVINCE_BY_KEY':
             return {
                 ...state,
-                citiesList: state.citiesList.filter(x => (x["CITY-key"] !== action.payload))
+                provincesList: state.provincesList.filter(x => (x["province-key"] !== action.payload))
             }
 
         default:

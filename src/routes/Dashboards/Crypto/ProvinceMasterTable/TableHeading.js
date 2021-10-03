@@ -27,17 +27,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TableHeading = (props) => {
+  let columnNames = props?.columnNames ? props.columnNames : [];
   const classes = useStyles();
   return (
-    <TableRow className={classes.tableHeading}>
-     <TableCell className={classes.tableCellRoot}>Province Name</TableCell>
-     <TableCell className={classes.tableCellRoot}>Country Name</TableCell>
-    <TableCell className={classes.tableCellRoot}>Created by</TableCell>
-      <TableCell className={classes.tableCellRoot}>Created on</TableCell>
-     <TableCell className={classes.tableCellRoot}>Updated by</TableCell>
-       <TableCell className={classes.tableCellRoot}>Updated on</TableCell>
-      <TableCell className={classes.tableCellRoot}>Action</TableCell>
-    </TableRow>
+    <>
+      {columnNames.length ?
+        <TableRow className={classes.tableHeading}>
+          {
+            columnNames.map(name => {
+              return props.hideColumns.indexOf(name) === -1 ? <TableCell className={classes.tableCellRoot}>{name.toString().replaceAll('-', ' ')}</TableCell> : undefined
+            })}
+          <TableCell className={classes.tableCellRoot}>Action</TableCell>
+        </TableRow>
+        : ""}
+    </>
   );
 };
 

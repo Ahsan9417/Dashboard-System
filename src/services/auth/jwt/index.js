@@ -44,7 +44,7 @@ const JWTAuth = {
             if (data && data.dataException.err_code == 200) {
               localStorage.setItem('token', data.data.key);
               axios.defaults.headers.common['AuthorizationKey'] = data.data.key;
-              dispatch(fetchSuccess());
+              dispatch(fetchSuccess(data.dataException.err_msg));
               localStorage.setItem('user', data.data.userMenu[0]['child-key']);
               dispatch(JWTAuth.getAuthUser(true, data.data.key));
             } else {

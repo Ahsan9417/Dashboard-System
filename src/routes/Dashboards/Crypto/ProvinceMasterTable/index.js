@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CmtCard from '../../../../@coremat/CmtCard';
 import CmtCardHeader from '../../../../@coremat/CmtCard/CmtCardHeader';
 import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
@@ -17,6 +17,9 @@ import CmtSearch from '@coremat/CmtSearch';
 // import TablePagination from '@material-ui/core/TablePagination';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AddRow from './AddRow';
+import { DataMethods } from 'services/dataServices';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -94,11 +97,22 @@ const rows = [
 
 
 const ProvinceMasterTable = () => {
-  
-  const [tableData, setTableData] = useState(crypto.orders);
-  const [value, setValue] = useState('');
+  let provinces = useSelector(({ province }) => province.provincesList)
+  let filteredList = useSelector(({ province }) => province.filteredList)
+  let hideColumns = ["row-number", "province-key", "country-key"]
+  const [state, setState] = React.useState({
+    checked1: true,
+    checked2: true,
+    checked3: true,
+    checked4: true,
+    checked5: true,
+    checked6: true,
+  });
+
+  const [search, setValue] = useState('');
+
   const classes = useStyles();
-  const [page, setPage] = React.useState(2);
+  const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   // const [anchorEl, setAnchorEl] = React.useState(null);
   // const [state, setState] = React.useState({
@@ -111,8 +125,8 @@ const ProvinceMasterTable = () => {
   // });
   const [add, setAdd] = useState(false)
   const [update, setUpdate] = useState(false)
-  const [selectedCity, setSelectedCity] = useState("")
-
+  const [selectedProvince, setSelectedProvince] = useState("")
+  let dispatch = useDispatch();
 
   // const handleChange = event => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
@@ -128,61 +142,102 @@ const ProvinceMasterTable = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    dispatch(DataMethods['provinceService'].getAllProvinces(search, newPage, rowsPerPage))
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+    dispatch(DataMethods['provinceService'].getAllProvinces(search, 0, parseInt(event.target.value, 10)))
+
   };
 
   const changeHandlerFalse = () => {
-    setAdd(false)
-    setUpdate(false)
+    update ? setUpdate(false) : setAdd(false)
+
 
   }
-  const changeUpdateStatusToTrue = () => {
+  const changeUpdateStatusToTrue = (province) => {
+    setSelectedProvince(province)
+    //get Country of Province
+    dispatch(DataMethods['provinceService'].getProvinceCountryByKey(province["country-key"]))
     setUpdate(true)
   }
-  
+
   const changeHandlerTrue = () => {
     setAdd(true)
   }
 
-  const addProvince = (Province) => {
 
-    
+
+
+  const addProvince = (province) => {
+
+    changeHandlerFalse()
+    dispatch(DataMethods['provinceService'].AddProvince(province))
 
   }
-  const updateCity = (Province) => {
-   
+  const updateProvince = (province) => {
+    changeHandlerFalse()
+
+    dispatch(DataMethods['provinceService'].UpdateProvince(selectedProvince["province-key"], province))
+    setSelectedProvince("")
 
   }
+  function debounce(func, wait) {
+    let timeout
+    return (...args) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => func(...args), wait)
+    }
+  }
 
+
+  const SearchRecordsDebounce = debounce(Search, 2000)
+
+
+  function Search(e) {
+    setValue(e)
+    if (e) LoadTable(e)
+  }
+
+
+  function LoadTable(searchText = "") {
+
+    dispatch(DataMethods['provinceService'].getAllProvinces(searchText, page, rowsPerPage))
+  }
+
+  useEffect(() => {
+
+    console.log('Province Table');
+    console.log('use Effect country');
+    LoadTable()
+  }, []);
   return (
     <>
-      {add &&
+      {(add || update) ?
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} updateProvince={updateProvince} addProvince={addProvince} selectedProvince={selectedProvince} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
-        </CmtCard>
+        </CmtCard> : ""
       }
-    <CmtCard>
-      <CmtCardHeader
-        className={classes.headerRoot}
-        title={
-          <Box display="flex" alignItems={{ md: 'center' }} flexDirection={{ xs: 'column', md: 'row' }}>
-            {!add &&
+      <CmtCard>
+        <CmtCardHeader
+          className={classes.headerRoot}
+          title={
+            <Box display="flex" alignItems={{ md: 'center' }} flexDirection={{ xs: 'column', md: 'row' }}>
+              {!add &&
                 <IconButton aria-label="edit" onClick={() => setAdd(!add)} className={classes.backgroundEditColorChange} >
                   <AddIcon />
                 </IconButton>
               }
-            <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
-              <RefreshIcon />
-            </IconButton>
-            {/* <Box>
+              <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
+                <RefreshIcon />
+              </IconButton>
+              {/* <Box>
               <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                 <FilterListIcon />
               </IconButton>
@@ -213,42 +268,42 @@ const ProvinceMasterTable = () => {
                 /></MenuItem>
               </Menu>
             </Box> */}
-          </Box>
-        }
-        actionsPos="top-corner"
-      >
-        <Box className={classes.searchAction}>
-          <Box className={classes.searchActionBar}>
-            <CmtSearch
-              border={true}
-              onlyIcon={false}
-              iconPosition="right"
-              align="right"
-              placeholder="Search"
-              value={value}
-              onChange={e => setValue(e.target.value)} />
-          </Box>
-        </Box>
-      </CmtCardHeader>
+            </Box>
+          }
+          actionsPos="top-corner"
+        >
+          <Box className={classes.searchAction}>
+            <Box className={classes.searchActionBar}>
+              <CmtSearch
+                border={true}
+                onlyIcon={false}
+                iconPosition="right"
+                align="right"
+                placeholder="Search"
+                onChange={(e) => SearchRecordsDebounce(e.target.value)} />
 
-      <CmtCardContent className={classes.cardContentRoot}>
-        <PerfectScrollbar className={classes.scrollbarRoot}>
-        <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={tableData}  changeEditStateTrue={changeHandlerTrue} />
-        </PerfectScrollbar>
-      </CmtCardContent>
-      <CmtCardFooter>
-        <TablePagination
+            </Box>
+          </Box>
+        </CmtCardHeader>
 
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </CmtCardFooter>
-    </CmtCard>
+        <CmtCardContent className={classes.cardContentRoot}>
+          <PerfectScrollbar className={classes.scrollbarRoot}>
+            {((!search && provinces.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : provinces} state={state} hideColumns={hideColumns} /> : ""}
+          </PerfectScrollbar>
+        </CmtCardContent>
+        <CmtCardFooter>
+          <TablePagination
+
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </CmtCardFooter>
+      </CmtCard>
     </>
   );
 };

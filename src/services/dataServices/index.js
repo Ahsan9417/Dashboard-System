@@ -13,6 +13,7 @@ export const DataMethods = {
   hotelService: hotelService,
   provinceService : provinceService,
   userRoleService : userRole,
-  utilsService : utilsService
+  utilsService : utilsService,
+  userService : userService,
 
 };

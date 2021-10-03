@@ -67,3 +67,12 @@ export const updateUserByKey = data => {
         });
     };
 };
+
+export const setRowsCount = data => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_ROWS_COUNT',
+            payload: data,
+        });
+    };
+};

@@ -96,10 +96,12 @@ const rows = [
 ];
 
 
-const ProvinceMasterTable = () => {
-  let provinces = useSelector(({ province }) => province.provincesList)
-  let filteredList = useSelector(({ province }) => province.filteredList)
-  let hideColumns = ["row-number", "province-key", "country-key"]
+const UserTable = () => {
+  let users = useSelector(({ user }) => user.usersList)
+  let filteredList = useSelector(({ user }) => user.filteredList)
+  let rowCount = useSelector(({ user }) => user.totalRecords)
+
+  let hideColumns = ["row-number", "user-key","company-key","company-branch-key","password","confirm-password", "country-key"]
   const [state, setState] = React.useState({
     checked1: true,
     checked2: true,
@@ -142,13 +144,13 @@ const ProvinceMasterTable = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    dispatch(DataMethods['provinceService'].getAllProvinces(search, newPage, rowsPerPage))
+    dispatch(DataMethods['userService'].getAllUsers(search, newPage, rowsPerPage))
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-    dispatch(DataMethods['provinceService'].getAllProvinces(search, 0, parseInt(event.target.value, 10)))
+    dispatch(DataMethods['userService'].getAllUsers(search, 0, parseInt(event.target.value, 10)))
 
   };
 
@@ -157,10 +159,12 @@ const ProvinceMasterTable = () => {
 
 
   }
-  const changeUpdateStatusToTrue = (province) => {
-    setselectedUser(province)
+  const changeUpdateStatusToTrue = (user) => {
+
+    console.log(user);
+    setselectedUser(user)
     //get Country of Province
-    // DataMethods['utilsService'].getCountryByKey(province["country-key"])
+    // DataMethods['utilsService'].getCountryByKey(user["country-key"])
     setUpdate(true)
   }
 
@@ -171,15 +175,19 @@ const ProvinceMasterTable = () => {
 
 
 
-  const addUsers = (province) => {
+  const addUser = (user) => {
+
+    console.log(user)
     changeHandlerFalse()
-    dispatch(DataMethods['provinceService'].AddProvince(province))
+    dispatch(DataMethods['userService'].registerUser(user))
 
   }
-  const updateProvince = (province) => {
+  const updateUser = (user) => {
+
+    console.log('update',user);
     changeHandlerFalse()
 
-    dispatch(DataMethods['provinceService'].UpdateProvince(selectedUser["province-key"], province))
+    dispatch(DataMethods['userService'].updateUser(selectedUser["user-key"], user))
     setselectedUser("")
 
   }
@@ -197,13 +205,13 @@ const ProvinceMasterTable = () => {
 
   function Search(e) {
     setValue(e)
-    if (e) LoadTable(e)
+    LoadTable(e ? e : "")
   }
 
 
   function LoadTable(searchText = "") {
 
-    dispatch(DataMethods['provinceService'].getAllProvinces(searchText, page, rowsPerPage))
+    dispatch(DataMethods['userService'].getAllUsers(searchText, page, rowsPerPage))
   }
 
   useEffect(() => {
@@ -218,7 +226,7 @@ const ProvinceMasterTable = () => {
         <CmtCard style={{ marginBottom: 30, }} >
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} updateProvince={updateProvince} addUsers={addUsers} selectedUser={selectedUser} changeAddState={changeHandlerFalse} />
+              <AddRow updateState={update} updateUser={updateUser} addUser={addUser} selectedUser={selectedUser} changeAddState={changeHandlerFalse} />
             </PerfectScrollbar>
           </CmtCardContent>
         </CmtCard> : ""
@@ -287,7 +295,7 @@ const ProvinceMasterTable = () => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && provinces.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : provinces} state={state} hideColumns={hideColumns} /> : ""}
+            {((!search && users.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : users} state={state} hideColumns={hideColumns} /> : ""}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>
@@ -295,7 +303,7 @@ const ProvinceMasterTable = () => {
 
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={rowCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}
@@ -307,4 +315,4 @@ const ProvinceMasterTable = () => {
   );
 };
 
-export default ProvinceMasterTable;
+export default UserTable;

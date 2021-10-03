@@ -169,7 +169,7 @@ const provinceService = {
                 })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(deleteProvinceByKey(data.data["province-key"]))
+                        dispatch(deleteProvinceByKey(province["province-key"]))
                         dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {

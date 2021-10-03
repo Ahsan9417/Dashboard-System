@@ -89,9 +89,9 @@ const hotelService = {
                     if (data.data && data.dataException.err_code == 200) {
                         dispatch(addHotel(data.data));
 
-                        dispatch(fetchSuccess());
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -119,9 +119,9 @@ const hotelService = {
                         console.log(data)
                         dispatch(updateHotelByKey({ hotel: data.data, key: key }));
 
-                        dispatch(fetchSuccess());
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -143,11 +143,11 @@ const hotelService = {
                 })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code) {
-                        dispatch(deleteHotelByKey(data.data["hotel-type-key"]));
-                        dispatch(fetchSuccess());
+                        dispatch(deleteHotelByKey(hotel["hotel-type-key"]));
+                        dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {

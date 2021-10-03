@@ -146,7 +146,7 @@ const countryMaster = {
                 })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(deleteCountryByKey(data.data["country-key"]));
+                        dispatch(deleteCountryByKey(country["country-key"]));
                         dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {

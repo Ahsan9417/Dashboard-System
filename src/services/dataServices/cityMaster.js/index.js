@@ -176,7 +176,7 @@ const cityMaster = {
                 })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code) {
-                        dispatch(deleteCityByKey(data.data["city-key"]));
+                        dispatch(deleteCityByKey(city["city-key"]));
                         dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {

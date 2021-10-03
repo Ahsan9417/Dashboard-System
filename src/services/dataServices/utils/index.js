@@ -66,6 +66,34 @@ const utilsService = {
             }
         })
     },
-};
+
+    getBranchList: () => {
+
+        return new Promise(async (res, rej) => {
+            try {
+                const token = localStorage.getItem('token');
+                axios.defaults.headers.common['AuthorizationKey'] = token;
+
+                let results = await axios
+                    .post('admin/get-comp-branch-menu-mas')
+                if (results.status == 200 && results.data.dataException.err_code == 200) {
+
+                    console.log('success');
+                    res(results.data?.data ? results.data.data : {});
+
+                } else {
+                    console.log('no data');
+                    res([])
+
+                }
+
+
+            } catch (error) {
+                res([])
+            }
+        });
+    },
+
+}
 
 export default utilsService;

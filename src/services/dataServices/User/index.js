@@ -1,4 +1,4 @@
-import { DataMethods } from '..';
+import { AddUser, deleteUserByKey, setAllFilteredUsers, setAllUsers,setRowsCount,updateUserByKey } from 'redux/actions/User';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
 import axios from './config';
 
@@ -19,11 +19,15 @@ const userService = {
                     "search-text": searchText
                 })
                 .then(({ data }) => {
-                    if (data.data && data.data.countries) {
+                    if (data.data && data.data["user-list"]) {
+                        dispatch(setRowsCount(data.data["total-rows"]));
+
+                        dispatch(searchText ? setAllFilteredUsers(data.data["user-list"]) : setAllUsers(data.data["user-list"]));
+
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -35,20 +39,28 @@ const userService = {
         };
     },
 
-
     registerUser: (obj) => {
         return dispatch => {
+
+            let user = {
+                "user-name": obj.userName,
+                "password": obj.password,
+                "confirm-password": obj.confirmPassword,
+                "user-branches": obj.branchList,
+
+            }
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
-                .post('save', obj)
+                .post('save', user)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(fetchSuccess());
+                        dispatch(AddUser(data.data))
+                        dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -67,10 +79,12 @@ const userService = {
                 .post('update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(fetchSuccess());
+                        dispatch(updateUserByKey(data.data))
+
+                        dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -80,25 +94,27 @@ const userService = {
         };
     },
 
-    deleteUser: (obj) => {
+    deleteUser: (user) => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
-                .post('get-by-key', obj)
+                .post('/Delete', {
+                    "user-key": user["user-key"]
+                })
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(fetchSuccess());
+                        dispatch(deleteUserByKey(user["user-key"]))
+                        dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
                     dispatch(fetchError(error.message));
-
                 });
         };
     },
@@ -131,31 +147,7 @@ const userService = {
                 });
         };
     },
-    getBranchList: (key) => {
 
-        return dispatch => {
-            dispatch(fetchStart());
-            const token = localStorage.getItem('token');
-            axios.defaults.headers.common['AuthorizationKey'] = token;
-
-            axios
-                .post('/get-comp-branch-menu-mas')
-                .then(({ data }) => {
-                    if (data.data && data.data.countries) {
-                        dispatch(fetchSuccess());
-
-                    } else {
-                        dispatch(fetchError(data.error));
-
-                    }
-
-                })
-                .catch(function (error) {
-                    dispatch(fetchError(error.message));
-
-                });
-        };
-    },
 
 };
 

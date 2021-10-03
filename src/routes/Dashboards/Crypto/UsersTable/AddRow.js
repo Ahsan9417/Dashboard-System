@@ -95,11 +95,7 @@ const AddRow = (props) => {
         setMenusDropDown(data && data["web-menu-rights-masters"] ? data["web-menu-rights-masters"] : [])
     };
 
-
     useEffect(() => {
-
-        console.log('user Table');
-
         getBranches()
     }, []);
 
@@ -150,7 +146,7 @@ const AddRow = (props) => {
                                     <option aria-label="None" value="" />
                                     {
                                         branches.map((x, index) => {
-                                            return <option selected={(props.selectedUser && props.selectedUser["user-branches"].length && (x["company-branch-key"] == props.selectedUser["user-branches"][0]["company-branch-key"]))} name={x["country-name"]} value={x["company-branch-key"]}>{x["company-branch-name"]}</option>
+                                            return <option selected={(props.selectedUser && props.selectedUser["user-branches"]?.length && (x["company-branch-key"] == props.selectedUser["user-branches"][0]["company-branch-key"]))} name={x["country-name"]} value={x["company-branch-key"]}>{x["company-branch-name"]}</option>
                                         })
                                     }
 

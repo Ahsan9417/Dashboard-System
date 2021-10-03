@@ -101,6 +101,7 @@ const AddRow = (props) => {
                                         name: 'name',
                                         id: 'outlined-age-native-simple',
                                     }}>
+                                        <option aria-label="None" value="" />
                                     {
                                         countries.map((x, index) => {
                                             // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}

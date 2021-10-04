@@ -16,7 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { DataMethods } from 'services/dataServices';
-
+import MultiSelect from "./MultiSelect"
 
 const useStyles = makeStyles(theme => ({
     backgroundDeleteColorChange: {
@@ -78,7 +78,7 @@ const AddRow = (props) => {
                     name: event.target.selectedOptions[0].text,
                     key: event.target.selectedOptions[0].value,
                 });
-                setCompany(branches.filter(x=>(x["company-branch-key"] == event.target.selectedOptions[0].value))[0]["company-key"]);
+                setCompany(branches.filter(x => (x["company-branch-key"] == event.target.selectedOptions[0].value))[0]["company-key"]);
                 break;
 
             default:
@@ -101,7 +101,6 @@ const AddRow = (props) => {
 
     return (
         <TableRow className={classes.tableRowRoot}>
-
             <CmtCard style={{ marginBottom: 30, marginRight: 10, marginTop: 10, marginLeft: 10, }} >
                 <CmtCardContent className={classes.cardContentRoot}>
                     <PerfectScrollbar className={classes.scrollbarRoot}>
@@ -111,6 +110,8 @@ const AddRow = (props) => {
                             <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Confirm Password" variant="outlined" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         </Box>
                         <Box sx={{ display: 'flex', margin: 10 }}>
+                            <MultiSelect style={{ width: "100%" }} />
+
                             {/* <FormControl variant="outlined" style={{ marginRight: 7 }} >
                                 <InputLabel htmlFor="outlined-age-native-simple">Company</InputLabel>
                                 <Select
@@ -132,7 +133,7 @@ const AddRow = (props) => {
 
                                 </Select>
                             </FormControl> */}
-                            <FormControl variant="outlined" style={{ marginRight: 7 }} >
+                            <FormControl variant="outlined" style={{ marginRight: 7, width: "100%" }} >
                                 <InputLabel htmlFor="outlined-age-native-simple">Company Branch</InputLabel>
                                 <Select
                                     native
@@ -152,7 +153,7 @@ const AddRow = (props) => {
 
                                 </Select>
                             </FormControl>
-                            <FormControl variant="outlined" style={{ marginRight: 7 }} >
+                            <FormControl variant="outlined" style={{ marginRight: 7, width: "100%" }} >
                                 <InputLabel htmlFor="outlined-age-native-simple">Menu Rights</InputLabel>
                                 <Select
                                     native

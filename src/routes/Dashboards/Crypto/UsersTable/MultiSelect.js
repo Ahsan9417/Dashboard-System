@@ -5,7 +5,8 @@ import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%"
+    width: "100%",
+    marginRight: 7
   }
 }));
 

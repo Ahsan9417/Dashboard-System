@@ -6,84 +6,37 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import RemoveIcon from "@material-ui/icons/Remove";
-export default function CheckedBoxTree() {
-  // Node Array will be used in CheckboxTree
 
-  const nodes = [
-    {
-      value: "home",
-      label: "Home",
-    },
-    {
-      value: "transaction",
-      label: "Transaction",
-      children: [
-        {
-          value: "ticketSale",
-          label: "Ticket Sale",
-        },
-        {
-          value: "referralPayments",
-          label: "Referral Payments",
-        },
-        {
-          value: "rePrintReceipt",
-          label: "Re Print Receipt",
-        },
-      ],
-    },
-    {
-      value: "admin",
-      label: "Admin",
-      children: [
-        {
-          value: "purchaseOrder",
-          label: "Purchase Order",
-        },
-        {
-          value: "ewalletTopUp",
-          label: "E-Wallet Top Up",
-        },
-      ],
-    },
-    {
-      value: "settings",
-      label: "Settings",
-      children: [
-        {
-          value: "menuRights",
-          label: "Menu Rights",
-        },
-        {
-          value: "users",
-          label: "Users",
-        },
-        {
-          value: "changePassword",
-          label: "Change Password",
-        },
-      ],
-    },
-    {
-      value: "reports",
-      label: "Reports",
-      children: [
-        {
-          value: "salesReports",
-          label: "Sales Reports",
-        },
-        {
-          value: "ledgerBalance",
-          label: "Ledger Balance",
-        },
-        {
-          value: "ledgerCummulative",
-          label: "Legdger Cummulative",
-        },
-      ],
-    },
-  ];
 
+
+
+export default function CheckedBoxTree(props) {
+
+  let nodes = [];
+  let menuName = {}
+  // let checked = []
+  const [checked, setChecked] = useState([]);
+  const [expanded, setExpanded] = useState([]);
+
+
+  const parseMenu = (menuArray) => {
+
+    return menuArray.map(menu => {
+      if (menu.children.length) menu.children = parseMenu(menu.children)
+
+      if (menuName[menu.menuName]) menu.menuName = menu.menuName + '-' + Math.random(1000)
+      menuName[menu.menuName] = menu
+      menu.value = menu.menuName.split(" ").join("-")
+      menu.label = menu.menuName.split(" ").join("-")
+      menu.checked = false
+      menu.disabled = false
+      // checked.push({ [`${menu.menuName}`]: false })
+      return menu
+    })
+  }
+  nodes = parseMenu(props.menuList);
+
+  console.log(nodes[0]);
   //  Icons That use in Check box tree
   const icons = {
     check: <CheckCircleIcon />,
@@ -92,23 +45,37 @@ export default function CheckedBoxTree() {
     expandClose: <RemoveIcon />,
     expandOpen: <RemoveIcon />,
     leaf: <InsertDriveFileIcon />,
-  };
-  const [checked, setChecked] = useState([]);
-  const [expanded, setExpanded] = useState([]);
 
+  };
+
+
+
+  const handleChange = (checked) => {
+    console.log('change', checked);
+  }
+  const handleClick = (e) => {
+    console.log('click', e);
+  }
+
+  console.log(checked)
   return (
     <>
-      <CheckboxTree
+      {nodes.length ? <CheckboxTree
+
         nodes={nodes}
-        checked={checked}
-        expanded={expanded}
-        onCheck={(checked) => setChecked(checked)}
-        onExpand={(expanded) => setExpanded(expanded)}
-        icons={icons}
-        showNodeIcon={false}
+        // showNodeIcon={false}
         expandOnClick={true}
-        showExpandAll={true} // THis is not working yet
-      />
+        showExpandAll={true}
+        checked={checked}
+        nativeCheckboxes={true}
+        // onCheck={checked =>setChecked(checked)}
+        onCheck={checked => setChecked(checked)}
+        expanded={expanded}
+        onExpand={expanded => setExpanded(expanded)}
+        checkModel={"all"}
+        icons={icons}
+        // iconsClass="fa5"
+      /> : ""}
     </>
   );
 }

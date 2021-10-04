@@ -5,12 +5,7 @@ const INIT_STATE = {
   authUser: null,
   loadUser: false,
   send_forget_password_email: false,
-  dynamicMenu: [
-    {
-      name: 'Main',
-      child: [],
-    },
-  ],
+  authorizedMenu: [],
 };
 
 export default (state = INIT_STATE, action) => {
@@ -33,6 +28,12 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         send_forget_password_email: action.payload,
+      };
+    }
+    case 'SET_AUTH_MENU': {
+      return {
+        ...state,
+        authorizedMenu: action.payload,
       };
     }
     default:

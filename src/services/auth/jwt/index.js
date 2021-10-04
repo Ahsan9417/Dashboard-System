@@ -1,5 +1,5 @@
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { setAuthUser, setForgetPassMailSent, updateLoadUser } from '../../../redux/actions/Auth';
+import { setAuthMenu, setAuthUser, setForgetPassMailSent, updateLoadUser } from '../../../redux/actions/Auth';
 import React from 'react';
 import axios from './config';
 
@@ -45,6 +45,7 @@ const JWTAuth = {
               localStorage.setItem('token', data.data.key);
               axios.defaults.headers.common['AuthorizationKey'] = data.data.key;
               dispatch(fetchSuccess(data.dataException.err_msg));
+              dispatch(setAuthMenu(data.data.userMenu?.length ? data.data.userMenu : []));
               localStorage.setItem('user', data.data.userMenu[0]['child-key']);
               dispatch(JWTAuth.getAuthUser(true, data.data.key));
             } else {

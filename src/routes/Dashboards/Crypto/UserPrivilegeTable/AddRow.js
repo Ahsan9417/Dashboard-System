@@ -17,6 +17,8 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { DataMethods } from 'services/dataServices';
 import CheckedBoxTree from './CheckedBoxTree';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const useStyles = makeStyles(theme => ({
     backgroundDeleteColorChange: {
@@ -48,6 +50,9 @@ const useStyles = makeStyles(theme => ({
 const AddRow = (props) => {
     console.log(props);
     const classes = useStyles();
+    let menuList = useSelector(({ userRole }) => userRole.menusList)
+
+    const [menuName, setMenuName] = useState(props.selectedUserPrivilege && props.selectedUserPrivilege["menu-rights-name"] ? props.selectedUserPrivilege["menu-rights-name"] : "")
     const [userPrivilegesList, setUserPrivilegesList] = useState([])
 
     const [userPrivilege, setUserPrivilege] = React.useState({
@@ -62,21 +67,15 @@ const AddRow = (props) => {
         });
 
     };
-
-    const getUserPrivilege = async () => {
-        userPrivilegesList(await DataMethods['utilsService'].getAllCountries("", 1, 100))
+    let dispatch = useDispatch();
+    const getUserMenus = () => {
+        dispatch(DataMethods['userRoleService'].getAllMenus())
     };
-
 
     useEffect(() => {
 
-        console.log('user privilege Table');
-        console.log('use Effect user Privilege');
-        // let a  =await DataMethods['utilsService'].getAllCountries("", 1, 100)
-        // console.log(a);
-        console.log(userPrivilegesList);
-        getUserPrivilege()
-
+        console.log('user privilege Add row');
+        getUserMenus()
     }, []);
 
 
@@ -89,6 +88,10 @@ const AddRow = (props) => {
                     <PerfectScrollbar className={classes.scrollbarRoot}>
                         <Box sx={{ display: 'flex', margin: 10 }}>
                             <Box >
+                                <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Menu Name" variant="outlined" value={menuName} onChange={(e) => setMenuName(e.target.value)} />
+                            </Box>
+                            {/* <Box >
+
                                 <FormControl variant="outlined" style={{ width: "100%", marginRight: 20 }} >
                                     <InputLabel htmlFor="outlined-age-native-simple">Menu Rights</InputLabel>
                                     <Select
@@ -106,9 +109,9 @@ const AddRow = (props) => {
                                         <option value={30}>Singapore</option>
                                     </Select>
                                 </FormControl>
-                            </Box>
+                            </Box> */}
                             <Box >
-                                <CheckedBoxTree />
+                                {menuList.length ? <CheckedBoxTree menuList={menuList} /> : ""}
                             </Box>
                         </Box>
                     </PerfectScrollbar>
@@ -129,5 +132,18 @@ const AddRow = (props) => {
         </TableRow>
     );
 };
+
+
+const RecursivePrevileges = ({ items }) => {
+    const hasChildren = items && items.length
+
+    return (
+        <>
+            {hasChildren && items.map((item) => (
+                <RecursivePrevileges key={item.name} {...item} />
+            ))}
+        </>
+    )
+}
 
 export default AddRow;

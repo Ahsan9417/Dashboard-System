@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import UserPrivilegeTable from 'routes/Dashboards/Crypto/UserPrivilegeTable';
 
 const breadcrumbs = [
-  { label: 'user-privilage', link: '/user-privilege' },
+  { label: 'user-privilege', link: '/user-privilege' },
   { label: 'User Privilege', isActive: true },
 ];
 

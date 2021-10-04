@@ -1,12 +1,12 @@
-export const getAllMenus = () => {
+
+export const getAllRoles = () => {
     return dispatch => {
         dispatch({
             type: 'GET_ALL'
         });
     };
 };
-
-export const setAllMenus = data => {
+export const setAllRoles = (data) => {
     return dispatch => {
         dispatch({
             type: 'SET_ALL',
@@ -14,7 +14,22 @@ export const setAllMenus = data => {
         });
     };
 };
-export const setAllFilteredMenus = data => {
+export const getAllMenus = () => {
+    return dispatch => {
+        dispatch({
+            type: 'GET_ALL_MENUS'
+        });
+    };
+};
+export const setAllMenus = data => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_ALL_MENUS',
+            payload: data,
+        });
+    };
+};
+export const setAllFilteredRoles= data => {
     return dispatch => {
         dispatch({
             type: 'SET_ALL_FILTERED',
@@ -23,46 +38,54 @@ export const setAllFilteredMenus = data => {
     };
 };
 
-export const setSelectedMenu = data => {
+export const setSelectedRole = data => {
     return dispatch => {
         dispatch({
-            type: 'SET_SELECTED_MENU',
+            type: 'SET_SELECTED_ROLE',
             payload: data,
         });
     };
 };
 
-export const AddMenu = data => {
+export const AddRole = data => {
     return dispatch => {
         dispatch({
-            type: 'ADD_MENU',
+            type: 'ADD_ROLE',
             payload: data,
         });
     };
 };
 
-
-
-export const getMenuyByKey = data => {
+export const setRowsCount = data => {
     return dispatch => {
         dispatch({
-            type: 'GET_MENU_BY_KEY',
+            type: 'SET_ROWS_COUNT',
             payload: data,
         });
     };
 };
-export const deleteMenuByKey = data => {
+
+export const getRoleByKey = data => {
     return dispatch => {
         dispatch({
-            type: 'DELETE_MENU_BY_KEY',
+            type: 'GET_ROLE_BY_KEY',
             payload: data,
         });
     };
 };
-export const updateMenuByKey = data => {
+
+export const deleteRoleByKey = data => {
     return dispatch => {
         dispatch({
-            type: 'UPDATE_MENU_BY_KEY',
+            type: 'DELETE_ROLE_BY_KEY',
+            payload: data,
+        });
+    };
+};
+export const updateRoleByKey = data => {
+    return dispatch => {
+        dispatch({
+            type: 'UPDATE_ROLE_BY_KEY',
             payload: data,
         });
     };

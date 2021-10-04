@@ -97,11 +97,11 @@ const rows = [
 
 
 const UserPrivilegeTable = () => {
-  let provinces = useSelector(({ province }) => province.provincesList)
-  let filteredList = useSelector(({ province }) => province.filteredList)
-  let rowCount = useSelector(({ province }) => province.totalRecords)
+  let privileges = useSelector(({ userRole }) => userRole.rolesList)
+  let filteredList = useSelector(({ userRole }) => userRole.filteredList)
+  let rowCount = useSelector(({ userRole }) => userRole.totalRecords)
 
-  let hideColumns = ["row-number", "province-key", "country-key"]
+  let hideColumns = ["row-number", "menu-rights-mas-key"]
   // const [state, setState] = React.useState({
   //   checked1: true,
   //   checked2: true,
@@ -144,13 +144,13 @@ const UserPrivilegeTable = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    dispatch(DataMethods['provinceService'].getAllProvinces(search, newPage, rowsPerPage))
+    dispatch(DataMethods['userRoleService'].getAllPrivileges(search, newPage, rowsPerPage))
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-    dispatch(DataMethods['provinceService'].getAllProvinces(search, 0, parseInt(event.target.value, 10)))
+    dispatch(DataMethods['userRoleService'].getAllPrivileges(search, 0, parseInt(event.target.value, 10)))
 
   };
 
@@ -159,8 +159,8 @@ const UserPrivilegeTable = () => {
 
 
   }
-  const changeUpdateStatusToTrue = (province) => {
-    setSelectedUserPrivilege(province)
+  const changeUpdateStatusToTrue = (privilege) => {
+    setSelectedUserPrivilege(privilege)
     //get Country of Province
     // DataMethods['utilsService'].getCountryByKey(province["country-key"])
     setUpdate(true)
@@ -173,15 +173,15 @@ const UserPrivilegeTable = () => {
 
 
 
-  const addUserPrivilege = (province) => {
+  const addUserPrivilege = (privilege) => {
     changeHandlerFalse()
-    dispatch(DataMethods['provinceService'].AddProvince(province))
+    dispatch(DataMethods['userRoleService'].AddMenu(privilege))
 
   }
-  const updateUserPrivilege = (province) => {
+  const updateUserPrivilege = (privilege) => {
     changeHandlerFalse()
 
-    dispatch(DataMethods['provinceService'].UpdateProvince(selectedUserPrivilege["province-key"], province))
+    dispatch(DataMethods['userRoleService'].UpdateMenu(selectedUserPrivilege["menu-rights-mas-key"], privilege))
     setSelectedUserPrivilege("")
 
   }
@@ -205,7 +205,7 @@ const UserPrivilegeTable = () => {
 
   function LoadTable(searchText = "") {
 
-    dispatch(DataMethods['provinceService'].getAllProvinces(searchText, page, rowsPerPage))
+    dispatch(DataMethods['userRoleService'].getAllPrivileges(searchText, page, rowsPerPage))
   }
 
   useEffect(() => {
@@ -213,6 +213,7 @@ const UserPrivilegeTable = () => {
     console.log('privilege Table');
     console.log('use Effect privilege');
     LoadTable()
+    
   }, []);
   return (
     <>
@@ -289,7 +290,7 @@ const UserPrivilegeTable = () => {
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && provinces.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : provinces} hideColumns={hideColumns} /> : "Records Not Found"}
+            {((!search && privileges.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : privileges} hideColumns={hideColumns} /> : "Records Not Found"}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>

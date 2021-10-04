@@ -26,3 +26,12 @@ export const setForgetPassMailSent = status => {
     });
   };
 };
+
+export const setAuthMenu = data => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_AUTH_MENU',
+      payload: data,
+    });
+  };
+};

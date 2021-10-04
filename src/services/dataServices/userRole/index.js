@@ -1,34 +1,33 @@
+import { AddRole,setAllRoles, deleteRoleByKey, setAllFilteredRoles, setAllMenus, setSelectedRole, updateRoleByKey ,setRowsCount} from 'redux/actions/UserRole';
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
-import { AddCity, setAllCities, updateCityByKey, setAllFilteredCities, deleteCityByKey, setSelectedCity } from '../../../redux/actions/City';
 import axios from './config';
 
-const hotelService = {
-    getAllCities: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
+const userRole = {
+    getAllPrivileges: (searchText = "", pageNo = 0, rowCount = 10, sortBy = 0, sortOrder = 'DESC') => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-
             axios
                 .post('/get', {
                     "display-length": rowCount,
-                    "display-start": pageNo * rowCount,
+                    "display-start": (pageNo * rowCount) + (pageNo ? 1 : 0),
                     "sort-column": sortBy,
                     "sort-direction": sortOrder,
                     "search-text": searchText
                 })
                 .then(({ data }) => {
-                    if (data.data && data.data.cities) {
-                        dispatch(searchText ? setAllFilteredCities(data.data.cities) : setAllCities(data.data.cities));
+                    if (data.data) {
+                        // dispatch(setRowsCount(data.data["total-rows"]));
+                        dispatch(searchText ? setAllFilteredRoles(data.data?.length ? data.data : []) : setAllRoles(data.data?.length ? data.data : []));
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
-
                 })
                 .catch(function (error) {
                     dispatch(fetchError(error.message));
@@ -36,29 +35,23 @@ const hotelService = {
                 });
         };
     },
-
-    getCityByKey: (key) => {
+    getAllMenus: () => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-        
             axios
-                .post('/get-by-key', {
-                    "city-key": key,
-                   
-                })
+                .post('/get-all-menu')
                 .then(({ data }) => {
-                    if (data.data && data.data.cities) {
-                        dispatch(setSelectedCity(data.data))
+                    if (data.data) {
+                       
+                        dispatch(setAllMenus(data.data?.length ? data.data : []));
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
-
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
-
                 })
                 .catch(function (error) {
                     dispatch(fetchError(error.message));
@@ -67,25 +60,25 @@ const hotelService = {
         };
     },
 
-    getCityByCountryKey: (key) => {
+    getRoleByKey: (key) => {
 
         return dispatch => {
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-        
+
             axios
                 .post('/get-by-key', {
-                    "country-key": key,
-                   
+                    "menu-rights-mas-key": key,
+
                 })
                 .then(({ data }) => {
-                    if (data.data && data.data.cities) {
-                        // dispatch(setSelectedCity(data.data))
+                    if (data.data) {
+                        dispatch(setSelectedRole(data.data))
                         dispatch(fetchSuccess());
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
 
                     }
 
@@ -97,15 +90,12 @@ const hotelService = {
         };
     },
 
-    AddCity: (city) => {
+    AddRole: (menu) => {
 
         return dispatch => {
-            console.log('save city')
             let obj = {
-                "city-iso": city.cityISO,
-                "city-code": city.cityCode,
-                "city-name": city.cityName,
-                "currency-code": city.currencyCode
+                "menu-rights-name": menu.menuName,
+                "list-privilege": menu.previlages
             }
 
             dispatch(fetchStart());
@@ -115,11 +105,10 @@ const hotelService = {
                 .post('/save', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        dispatch(AddCity(data.data));
-
-                        dispatch(fetchSuccess());
+                        dispatch(AddRole(data.data))
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -129,29 +118,27 @@ const hotelService = {
     },
 
 
-    UpdateCity: (key, updatedCity) => {
+    UpdateRole: (key, updatedRole) => {
 
         return dispatch => {
+
+            let obj = {
+                "menu-rights-name": updatedRole.menuName,
+                "list-privilege": updatedRole.previlages,
+                "menu-rights-mas-key": key
+            }
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
-            let obj = {
-                "city-iso": updatedCity.cityISO,
-                "city-code": updatedCity.cityCode,
-                "city-name": updatedCity.cityName,
-                "currency-code": updatedCity.currencyCode,
-                "city-key" : key
-            }
             axios
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         console.log(data)
-                        dispatch(updateCityByKey({city : data.data , key : key}));
-
-                        dispatch(fetchSuccess());
+                        dispatch(updateRoleByKey(data.data))
+                        dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -161,24 +148,23 @@ const hotelService = {
     },
 
 
-    DeleteCity: (city) => {
+    DeleteRole: (menu) => {
 
         return dispatch => {
-            console.log('delete city api');
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {
-                    "city-key": city["city-key"]
+                    "menu-rights-mas-key": menu["menu-rights-mas-key"]
                 })
                 .then(({ data }) => {
-                    if (data.data && data.dataException.err_code) {
-                        dispatch(deleteCityByKey(data.data["city-key"]));
-                        dispatch(fetchSuccess());
+                    if (data.data && data.dataException.err_code == 200) {
+                        dispatch(deleteRoleByKey(menu["menu-rights-mas-key"]))
+                        dispatch(fetchSuccess(data.dataException.err_msg));
 
                     } else {
-                        dispatch(fetchError(data.error));
+                        dispatch(fetchError(data.dataException.err_msg ? data.dataException.err_msg : data.error));
                     }
                 })
                 .catch(function (error) {
@@ -187,8 +173,6 @@ const hotelService = {
         };
     },
 
-
-
 };
 
-export default hotelService;
+export default userRole;

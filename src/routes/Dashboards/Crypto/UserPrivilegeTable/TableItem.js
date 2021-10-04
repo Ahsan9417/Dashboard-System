@@ -97,7 +97,7 @@ const TableItem = ({ row, changeEditStateTrue, changeUpdateStatusToTrue, key, hi
     changeUpdateStatusToTrue(e)
   }
   const handleClose = (value) => {
-    if (value) dispatch(DataMethods['provinceService'].DeleteProvince(row))
+    if (value) dispatch(DataMethods['userRoleService'].DeleteMenu(row))
     setOpen(false);
   };
   return (

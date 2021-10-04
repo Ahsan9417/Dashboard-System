@@ -5,6 +5,9 @@ import CmtHorizontal from '../../../../../../@coremat/CmtNavigation/Horizontal';
 import IntlMessages from '../../../../../utils/IntlMessages';
 
 const HeaderNavigations = () => {
+
+  console.log('HeaderNavigations');
+
   const navigationMenus = [
     {
       name: <IntlMessages id={'sidebar.main'} />,

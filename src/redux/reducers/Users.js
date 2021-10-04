@@ -2,7 +2,7 @@
 const INIT_STATE = {
     usersList: [],
     filteredList: [],
-    selectedUser: {},
+    selectedUser: "",
     searchText: '',
     loading: false,
     totalRecords: 0

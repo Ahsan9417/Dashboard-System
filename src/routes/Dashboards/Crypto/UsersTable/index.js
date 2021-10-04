@@ -100,8 +100,10 @@ const UserTable = () => {
   let users = useSelector(({ user }) => user.usersList)
   let filteredList = useSelector(({ user }) => user.filteredList)
   let rowCount = useSelector(({ user }) => user.totalRecords)
+  // let selectedUser = useSelector(({ user }) => user.selectedUser)
+  const [selectedUser, setselectedUser] = useState("")
 
-  let hideColumns = ["row-number", "user-key","company-key","company-branch-key","password","confirm-password", "country-key"]
+  let hideColumns = ["row-number", "user-key", "company-key", "company-branch-key", "password", "confirm-password", "country-key"]
   const [state, setState] = React.useState({
     checked1: true,
     checked2: true,
@@ -127,7 +129,6 @@ const UserTable = () => {
   // });
   const [add, setAdd] = useState(false)
   const [update, setUpdate] = useState(false)
-  const [selectedUser, setselectedUser] = useState("")
   let dispatch = useDispatch();
 
   // const handleChange = event => {
@@ -164,7 +165,7 @@ const UserTable = () => {
     console.log(user);
     setselectedUser(user)
     //get Country of Province
-    // DataMethods['utilsService'].getCountryByKey(user["country-key"])
+    // dispatch(DataMethods['userService'].getUserByKey(user["user-key"]))
     setUpdate(true)
   }
 
@@ -184,11 +185,11 @@ const UserTable = () => {
   }
   const updateUser = (user) => {
 
-    console.log('update',user);
+    console.log('update', user);
     changeHandlerFalse()
 
     dispatch(DataMethods['userService'].updateUser(selectedUser["user-key"], user))
-    setselectedUser("")
+    // setselectedUser("")
 
   }
   function debounce(func, wait) {

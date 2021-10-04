@@ -1,4 +1,4 @@
-import { AddUser, deleteUserByKey, setAllFilteredUsers, setAllUsers,setRowsCount,updateUserByKey } from 'redux/actions/User';
+import { AddUser, deleteUserByKey, setAllFilteredUsers, setAllUsers,setRowsCount,setSelectedUser,updateUserByKey } from 'redux/actions/User';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
 import axios from './config';
 
@@ -70,16 +70,26 @@ const userService = {
         };
     },
 
-    updateUser: (obj) => {
+    updateUser: (key, obj) => {
         return dispatch => {
             dispatch(fetchStart());
+            
+            let user = {
+                "user-name": obj.userName,
+                "password": obj.password,
+                "confirm-password": obj.confirmPassword,
+                "user-branches": obj.branchList,
+                "user-key":key
+
+            }
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
-                .post('update', obj)
+                .post('update', user)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         dispatch(updateUserByKey(data.data))
+                        dispatch(setSelectedUser({}))
 
                         dispatch(fetchSuccess(data.dataException.err_msg));
 
@@ -128,11 +138,12 @@ const userService = {
 
             axios
                 .post('/get-by-key', {
-                    "country-key": key,
+                    "user-key": key,
 
                 })
                 .then(({ data }) => {
-                    if (data.data && data.data.countries) {
+                    if (data.data) {
+                        dispatch(setSelectedUser(data.data))
                         dispatch(fetchSuccess());
 
                     } else {

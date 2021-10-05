@@ -1,4 +1,4 @@
-import { AddRole,setAllRoles, deleteRoleByKey, setAllFilteredRoles, setAllMenus, setSelectedRole, updateRoleByKey ,setRowsCount} from 'redux/actions/UserRole';
+import { AddRole, setAllRoles, deleteRoleByKey, setAllFilteredRoles, setAllMenus, setSelectedRole, updateRoleByKey, setRowsCount } from 'redux/actions/UserRole';
 import { DataMethods } from '..';
 import { fetchError, fetchStart, fetchSuccess } from '../../../redux/actions';
 import axios from './config';
@@ -45,7 +45,7 @@ const userRole = {
                 .post('/get-all-menu')
                 .then(({ data }) => {
                     if (data.data) {
-                       
+
                         dispatch(setAllMenus(data.data?.length ? data.data : []));
                         dispatch(fetchSuccess());
 
@@ -91,11 +91,10 @@ const userRole = {
     },
 
     AddRole: (menu) => {
-
         return dispatch => {
             let obj = {
-                "menu-rights-name": menu.menuName,
-                "list-privilege": menu.previlages
+                "menu-rights-name": menu["menu-rights-name"],
+                "list-privilege": menu["list-privilege"]
             }
 
             dispatch(fetchStart());
@@ -123,15 +122,15 @@ const userRole = {
         return dispatch => {
 
             let obj = {
-                "menu-rights-name": updatedRole.menuName,
-                "list-privilege": updatedRole.previlages,
+                "menu-rights-name": updatedRole["menu-rights-name"],
+                "list-privilege": updatedRole["list-privilege"],
                 "menu-rights-mas-key": key
             }
             dispatch(fetchStart());
             const token = localStorage.getItem('token');
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
-                .post('/update', obj)
+                .post('/save', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
                         console.log(data)

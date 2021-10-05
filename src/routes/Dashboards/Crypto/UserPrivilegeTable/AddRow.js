@@ -48,12 +48,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = (props) => {
-    console.log(props);
+
+    //CheckBox tree params
+    const [checked, setChecked] = useState([]);
+    const [expanded, setExpanded] = useState([]);
+    let menuHash = {}
+    let nodes = []
+
+    console.log(props.selectedUserPrivilege);
+
+
     const classes = useStyles();
     let menuList = useSelector(({ userRole }) => userRole.menusList)
-
     const [menuName, setMenuName] = useState(props.selectedUserPrivilege && props.selectedUserPrivilege["menu-rights-name"] ? props.selectedUserPrivilege["menu-rights-name"] : "")
     const [userPrivilegesList, setUserPrivilegesList] = useState([])
+    let dispatch = useDispatch();
 
     const [userPrivilege, setUserPrivilege] = React.useState({
         name: '',
@@ -67,18 +76,31 @@ const AddRow = (props) => {
         });
 
     };
-    let dispatch = useDispatch();
-    const getUserMenus = () => {
-        dispatch(DataMethods['userRoleService'].getAllMenus())
-    };
 
-    useEffect(() => {
+    const getSelectedMenu = (checked) => {
 
-        console.log('user privilege Add row');
-        getUserMenus()
-    }, []);
+     
+        setUserPrivilegesList(checked.map(menu => { return { "menu-key": menuHash[menu]["menuKey"] } }))
+
+    }
 
 
+    const parseMenu = (menuArray) => {
+
+        return menuArray.map(menu => {
+            if (menuHash[menu.menuKey]) menu.menuName = menu.menuKey
+            menuHash[menu.menuKey] = menu
+            let node = {
+                value: menu.menuKey,
+                label: menu.menuName,
+            }
+            if (menu.children.length) node.children = parseMenu(menu.children)
+            return node
+        })
+    }
+
+    if (menuList.length) nodes = parseMenu(menuList);
+    console.log(checked);
     return (
 
         <TableRow className={classes.tableRowRoot}>
@@ -111,7 +133,7 @@ const AddRow = (props) => {
                                 </FormControl>
                             </Box> */}
                             <Box >
-                                {menuList.length ? <CheckedBoxTree menuList={menuList} /> : ""}
+                                {nodes.length ? <CheckedBoxTree setChecked={setChecked} getSelectedMenu={getSelectedMenu} setExpanded={setExpanded} nodes={nodes} expanded={expanded} checked={checked} menuList={menuList} /> : ""}
                             </Box>
                         </Box>
                     </PerfectScrollbar>
@@ -119,7 +141,7 @@ const AddRow = (props) => {
                 <CmtCardFooter>
                     <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
 
-                        <Button onClick={(e) => props[props.updateState ? "updateUserPrivilege" : "addUserPrivilege"]({ countryKey: userPrivilege["key"] })} style={{ marginRight: 10 }} variant="contained" color="primary">
+                        <Button onClick={(e) => props[props.updateState ? "updateUserPrivilege" : "addUserPrivilege"]({"menu-rights-name": menuName, "list-privilege": userPrivilegesList})} style={{ marginRight: 10 }} variant="contained" color="primary">
                             {props.updateState ? 'Update' : 'Save'}
                         </Button>
                         <Button onClick={(e) => props.changeAddState(e)} variant="contained" >

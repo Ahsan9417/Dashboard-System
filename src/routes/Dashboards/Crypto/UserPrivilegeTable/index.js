@@ -174,14 +174,17 @@ const UserPrivilegeTable = () => {
 
 
   const addUserPrivilege = (privilege) => {
+
+    console.log('add', privilege);
     changeHandlerFalse()
-    dispatch(DataMethods['userRoleService'].AddMenu(privilege))
+    dispatch(DataMethods['userRoleService'].AddRole(privilege))
 
   }
   const updateUserPrivilege = (privilege) => {
     changeHandlerFalse()
+    console.log('update', privilege);
 
-    dispatch(DataMethods['userRoleService'].UpdateMenu(selectedUserPrivilege["menu-rights-mas-key"], privilege))
+    dispatch(DataMethods['userRoleService'].UpdateRole(selectedUserPrivilege["menu-rights-mas-key"], privilege))
     setSelectedUserPrivilege("")
 
   }
@@ -208,12 +211,18 @@ const UserPrivilegeTable = () => {
     dispatch(DataMethods['userRoleService'].getAllPrivileges(searchText, page, rowsPerPage))
   }
 
+  const getUserMenus = () => {
+    dispatch(DataMethods['userRoleService'].getAllMenus())
+  };
+
+
   useEffect(() => {
 
     console.log('privilege Table');
     console.log('use Effect privilege');
+    getUserMenus()
     LoadTable()
-    
+
   }, []);
   return (
     <>

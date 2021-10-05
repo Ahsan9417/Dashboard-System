@@ -207,6 +207,7 @@ const CountryMasterTable = (props) => {
   useEffect(() => {
     console.log('use Effect country');
     dispatch(DataMethods['countryService'].getAllCountries(search,page,rowsPerPage))
+    LoadTable();
   }, []);
 
   return (
@@ -230,7 +231,7 @@ const CountryMasterTable = (props) => {
                   <AddIcon />
                 </IconButton>
               }
-              <IconButton aria-label="edit" className={classes.backgroundEditColorChange}>
+              <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
                 <RefreshIcon />
               </IconButton>
               {/* <Box>

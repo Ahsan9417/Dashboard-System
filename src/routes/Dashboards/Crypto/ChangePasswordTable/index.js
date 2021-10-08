@@ -1,25 +1,11 @@
 import React, { useState } from 'react';
 import CmtCard from '../../../../@coremat/CmtCard';
-import CmtCardHeader from '../../../../@coremat/CmtCard/CmtCardHeader';
-import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
 import CmtCardContent from '../../../../@coremat/CmtCard/CmtCardContent';
 import OrderTable from './OrderTable';
 import { crypto } from '../../../../@fake-db';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { getTodayDate, getYesterdayDate } from '../../../../@jumbo/utils/dateHelper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import MenuIcon from '@material-ui/icons/Menu';
-import { Box, fade, TablePagination } from '@material-ui/core';
-import CmtSearch from '@coremat/CmtSearch';
-// import TablePagination from '@material-ui/core/TablePagination';
-
-
-
 const useStyles = makeStyles(theme => ({
-
   cardContentRoot: {
     padding: '0 !important',
   },
@@ -32,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     letterSpacing: 0.15,
   },
   scrollbarRoot: {
-    width: "100%",
+    width: '100%',
     height: 347,
   },
   backgroundEditColorChange: {
@@ -40,8 +26,8 @@ const useStyles = makeStyles(theme => ({
     width: 60,
     height: 30,
     borderRadius: 10,
-    backgroundColor: "#eb6b34",
-    color: "white"
+    backgroundColor: '#eb6b34',
+    color: 'white',
   },
   headerRoot: {
     paddingBottom: 10,
@@ -70,7 +56,6 @@ const useStyles = makeStyles(theme => ({
     top: 2,
     zIndex: 1,
   },
- 
 }));
 
 function createData(name, calories, fat, carbs, protein) {
@@ -92,15 +77,13 @@ const rows = [
   createData('Oreo', 437, 18.0, 63, 4.0),
 ];
 
-
 const ChangePasswordTable = () => {
   const [tableData, setTableData] = useState(crypto.orders);
   const [value, setValue] = useState('');
   const classes = useStyles();
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  
- 
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -127,14 +110,11 @@ const ChangePasswordTable = () => {
 
   return (
     <CmtCard>
-        
-      
       <CmtCardContent className={classes.cardContentRoot}>
         <PerfectScrollbar className={classes.scrollbarRoot}>
           <OrderTable tableData={tableData} />
         </PerfectScrollbar>
       </CmtCardContent>
-      
     </CmtCard>
   );
 };

@@ -4,26 +4,18 @@ import CmtCardHeader from '../../../../@coremat/CmtCard/CmtCardHeader';
 import CmtCardFooter from '@coremat/CmtCard/CmtCardFooter';
 import CmtCardContent from '../../../../@coremat/CmtCard/CmtCardContent';
 import OrderTable from './OrderTable';
-import { crypto } from '../../../../@fake-db';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { getTodayDate, getYesterdayDate } from '../../../../@jumbo/utils/dateHelper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import MenuIcon from '@material-ui/icons/Menu';
-import { Box, Checkbox, fade, FormControlLabel, Menu, MenuItem, TablePagination } from '@material-ui/core';
+import { Box, TablePagination } from '@material-ui/core';
 import CmtSearch from '@coremat/CmtSearch';
-// import TablePagination from '@material-ui/core/TablePagination';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import AddRow from './AddRow';
 import { DataMethods } from 'services/dataServices';
 import { useDispatch, useSelector } from 'react-redux';
 
-
-
 const useStyles = makeStyles(theme => ({
-
   cardContentRoot: {
     padding: '0 !important',
   },
@@ -43,8 +35,8 @@ const useStyles = makeStyles(theme => ({
     width: 60,
     height: 30,
     borderRadius: 10,
-    backgroundColor: "#eb6b34",
-    color: "white"
+    backgroundColor: '#eb6b34',
+    color: 'white',
   },
   headerRoot: {
     paddingBottom: 10,
@@ -73,7 +65,6 @@ const useStyles = makeStyles(theme => ({
     top: 2,
     zIndex: 1,
   },
-
 }));
 
 function createData(name, calories, fat, carbs, protein) {
@@ -95,14 +86,12 @@ const rows = [
   createData('Oreo', 437, 18.0, 63, 4.0),
 ];
 
-
 const HotelTypeMasterTable = () => {
-  let hotels = useSelector(({ hotel }) => hotel.hotelsList)
-  let filteredList = useSelector(({ hotel }) => hotel.filteredList)
-  let rowCount = useSelector(({ hotel }) => hotel.totalRecords)
+  let hotels = useSelector(({ hotel }) => hotel.hotelsList);
+  let filteredList = useSelector(({ hotel }) => hotel.filteredList);
+  let rowCount = useSelector(({ hotel }) => hotel.totalRecords);
 
-
-  let hideColumns = ["row-number", "hotel-type-key"]
+  let hideColumns = ['row-number', 'hotel-type-key'];
   const [state, setState] = React.useState({
     checked1: true,
     checked2: true,
@@ -117,161 +106,100 @@ const HotelTypeMasterTable = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  // const [anchorEl, setAnchorEl] = React.useState(null);
-  // const [state, setState] = React.useState({
-  //   checked1: true,
-  //   checked2: true,
-  //   checked3: true,
-  //   checked4: true,
-  //   checked5: true,
-  //   checked6: true,
-  // });
-  const [add, setAdd] = useState(false)
-  const [update, setUpdate] = useState(false)
-  const [selectedHotel, setSelectedHotel] = useState("")
+
+  const [add, setAdd] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [selectedHotel, setSelectedHotel] = useState('');
   let dispatch = useDispatch();
-
-  // const handleChange = event => {
-  //   setState({ ...state, [event.target.name]: event.target.checked });
-  // };
-  // const handleClick = event => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    dispatch(DataMethods['hotelService'].getAllHotels(search, newPage, rowsPerPage))
+    dispatch(DataMethods['hotelService'].getAllHotels(search, newPage, rowsPerPage));
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-    dispatch(DataMethods['hotelService'].getAllHotels(search, 0, parseInt(event.target.value, 10)))
-
+    dispatch(DataMethods['hotelService'].getAllHotels(search, 0, parseInt(event.target.value, 10)));
   };
 
   const changeHandlerFalse = () => {
-    update ? setUpdate(false) : setAdd(false)
+    update ? setUpdate(false) : setAdd(false);
+  };
+  const changeUpdateStatusToTrue = hotel => {
+    setSelectedHotel(hotel);
+    setUpdate(true);
+  };
 
+  const addHotel = hotel => {
+    changeHandlerFalse();
+    dispatch(DataMethods['hotelService'].AddHotel(hotel));
+  };
+  const updateHotel = hotel => {
+    changeHandlerFalse();
 
-  }
-  const changeUpdateStatusToTrue = (hotel) => {
-    setSelectedHotel(hotel)
-    setUpdate(true)
-  }
-
-  const changeHandlerTrue = () => {
-    setAdd(true)
-  }
-
-
-
-
-  const addHotel = (hotel) => {
-    changeHandlerFalse()
-    dispatch(DataMethods['hotelService'].AddHotel(hotel))
-
-  }
-  const updateHotel = (hotel) => {
-    changeHandlerFalse()
-
-    dispatch(DataMethods['hotelService'].UpdateHotel(selectedHotel["hotel-type-key"], hotel))
-    setSelectedHotel("")
-
-  }
+    dispatch(DataMethods['hotelService'].UpdateHotel(selectedHotel['hotel-type-key'], hotel));
+    setSelectedHotel('');
+  };
   function debounce(func, wait) {
-    let timeout
+    let timeout;
     return (...args) => {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => func(...args), wait)
-    }
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
   }
 
-
-  const SearchRecordsDebounce = debounce(Search, 2000)
-
+  const SearchRecordsDebounce = debounce(Search, 2000);
 
   function Search(e) {
-    setValue(e)
-    LoadTable(e ? e : "")
+    setValue(e);
+    LoadTable(e ? e : '');
   }
 
-
-  function LoadTable(searchText = "") {
-
-    dispatch(DataMethods['hotelService'].getAllHotels(searchText, page, rowsPerPage))
+  function LoadTable(searchText = '') {
+    dispatch(DataMethods['hotelService'].getAllHotels(searchText, page, rowsPerPage));
   }
 
   useEffect(() => {
-
     console.log('Hotel Table');
     console.log('use Effect Hotek');
-    LoadTable()
+    LoadTable();
   }, []);
   return (
     <>
-      {(add || update) ?
-        <CmtCard style={{ marginBottom: 30, }} >
+      {add || update ? (
+        <CmtCard style={{ marginBottom: 30 }}>
           <CmtCardContent className={classes.cardContentRoot}>
-            <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} updateHotel={updateHotel} addHotel={addHotel} selectedHotel={selectedHotel} changeAddState={changeHandlerFalse} />
+            <PerfectScrollbar>
+              <AddRow
+                updateState={update}
+                updateHotel={updateHotel}
+                addHotel={addHotel}
+                selectedHotel={selectedHotel}
+                changeAddState={changeHandlerFalse}
+              />
             </PerfectScrollbar>
           </CmtCardContent>
-        </CmtCard> : ""
-      }
+        </CmtCard>
+      ) : (
+        ''
+      )}
       <CmtCard>
         <CmtCardHeader
           className={classes.headerRoot}
           title={
             <Box display="flex" alignItems={{ md: 'center' }} flexDirection={{ xs: 'column', md: 'row' }}>
-              {!add &&
-                <IconButton aria-label="edit" onClick={() => setAdd(!add)} className={classes.backgroundEditColorChange} >
+              {!add && (
+                <IconButton aria-label="edit" onClick={() => setAdd(!add)} className={classes.backgroundEditColorChange}>
                   <AddIcon />
                 </IconButton>
-              }
+              )}
               <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
                 <RefreshIcon />
               </IconButton>
-              {/* <Box>
-              <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                <FilterListIcon />
-              </IconButton>
-              <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem >  <FormControlLabel
-                  control={<Checkbox checked={state.checked1} onChange={handleChange} name="checked1" color="primary" />}
-                  label="Province Name"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked2} onChange={handleChange} name="checked2" color="primary" />}
-                  label="Country Name"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked3} onChange={handleChange} name="checked3" color="primary" />}
-                  label="Created By"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked4} onChange={handleChange} name="checked4" color="primary" />}
-                  label="Created On"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked5} onChange={handleChange} name="checked5" color="primary" />}
-                  label="Updated By"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked6} onChange={handleChange} name="checked6" color="primary" />}
-                  label="Updated On"
-                /></MenuItem>
-              </Menu>
-            </Box> */}
             </Box>
           }
-          actionsPos="top-corner"
-        >
+          actionsPos="top-corner">
           <Box className={classes.searchAction}>
             <Box className={classes.searchActionBar}>
               <CmtSearch
@@ -280,20 +208,28 @@ const HotelTypeMasterTable = () => {
                 iconPosition="right"
                 align="right"
                 placeholder="Search"
-                onChange={(e) => SearchRecordsDebounce(e.target.value)} />
-
+                onChange={e => SearchRecordsDebounce(e.target.value)}
+              />
             </Box>
           </Box>
         </CmtCardHeader>
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && hotels.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : hotels} hideColumns={hideColumns} /> : "Records Not Found"}
+            {(!search && hotels.length) || (search && filteredList.length) ? (
+              <OrderTable
+                updateState={update}
+                changeUpdateStatusToTrue={changeUpdateStatusToTrue}
+                tableData={search ? filteredList : hotels}
+                hideColumns={hideColumns}
+              />
+            ) : (
+              'Records Not Found'
+            )}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>
           <TablePagination
-
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={rowCount}

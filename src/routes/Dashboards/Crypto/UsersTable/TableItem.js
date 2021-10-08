@@ -18,24 +18,22 @@ import CmtSearch from '@coremat/CmtSearch';
 import { useDispatch } from 'react-redux';
 import { DataMethods } from 'services/dataServices';
 
-
 const useStyles = makeStyles(theme => ({
   backgroundDeleteColorChange: {
     margin: theme.spacing(2),
     width: 60,
     height: 30,
     borderRadius: 10,
-    backgroundColor: "#9e0000",
-    color: "white"
-
+    backgroundColor: '#9e0000',
+    color: 'white',
   },
   backgroundEditColorChange: {
     margin: theme.spacing(2),
     width: 60,
     height: 30,
     borderRadius: 10,
-    backgroundColor: "#eb6b34",
-    color: "white"
+    backgroundColor: '#eb6b34',
+    color: 'white',
   },
 
   tableRowRoot: {
@@ -62,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   tableCellRoot: {
-    padding: 16,
+    padding: 0,
     fontSize: 14,
     letterSpacing: 0.25,
     color: theme.palette.text.secondary,
@@ -86,120 +84,61 @@ const TableItem = ({ row, state, changeEditStateTrue, changeUpdateStatusToTrue, 
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [open, setOpen] = React.useState(false);
-  let dispatch = useDispatch()
+  let dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const changeStatus = (e) => {
-
-    changeUpdateStatusToTrue(e)
-  }
-  const handleClose = (value) => {
-    if (value) dispatch(DataMethods['userService'].deleteUser(row))
+  const changeStatus = e => {
+    changeUpdateStatusToTrue(e);
+  };
+  const handleClose = value => {
+    if (value) dispatch(DataMethods['userService'].deleteUser(row));
     setOpen(false);
   };
   return (
     <>
-      
-      {/* <TableRow className={classes.tableRowRoot}>
-        <TableCell className={classes.tableCellRoot}>
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search User Name"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-        </TableCell>
-        <TableCell className={classes.tableCellRoot}>
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Created By"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-        </TableCell>
-        <TableCell className={classes.tableCellRoot}>
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Created On"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-        </TableCell>
-        <TableCell className={classes.tableCellRoot}>
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Update By"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-        </TableCell>
-        <TableCell className={classes.tableCellRoot}>
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Updated On"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-        </TableCell>
-
-        <TableCell className={classes.tableCellRoot}>
-
-        </TableCell>
-      </TableRow> */}
       <TableRow className={classes.tableRowRoot}>
-      {
-        Object.keys(row).map((col, index) => {
-          return hideColumns.indexOf(col) === -1 ? <TableCell className={classes.tableCellRoot} key={index} name={col}>{row[col]}</TableCell> : ""
-        })
-      }
-        {/* {state && state.checked3 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked4 && <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>}
-      {state && state.checked5 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>} */}
+        {Object.keys(row).map((col, index) => {
+          return hideColumns.indexOf(col) === -1 ? (
+            <TableCell className={classes.tableCellRoot} key={index} name={col}>
+              {row[col]}
+            </TableCell>
+          ) : (
+            ''
+          );
+        })}
+
         <TableCell className={classes.tableCellRoot}>
-        <IconButton aria-label="edit" onClick={() => changeStatus(row)} className={classes.backgroundEditColorChange}>
-          <EditIcon />
-        </IconButton>
-        <IconButton aria-label="delete" onClick={handleClickOpen} className={classes.backgroundDeleteColorChange}>
-          <DeleteIcon />
-        </IconButton>
-        <Box>
-          <Dialog
-            open={open}
-            onClose={(e)=>handleClose(false)}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description">
-            <DialogTitle id="alert-dialog-title">Confirmation Alert.</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Are you sure, you are deleting a record.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={(e)=>handleClose(false)} color="primary">
-                No
-              </Button>
-              <Button onClick={(e)=>handleClose(true)} color="primary" autoFocus>
-                Yes
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Box>
-      </TableCell>
-    </TableRow>
+          <IconButton aria-label="edit" onClick={() => changeStatus(row)} className={classes.backgroundEditColorChange}>
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="delete" onClick={handleClickOpen} className={classes.backgroundDeleteColorChange}>
+            <DeleteIcon />
+          </IconButton>
+          <Box>
+            <Dialog
+              open={open}
+              onClose={e => handleClose(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description">
+              <DialogTitle id="alert-dialog-title">Confirmation Alert.</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">Are you sure, you are deleting a record.</DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={e => handleClose(false)} color="primary">
+                  No
+                </Button>
+                <Button onClick={e => handleClose(true)} color="primary" autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </TableCell>
+      </TableRow>
     </>
   );
 };

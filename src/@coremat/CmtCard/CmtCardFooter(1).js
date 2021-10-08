@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 24,
+    padding: 10,
   }),
 }));
 

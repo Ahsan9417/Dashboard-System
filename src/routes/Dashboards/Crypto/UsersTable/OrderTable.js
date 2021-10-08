@@ -15,7 +15,17 @@ const OrderTable = ({ tableData, state, changeEditStateTrue, changeUpdateStatusT
         </TableHead>
         <TableBody>
           {tableData.map((row, index) => {
-            return <TableItem key={index} hideColumns={hideColumns} changeUpdateStatusToTrue={changeUpdateStatusToTrue} row={row} key={index} state={state} changeEditStateTrue={changeEditStateTrue} />
+            return (
+              <TableItem
+                key={index}
+                hideColumns={hideColumns}
+                changeUpdateStatusToTrue={changeUpdateStatusToTrue}
+                row={row}
+                key={index}
+                state={state}
+                changeEditStateTrue={changeEditStateTrue}
+              />
+            );
           })}
         </TableBody>
       </Table>

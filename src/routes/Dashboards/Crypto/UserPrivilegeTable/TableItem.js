@@ -17,7 +17,6 @@ import { Box } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { useDispatch } from 'react-redux';
 import { DataMethods } from 'services/dataServices';
-import CmtSearch from '@coremat/CmtSearch';
 
 const useStyles = makeStyles(theme => ({
   backgroundDeleteColorChange: {
@@ -25,17 +24,16 @@ const useStyles = makeStyles(theme => ({
     width: 60,
     height: 30,
     borderRadius: 10,
-    backgroundColor: "#9e0000",
-    color: "white"
-
+    backgroundColor: '#9e0000',
+    color: 'white',
   },
   backgroundEditColorChange: {
     margin: theme.spacing(2),
     width: 60,
     height: 30,
     borderRadius: 10,
-    backgroundColor: "#eb6b34",
-    color: "white"
+    backgroundColor: '#eb6b34',
+    color: 'white',
   },
 
   tableRowRoot: {
@@ -62,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   tableCellRoot: {
-    padding: 16,
+    padding: 0,
     fontSize: 14,
     letterSpacing: 0.25,
     color: theme.palette.text.secondary,
@@ -85,102 +83,33 @@ const useStyles = makeStyles(theme => ({
 const TableItem = ({ row, changeEditStateTrue, changeUpdateStatusToTrue, key, hideColumns = [] }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
-  let dispatch = useDispatch()
+  const [value, setValue] = React.useState('');
+  let dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const changeStatus = (e) => {
-
-    changeUpdateStatusToTrue(e)
-  }
-  const handleClose = (value) => {
-    if (value) dispatch(DataMethods['userRoleService'].DeleteMenu(row))
+  const changeStatus = e => {
+    changeUpdateStatusToTrue(e);
+  };
+  const handleClose = value => {
+    if (value) dispatch(DataMethods['userRoleService'].DeleteMenu(row));
     setOpen(false);
   };
   return (
-
     <>
-      {/* <TableRow className={classes.tableRowRoot} >
-        <TableCell >
-
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Cofig Name"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-
-        </TableCell>
-        <TableCell >
-
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Created By"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-
-        </TableCell>
-        <TableCell >
-
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Created On"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-
-        </TableCell>
-        <TableCell >
-
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Updated by"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-
-        </TableCell>
-        <TableCell >
-
-
-          <CmtSearch
-            border={true}
-            onlyIcon={false}
-            iconPosition="right"
-            // align="right"
-            placeholder="Search Updated On"
-            value={value}
-            onChange={e => setValue(e.target.value)} />
-
-        </TableCell>
-
-      </TableRow> */}
       <TableRow className={classes.tableRowRoot}>
+        {Object.keys(row).map((col, index) => {
+          return hideColumns.indexOf(col) === -1 ? (
+            <TableCell className={classes.tableCellRoot} key={index} name={col}>
+              {row[col]}
+            </TableCell>
+          ) : (
+            ''
+          );
+        })}
 
-
-        {
-          Object.keys(row).map((col, index) => {
-            return hideColumns.indexOf(col) === -1 ? <TableCell className={classes.tableCellRoot} key={index} name={col}>{row[col]}</TableCell> : ""
-          })
-        }
-        {/* {state && state.checked1 && <TableCell className={classes.tableCellRoot}>{row.currency}</TableCell>}
-      {state && state.checked2 && <TableCell className={classes.tableCellRoot}>{row.rate}</TableCell>}
-       <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked4 && <TableCell className={clsx(classes.tableCellRoot, 'success')}>{row.date}</TableCell>}
-      {state && state.checked5 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>}
-      {state && state.checked6 && <TableCell className={classes.tableCellRoot}>{row.date}</TableCell>} */}
         <TableCell className={classes.tableCellRoot}>
           <IconButton aria-label="edit" onClick={() => changeStatus(row)} className={classes.backgroundEditColorChange}>
             <EditIcon />
@@ -191,20 +120,18 @@ const TableItem = ({ row, changeEditStateTrue, changeUpdateStatusToTrue, key, hi
           <Box>
             <Dialog
               open={open}
-              onClose={(e) => handleClose(false)}
+              onClose={e => handleClose(false)}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description">
               <DialogTitle id="alert-dialog-title">Confirmation Alert.</DialogTitle>
               <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Are you sure, you are deleting a record.
-                </DialogContentText>
+                <DialogContentText id="alert-dialog-description">Are you sure, you are deleting a record.</DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={(e) => handleClose(false)} color="primary">
+                <Button onClick={e => handleClose(false)} color="primary">
                   No
                 </Button>
-                <Button onClick={(e) => handleClose(true)} color="primary" autoFocus>
+                <Button onClick={e => handleClose(true)} color="primary" autoFocus>
                   Yes
                 </Button>
               </DialogActions>

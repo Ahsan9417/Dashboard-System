@@ -22,25 +22,29 @@ const useStyles = makeStyles(theme => ({
     },
   },
   tableHeading: {
-    backgroundColor: "#eb6b34",
+    backgroundColor: '#eb6b34',
   },
 }));
 
-const TableHeading = (props) => {
+const TableHeading = props => {
   let columnNames = props?.columnNames ? props.columnNames : [];
   const classes = useStyles();
   return (
-
     <>
-      {columnNames.length ?
+      {columnNames.length ? (
         <TableRow className={classes.tableHeading}>
-          {
-            columnNames.map(name => {
-              return props.hideColumns.indexOf(name) === -1 ?  <TableCell className={classes.tableCellRoot}>{name.toString().replaceAll('-', ' ')}</TableCell> : undefined
-            })}
+          {columnNames.map(name => {
+            return props.hideColumns.indexOf(name) === -1 ? (
+              <TableCell className={classes.tableCellRoot}>{name.toString().replaceAll('-', ' ')}</TableCell>
+            ) : (
+              undefined
+            );
+          })}
           <TableCell className={classes.tableCellRoot}>Action</TableCell>
         </TableRow>
-        : ""}
+      ) : (
+        ''
+      )}
     </>
   );
 };

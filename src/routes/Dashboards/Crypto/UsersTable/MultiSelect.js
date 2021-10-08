@@ -1,19 +1,19 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
-    marginRight: 7
-  }
+    width: '100%',
+    marginRight: 7,
+  },
 }));
 
 export default function SelectTextField() {
   const classes = useStyles();
   const [formState, setFormState] = React.useState({
-    userRoles: []
+    userRoles: [],
   });
 
   const handleFieldChange = event => {
@@ -21,10 +21,7 @@ export default function SelectTextField() {
     event.persist();
     setFormState(formState => ({
       ...formState,
-      [event.target.name]:
-        event.target.type === "checkbox"
-          ? event.target.checked
-          : event.target.value
+      [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
     }));
   };
 
@@ -39,9 +36,8 @@ export default function SelectTextField() {
       SelectProps={{
         multiple: true,
         value: formState.userRoles,
-        onChange: handleFieldChange
-      }}
-    >
+        onChange: handleFieldChange,
+      }}>
       <MenuItem value="admin">Admin</MenuItem>
       <MenuItem value="user1">User1</MenuItem>
       <MenuItem value="user2">User2</MenuItem>

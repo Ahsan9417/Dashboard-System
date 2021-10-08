@@ -18,118 +18,126 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { DataMethods } from 'services/dataServices';
 
 const useStyles = makeStyles(theme => ({
-    backgroundDeleteColorChange: {
-        margin: theme.spacing(2),
-        width: 60,
-        height: 30,
-        borderRadius: 10,
-        backgroundColor: "#9e0000",
-        color: "white"
-
-    },
-    backgroundEditColorChange: {
-        margin: theme.spacing(2),
-        width: 60,
-        height: 30,
-        borderRadius: 10,
-        backgroundColor: "#eb6b34",
-        color: "white"
-    },
-    tableRowRoot: {
-        marginLeft: 10
-    },
-    formControl: {
-        // margin: theme.spacing(2),
-        // minWidth: 120,
-    },
+  backgroundDeleteColorChange: {
+    margin: theme.spacing(2),
+    width: 60,
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: '#9e0000',
+    color: 'white',
+  },
+  backgroundEditColorChange: {
+    margin: theme.spacing(2),
+    width: 60,
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: '#eb6b34',
+    color: 'white',
+  },
+  tableRowRoot: {
+    marginLeft: 10,
+  },
+  formControl: {
+    // margin: theme.spacing(2),
+    // minWidth: 120,
+  },
 }));
 
-const AddRow = (props) => {
-    console.log(props);
-    const classes = useStyles();
-    const [countries, SetCountriesDropdown] = useState([])
+const AddRow = props => {
+  console.log(props);
+  const classes = useStyles();
+  const [countries, SetCountriesDropdown] = useState([]);
 
-    // const [countryKey, setCountryKey] = useState(props.selectedProvince ? props.selectedProvince["country-key"] : "")
-    const [provinceName, setProvinceName] = useState(props.selectedProvince ? props.selectedProvince["province-name"] : "")
-    const [countryName, setCountryName] = React.useState({
-        name: '',
-        key: '',
+  // const [countryKey, setCountryKey] = useState(props.selectedProvince ? props.selectedProvince["country-key"] : "")
+  const [provinceName, setProvinceName] = useState(props.selectedProvince ? props.selectedProvince['province-name'] : '');
+  const [countryName, setCountryName] = React.useState({
+    name: '',
+    key: '',
+  });
+  const handleChange = event => {
+    console.log(event.target.selectedOptions[0]);
+    setCountryName({
+      name: event.target.selectedOptions[0].text,
+      key: event.target.selectedOptions[0].value,
     });
-    const handleChange = event => {
-        console.log(event.target.selectedOptions[0]);
-        setCountryName({
-            name: event.target.selectedOptions[0].text,
-            key: event.target.selectedOptions[0].value,
-        });
+  };
 
-    };
+  const getCountries = async () => {
+    SetCountriesDropdown(await DataMethods['utilsService'].getAllCountries('', 1, 100));
+  };
 
-    const getCountries = async () => {
-        SetCountriesDropdown(await DataMethods['utilsService'].getAllCountries("", 1, 100))
-    };
+  useEffect(() => {
+    console.log('Province Table');
+    console.log('use Effect country');
+    // let a  =await DataMethods['utilsService'].getAllCountries("", 1, 100)
+    // console.log(a);
+    console.log(countries);
+    getCountries();
+  }, []);
 
-
-    useEffect(() => {
-
-        console.log('Province Table');
-        console.log('use Effect country');
-        // let a  =await DataMethods['utilsService'].getAllCountries("", 1, 100)
-        // console.log(a);
-        console.log(countries);
-        getCountries()
-
-    }, []);
-
-
-    return (
-
-        <TableRow className={classes.tableRowRoot}>
-
-            <CmtCard style={{ marginBottom: 30, marginRight: 10, marginTop: 10, marginLeft: 10, }} >
-                <CmtCardContent className={classes.cardContentRoot}>
-                    <PerfectScrollbar className={classes.scrollbarRoot}>
-                        <Box sx={{ display: 'flex', margin: 10 }}>
-                            <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Province Name" defaultValue="admin" variant="outlined" value={provinceName} onChange={(e) => setProvinceName(e.target.value)} />
-                            <FormControl variant="outlined" style={{ width: "100%" }} >
-                                <InputLabel htmlFor="outlined-age-native-simple">Country Name</InputLabel>
-                                <Select
-                                    native
-                                    // value={countryName.name}
-                                    onChange={handleChange}
-                                    label="Country Name"
-                                    inputProps={{
-                                        name: 'name',
-                                        id: 'outlined-age-native-simple',
-                                    }}>
-                                        <option aria-label="None" value="" />
-                                    {
-                                        countries.map((x, index) => {
-                                            // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}
-                                            return <option selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))} name={x["country-name"]} value={x["country-key"]}>{x["country-name"]}</option>
-                                        })
-                                    }
-
-                                </Select>
-                            </FormControl>
-
-                        </Box>
-                    </PerfectScrollbar>
-                </CmtCardContent>
-                <CmtCardFooter>
-                    <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
-
-                        <Button onClick={(e) => props[props.updateState ? "updateProvince" : "addProvince"]({ countryKey: countryName["key"], provinceName })} style={{ marginRight: 10 }} variant="contained" color="primary">
-                            {props.updateState ? 'Update' : 'Save'}
-                        </Button>
-                        <Button onClick={(e) => props.changeAddState(e)} variant="contained" >
-                            Cancel
-                        </Button>
-                    </Box>
-                </CmtCardFooter>
-            </CmtCard>
-
-        </TableRow>
-    );
+  return (
+    <>
+      <CmtCardContent className={classes.cardContentRoot}>
+        <PerfectScrollbar className={classes.scrollbarRoot}>
+          <Box sx={{ display: 'flex', margin: 10 }}>
+            <TextField
+              style={{ marginRight: 10 }}
+              id="outlined-basic"
+              label="Province Name"
+              defaultValue="admin"
+              variant="outlined"
+              value={provinceName}
+              onChange={e => setProvinceName(e.target.value)}
+            />
+            <FormControl variant="outlined">
+              <InputLabel htmlFor="outlined-age-native-simple">Country Name</InputLabel>
+              <Select
+                native
+                // value={countryName.name}
+                onChange={handleChange}
+                label="Country Name"
+                inputProps={{
+                  name: 'name',
+                  id: 'outlined-age-native-simple',
+                }}>
+                <option aria-label="None" value="" />
+                {countries.map((x, index) => {
+                  // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}
+                  return (
+                    <option
+                      selected={props.selectedProvince && x['country-key'] == props.selectedProvince['country-key']}
+                      name={x['country-name']}
+                      value={x['country-key']}>
+                      {x['country-name']}
+                    </option>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Box>
+        </PerfectScrollbar>
+      </CmtCardContent>
+      <CmtCardFooter>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexBasis: '100%' }}>
+          <Button
+            onClick={e =>
+              props[props.updateState ? 'updateProvince' : 'addProvince']({
+                countryKey: countryName['key'],
+                provinceName,
+              })
+            }
+            style={{ marginRight: 10 }}
+            variant="contained"
+            color="primary">
+            {props.updateState ? 'Update' : 'Save'}
+          </Button>
+          <Button onClick={e => props.changeAddState(e)} variant="contained">
+            Cancel
+          </Button>
+        </Box>
+      </CmtCardFooter>
+    </>
+  );
 };
 
 export default AddRow;

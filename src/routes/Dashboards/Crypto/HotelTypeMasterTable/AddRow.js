@@ -18,76 +18,68 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { DataMethods } from 'services/dataServices';
 
 const useStyles = makeStyles(theme => ({
-    backgroundDeleteColorChange: {
-        margin: theme.spacing(2),
-        width: 60,
-        height: 30,
-        borderRadius: 10,
-        backgroundColor: "#9e0000",
-        color: "white"
-
-    },
-    backgroundEditColorChange: {
-        margin: theme.spacing(2),
-        width: 60,
-        height: 30,
-        borderRadius: 10,
-        backgroundColor: "#eb6b34",
-        color: "white"
-    },
-    tableRowRoot: {
-        marginLeft: 10
-    },
-    formControl: {
-        // margin: theme.spacing(2),
-        // minWidth: 120,
-    },
+  backgroundDeleteColorChange: {
+    margin: theme.spacing(2),
+    width: 60,
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: '#9e0000',
+    color: 'white',
+  },
+  backgroundEditColorChange: {
+    margin: theme.spacing(2),
+    width: 60,
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: '#eb6b34',
+    color: 'white',
+  },
+  tableRowRoot: {
+    marginLeft: 10,
+  },
 }));
 
-const AddRow = (props) => {
-    console.log(props);
-    const classes = useStyles();
-    const [hotelName, setHotelName] = useState(props.selectedHotel ? props.selectedHotel["hotel-type-desc"] : "")
+const AddRow = props => {
+  console.log(props);
+  const classes = useStyles();
+  const [hotelName, setHotelName] = useState(props.selectedHotel ? props.selectedHotel['hotel-type-desc'] : '');
 
+  useEffect(() => {
+    console.log('hotel Table');
+  }, []);
 
-
-    useEffect(() => {
-
-        console.log('hotel Table');
-
-    }, []);
-
-
-    return (
-
-        <TableRow className={classes.tableRowRoot}>
-
-            <CmtCard style={{ marginBottom: 30, marginRight: 10, marginTop: 10, marginLeft: 10, }} >
-                <CmtCardContent className={classes.cardContentRoot}>
-                    <PerfectScrollbar className={classes.scrollbarRoot}>
-                        <Box sx={{ display: 'flex', margin: 10 }}>
-                            <TextField style={{ marginRight: 10, width: "100%" }} id="outlined-basic" label="Hotel Tyoe Name" variant="outlined" value={hotelName} onChange={(e) => setHotelName(e.target.value)} />
-
-
-
-                        </Box>
-                    </PerfectScrollbar>
-                </CmtCardContent>
-                <CmtCardFooter>
-                    <Box sx={{ display: 'flex', justifyContent: "flex-end", }} >
-
-                        <Button onClick={(e) => props[props.updateState ? "updateHotel" : "addHotel"]({ hotelName })} style={{ marginRight: 10 }} variant="contained" color="primary">
-                            {props.updateState ? 'Update' : 'Save'}
-                        </Button>
-                        <Button onClick={(e) => props.changeAddState(e)} variant="contained" >
-                            Cancel
-                        </Button>
-                    </Box>
-                </CmtCardFooter>
-            </CmtCard>
-
-        </TableRow>
-    );
+  return (
+    <>
+      <CmtCardContent className={classes.cardContentRoot}>
+        <PerfectScrollbar className={classes.scrollbarRoot}>
+          <Box sx={{ display: 'flex', margin: 10 }}>
+            <TextField
+              style={{ marginRight: 10 }}
+              id="outlined-basic"
+              label="Hotel Tyoe Name"
+              variant="outlined"
+              value={hotelName}
+              onChange={e => setHotelName(e.target.value)}
+            />
+          </Box>
+        </PerfectScrollbar>
+      </CmtCardContent>
+      <CmtCardFooter>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexBasis: '100%' }}>
+          <Button
+            onClick={e => props[props.updateState ? 'updateHotel' : 'addHotel']({ hotelName })}
+            style={{ marginRight: 10 }}
+            variant="contained"
+            color="primary">
+            {props.updateState ? 'Update' : 'Save'}
+          </Button>
+          <Button onClick={e => props.changeAddState(e)} variant="contained">
+            Cancel
+          </Button>
+        </Box>
+      </CmtCardFooter>
+    </>
+  );
 };
 
 export default AddRow;

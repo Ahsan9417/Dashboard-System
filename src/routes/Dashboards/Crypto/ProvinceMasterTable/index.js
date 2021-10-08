@@ -20,10 +20,7 @@ import AddRow from './AddRow';
 import { DataMethods } from 'services/dataServices';
 import { useDispatch, useSelector } from 'react-redux';
 
-
-
 const useStyles = makeStyles(theme => ({
-
   cardContentRoot: {
     padding: '0 !important',
   },
@@ -43,8 +40,8 @@ const useStyles = makeStyles(theme => ({
     width: 60,
     height: 30,
     borderRadius: 10,
-    backgroundColor: "#eb6b34",
-    color: "white"
+    backgroundColor: '#eb6b34',
+    color: 'white',
   },
   headerRoot: {
     paddingBottom: 10,
@@ -73,7 +70,6 @@ const useStyles = makeStyles(theme => ({
     top: 2,
     zIndex: 1,
   },
-
 }));
 
 function createData(name, calories, fat, carbs, protein) {
@@ -95,13 +91,12 @@ const rows = [
   createData('Oreo', 437, 18.0, 63, 4.0),
 ];
 
-
 const ProvinceMasterTable = () => {
-  let provinces = useSelector(({ province }) => province.provincesList)
-  let filteredList = useSelector(({ province }) => province.filteredList)
-  let rowCount = useSelector(({ province }) => province.totalRecords)
+  let provinces = useSelector(({ province }) => province.provincesList);
+  let filteredList = useSelector(({ province }) => province.filteredList);
+  let rowCount = useSelector(({ province }) => province.totalRecords);
 
-  let hideColumns = ["row-number", "province-key", "country-key"]
+  let hideColumns = ['row-number', 'province-key', 'country-key'];
   const [state, setState] = React.useState({
     checked1: true,
     checked2: true,
@@ -125,9 +120,9 @@ const ProvinceMasterTable = () => {
   //   checked5: true,
   //   checked6: true,
   // });
-  const [add, setAdd] = useState(false)
-  const [update, setUpdate] = useState(false)
-  const [selectedProvince, setSelectedProvince] = useState("")
+  const [add, setAdd] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [selectedProvince, setSelectedProvince] = useState('');
   let dispatch = useDispatch();
 
   // const handleChange = event => {
@@ -141,138 +136,100 @@ const ProvinceMasterTable = () => {
   //   setAnchorEl(null);
   // };
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    dispatch(DataMethods['provinceService'].getAllProvinces(search, newPage, rowsPerPage))
+    dispatch(DataMethods['provinceService'].getAllProvinces(search, newPage, rowsPerPage));
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-    dispatch(DataMethods['provinceService'].getAllProvinces(search, 0, parseInt(event.target.value, 10)))
-
+    dispatch(DataMethods['provinceService'].getAllProvinces(search, 0, parseInt(event.target.value, 10)));
   };
 
   const changeHandlerFalse = () => {
-    update ? setUpdate(false) : setAdd(false)
-
-
-  }
-  const changeUpdateStatusToTrue = (province) => {
-    setSelectedProvince(province)
+    update ? setUpdate(false) : setAdd(false);
+  };
+  const changeUpdateStatusToTrue = province => {
+    setSelectedProvince(province);
     //get Country of Province
     // DataMethods['utilsService'].getCountryByKey(province["country-key"])
-    setUpdate(true)
-  }
+    setUpdate(true);
+  };
 
   const changeHandlerTrue = () => {
-    setAdd(true)
-  }
+    setAdd(true);
+  };
 
+  const addProvince = province => {
+    changeHandlerFalse();
+    dispatch(DataMethods['provinceService'].AddProvince(province));
+  };
+  const updateProvince = province => {
+    changeHandlerFalse();
 
-
-
-  const addProvince = (province) => {
-    changeHandlerFalse()
-    dispatch(DataMethods['provinceService'].AddProvince(province))
-
-  }
-  const updateProvince = (province) => {
-    changeHandlerFalse()
-
-    dispatch(DataMethods['provinceService'].UpdateProvince(selectedProvince["province-key"], province))
-    setSelectedProvince("")
-
-  }
+    dispatch(DataMethods['provinceService'].UpdateProvince(selectedProvince['province-key'], province));
+    setSelectedProvince('');
+  };
   function debounce(func, wait) {
-    let timeout
+    let timeout;
     return (...args) => {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => func(...args), wait)
-    }
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
   }
 
-
-  const SearchRecordsDebounce = debounce(Search, 2000)
-
+  const SearchRecordsDebounce = debounce(Search, 2000);
 
   function Search(e) {
-    setValue(e)
-    LoadTable(e ? e : "")
+    setValue(e);
+    LoadTable(e ? e : '');
   }
 
-
-  function LoadTable(searchText = "") {
-
-    dispatch(DataMethods['provinceService'].getAllProvinces(searchText, page, rowsPerPage))
+  function LoadTable(searchText = '') {
+    dispatch(DataMethods['provinceService'].getAllProvinces(searchText, page, rowsPerPage));
   }
 
   useEffect(() => {
-
     console.log('Province Table');
     console.log('use Effect country');
-    LoadTable()
+    LoadTable();
   }, []);
   return (
     <>
-      {(add || update) ?
-        <CmtCard style={{ marginBottom: 30, }} >
+      {add || update ? (
+        <CmtCard style={{ marginBottom: 30 }}>
           <CmtCardContent className={classes.cardContentRoot}>
-            <PerfectScrollbar className={classes.scrollbarRoot}>
-              <AddRow updateState={update} updateProvince={updateProvince} addProvince={addProvince} selectedProvince={selectedProvince} changeAddState={changeHandlerFalse} />
+            <PerfectScrollbar>
+              <AddRow
+                updateState={update}
+                updateProvince={updateProvince}
+                addProvince={addProvince}
+                selectedProvince={selectedProvince}
+                changeAddState={changeHandlerFalse}
+              />
             </PerfectScrollbar>
           </CmtCardContent>
-        </CmtCard> : ""
-      }
+        </CmtCard>
+      ) : (
+        ''
+      )}
       <CmtCard>
         <CmtCardHeader
           className={classes.headerRoot}
           title={
             <Box display="flex" alignItems={{ md: 'center' }} flexDirection={{ xs: 'column', md: 'row' }}>
-              {!add &&
-                <IconButton aria-label="edit" onClick={() => setAdd(!add)} className={classes.backgroundEditColorChange} >
+              {!add && (
+                <IconButton aria-label="edit" onClick={() => setAdd(!add)} className={classes.backgroundEditColorChange}>
                   <AddIcon />
                 </IconButton>
-              }
+              )}
               <IconButton aria-label="edit" onClick={() => LoadTable()} className={classes.backgroundEditColorChange}>
                 <RefreshIcon />
               </IconButton>
-              {/* <Box>
-              <IconButton className={classes.backgroundEditColorChange} aria-label="filter list" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                <FilterListIcon />
-              </IconButton>
-              <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem >  <FormControlLabel
-                  control={<Checkbox checked={state.checked1} onChange={handleChange} name="checked1" color="primary" />}
-                  label="Province Name"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked2} onChange={handleChange} name="checked2" color="primary" />}
-                  label="Country Name"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked3} onChange={handleChange} name="checked3" color="primary" />}
-                  label="Created By"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked4} onChange={handleChange} name="checked4" color="primary" />}
-                  label="Created On"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked5} onChange={handleChange} name="checked5" color="primary" />}
-                  label="Updated By"
-                /></MenuItem>
-                <MenuItem > <FormControlLabel
-                  control={<Checkbox checked={state.checked6} onChange={handleChange} name="checked6" color="primary" />}
-                  label="Updated On"
-                /></MenuItem>
-              </Menu>
-            </Box> */}
             </Box>
           }
-          actionsPos="top-corner"
-        >
+          actionsPos="top-corner">
           <Box className={classes.searchAction}>
             <Box className={classes.searchActionBar}>
               <CmtSearch
@@ -281,20 +238,29 @@ const ProvinceMasterTable = () => {
                 iconPosition="right"
                 align="right"
                 placeholder="Search"
-                onChange={(e) => SearchRecordsDebounce(e.target.value)} />
-
+                onChange={e => SearchRecordsDebounce(e.target.value)}
+              />
             </Box>
           </Box>
         </CmtCardHeader>
 
         <CmtCardContent className={classes.cardContentRoot}>
           <PerfectScrollbar className={classes.scrollbarRoot}>
-            {((!search && provinces.length) || (search && filteredList.length)) ? <OrderTable updateState={update} changeUpdateStatusToTrue={changeUpdateStatusToTrue} tableData={search ? filteredList : provinces} state={state} hideColumns={hideColumns} /> : "Records Not Found"}
+            {(!search && provinces.length) || (search && filteredList.length) ? (
+              <OrderTable
+                updateState={update}
+                changeUpdateStatusToTrue={changeUpdateStatusToTrue}
+                tableData={search ? filteredList : provinces}
+                state={state}
+                hideColumns={hideColumns}
+              />
+            ) : (
+              'Records Not Found'
+            )}
           </PerfectScrollbar>
         </CmtCardContent>
         <CmtCardFooter>
           <TablePagination
-
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={rowCount}

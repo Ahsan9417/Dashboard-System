@@ -9,12 +9,12 @@ import Box from '@material-ui/core/Box';
 const OrderTable = ({ tableData }) => {
   return (
     <Box className="Cmt-table-responsive">
-      <Table >
-        <TableHead >
+      <Table>
+        <TableHead>
           <TableHeading />
         </TableHead>
         <TableBody>
-         <TableItem />
+          <TableItem />
         </TableBody>
       </Table>
     </Box>

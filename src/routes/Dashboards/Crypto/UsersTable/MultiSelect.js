@@ -17,7 +17,7 @@ export default function SelectTextField() {
   });
 
   const handleFieldChange = event => {
-    console.log(event);
+    //console.log(event);
     event.persist();
     setFormState(formState => ({
       ...formState,

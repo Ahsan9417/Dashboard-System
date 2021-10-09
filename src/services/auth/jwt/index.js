@@ -104,8 +104,6 @@ const JWTAuth = {
           .then(({ data }) => {
             
             if (data.data) {
-
-              console.log(user.userMenu);
               dispatch(setAuthMenu(user.userMenu?.length ? user.userMenu : []));
               dispatch(fetchSuccess());
               dispatch(setAuthUser(data.data));

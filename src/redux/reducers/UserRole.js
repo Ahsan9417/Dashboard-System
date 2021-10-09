@@ -18,8 +18,6 @@ export default (state = INIT_STATE, action) => {
             return state;
 
         case 'SET_ALL': {
-
-            console.log('set roles');
             return {
                 ...state,
                 rolesList: action.payload

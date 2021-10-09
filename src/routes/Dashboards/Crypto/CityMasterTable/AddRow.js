@@ -29,7 +29,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = props => {
-  console.log(props);
   const classes = useStyles();
   const [cityName, setCityName] = useState(props.selectedCity ? props.selectedCity['city-name'] : '');
   const [countryCode, setCountryCode] = useState(props.selectedCity ? props.selectedCity['country-code'] : '');

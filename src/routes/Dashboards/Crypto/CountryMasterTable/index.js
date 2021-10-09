@@ -76,8 +76,6 @@ const CountryMasterTable = props => {
   let filteredList = useSelector(({ country }) => country.filteredList);
   let rowCount = useSelector(({ country }) => country.totalRecords);
 
-  console.log(countries.length);
-
   // [ "row-number", "country-iso","country-code","country-name","currency-code","is-active", "active-status", "last-update-by", "last-update-on"]
   let hideColumns = ['row-number', 'country-iso', 'country-key', 'currency-code', 'is-active', 'active-status'];
   // const [tableData, setTableData] = useState(props?.countries ? props.countries : []);
@@ -106,7 +104,6 @@ const CountryMasterTable = props => {
   };
 
   const handleChangeRowsPerPage = event => {
-    console.log('no. of record', event);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
 
@@ -152,7 +149,6 @@ const CountryMasterTable = props => {
   }
 
   useEffect(() => {
-    console.log('use Effect country');
     dispatch(DataMethods['countryService'].getAllCountries(search, page, rowsPerPage));
     LoadTable();
   }, []);

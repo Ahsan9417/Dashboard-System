@@ -161,8 +161,6 @@ const HotelTypeMasterTable = () => {
   }
 
   useEffect(() => {
-    console.log('Hotel Table');
-    console.log('use Effect Hotek');
     LoadTable();
   }, []);
   return (

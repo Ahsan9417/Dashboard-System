@@ -109,13 +109,13 @@ const UserPrivilegeTable = () => {
   };
 
   const addUserPrivilege = privilege => {
-    console.log('add', privilege);
+    //console.log('add', privilege);
     changeHandlerFalse();
     dispatch(DataMethods['userRoleService'].AddRole(privilege));
   };
   const updateUserPrivilege = privilege => {
     changeHandlerFalse();
-    console.log('update', privilege);
+    //console.log('update', privilege);
 
     dispatch(DataMethods['userRoleService'].UpdateRole(selectedUserPrivilege['menu-rights-mas-key'], privilege));
     setSelectedUserPrivilege('');
@@ -144,8 +144,8 @@ const UserPrivilegeTable = () => {
   };
 
   useEffect(() => {
-    console.log('privilege Table');
-    console.log('use Effect privilege');
+    //console.log('privilege Table');
+    //console.log('use Effect privilege');
     getUserMenus();
     LoadTable();
   }, []);

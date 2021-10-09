@@ -102,7 +102,7 @@ const cityMaster = {
     AddCity: (city) => {
 
         return dispatch => {
-            console.log('save city')
+            //console.log('save city')
             let obj = {
                 "city-iso": city.cityISO,
                 "city-code": city.cityCode,
@@ -148,7 +148,7 @@ const cityMaster = {
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        console.log(data)
+                        //console.log(data)
                         dispatch(updateCityByKey({ city: data.data, key: key }));
 
                         dispatch(fetchSuccess(data.dataException.err_msg));
@@ -166,7 +166,7 @@ const cityMaster = {
     DeleteCity: (city) => {
 
         return dispatch => {
-            console.log('delete city api');
+            //console.log('delete city api');
             dispatch(fetchStart());
             let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;

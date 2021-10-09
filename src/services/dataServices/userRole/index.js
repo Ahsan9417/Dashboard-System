@@ -138,7 +138,6 @@ const userRole = {
                 .post('/save', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        console.log(data)
                         dispatch(updateRoleByKey(data.data))
                         dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {

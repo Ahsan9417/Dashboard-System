@@ -10,7 +10,7 @@ const countryMaster = {
             dispatch(fetchStart());
             let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
-            console.log('calling country api');
+            //console.log('calling country api');
 
             axios
                 .post('/get', {
@@ -72,7 +72,7 @@ const countryMaster = {
     AddCountry: (country) => {
 
         return dispatch => {
-            console.log('save country')
+            //console.log('save country')
             let obj = {
                 "country-iso": country.countryISO,
                 "country-code": country.countryCode,
@@ -118,7 +118,7 @@ const countryMaster = {
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        console.log(data)
+                        //console.log(data)
                         dispatch(updateCountryByKey({country : data.data , key : key}));
 
                         dispatch(fetchSuccess(data.dataException.err_msg));
@@ -136,7 +136,7 @@ const countryMaster = {
     DeleteCountry: (country) => {
 
         return dispatch => {
-            console.log('delete country api');
+            //console.log('delete country api');
             dispatch(fetchStart());
             let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;

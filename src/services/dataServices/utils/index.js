@@ -23,11 +23,11 @@ const utilsService = {
                     })
                 if (results.status == 200 && results.data.dataException.err_code == 200) {
 
-                    console.log('success');
+                    //console.log('success');
                     res(results.data.data.countries?.length ? results.data.data.countries : []);
 
                 } else {
-                    console.log('no data');
+                    //console.log('no data');
                     res([])
 
                 }
@@ -54,11 +54,11 @@ const utilsService = {
                     })
                 if (results.status == 200 && results.data.dataException.err_code == 200) {
 
-                    console.log('success');
+                    //console.log('success');
                     res(results.data?.data ? results.data.data : {});
 
                 } else {
-                    console.log('no data');
+                    //console.log('no data');
                     res([])
 
                 }
@@ -81,11 +81,11 @@ const utilsService = {
                     .post('admin/get-comp-branch-menu-mas')
                 if (results.status == 200 && results.data.dataException.err_code == 200) {
 
-                    console.log('success');
+                    //console.log('success');
                     res(results.data?.data ? results.data.data : {});
 
                 } else {
-                    console.log('no data');
+                    //console.log('no data');
                     res([])
 
                 }

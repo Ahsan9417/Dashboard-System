@@ -74,7 +74,7 @@ const hotelService = {
     AddHotel: (hotel) => {
 
         return dispatch => {
-            console.log('save city')
+            //console.log('save city')
             let obj = {
                 "hotel-type-desc": hotel.hotelName,
 
@@ -116,7 +116,7 @@ const hotelService = {
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        console.log(data)
+                        //console.log(data)
                         dispatch(updateHotelByKey({ hotel: data.data, key: key }));
 
                         dispatch(fetchSuccess(data.dataException.err_msg));

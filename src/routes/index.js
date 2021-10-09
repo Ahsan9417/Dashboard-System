@@ -45,19 +45,19 @@ const Routes = () => {
     authUser &&
     (location.pathname === '/signin' || location.pathname === '/signup' || location.pathname === '/forgot-password')
   ) {
-    return <Redirect to={'/country-master'} />;
+    return <Redirect to={'/country'} />;
   }
 
   return (
     <React.Fragment>
       <Switch>
-        <RestrictedRoute path="/country-master" component={CountryMaster} />
-        <RestrictedRoute path="/province-master" component={ProvinceMaster} />
-        <RestrictedRoute path="/city-master" component={CityMaster} />
-        <RestrictedRoute path="/hotel-type-master" component={HotelTypeMaster} />
+        <RestrictedRoute path="/country" component={CountryMaster} />
+        <RestrictedRoute path="/province" component={ProvinceMaster} />
+        <RestrictedRoute path="/state" component={CityMaster} />
+        <RestrictedRoute path="/hotel-type" component={HotelTypeMaster} />
         <RestrictedRoute path="/users" component={Users} />
         <RestrictedRoute path="/change-password" component={ChangePassowrd} />
-        <RestrictedRoute path="/user-privilege" component={UserPrivilege} />
+        <RestrictedRoute path="/user-role" component={UserPrivilege} />
         <Route path="/signup" component={Register} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />
         <Route path="/signin" component={Login} />

@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = props => {
-  console.log(props);
+  //console.log(props);
   const classes = useStyles();
   const [countries, SetCountriesDropdown] = useState([]);
 
@@ -55,7 +55,7 @@ const AddRow = props => {
     key: '',
   });
   const handleChange = event => {
-    console.log(event.target.selectedOptions[0]);
+    //console.log(event.target.selectedOptions[0]);
     setCountryName({
       name: event.target.selectedOptions[0].text,
       key: event.target.selectedOptions[0].value,
@@ -67,11 +67,11 @@ const AddRow = props => {
   };
 
   useEffect(() => {
-    console.log('Province Table');
-    console.log('use Effect country');
+    //console.log('Province Table');
+    //console.log('use Effect country');
     // let a  =await DataMethods['utilsService'].getAllCountries("", 1, 100)
-    // console.log(a);
-    console.log(countries);
+    // //console.log(a);
+    //console.log(countries);
     getCountries();
   }, []);
 

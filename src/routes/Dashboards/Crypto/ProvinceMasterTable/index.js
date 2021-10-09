@@ -191,8 +191,6 @@ const ProvinceMasterTable = () => {
   }
 
   useEffect(() => {
-    console.log('Province Table');
-    console.log('use Effect country');
     LoadTable();
   }, []);
   return (

@@ -145,7 +145,7 @@ const provinceService = {
                 .post('/update', obj)
                 .then(({ data }) => {
                     if (data.data && data.dataException.err_code == 200) {
-                        console.log(data)
+                        //console.log(data)
                         dispatch(updateProvinceByKey({ province: data.data, key: key }))
                         dispatch(fetchSuccess(data.dataException.err_msg));
                     } else {
@@ -161,7 +161,7 @@ const provinceService = {
     DeleteProvince: (province) => {
 
         return dispatch => {
-            console.log('delete country api');
+            //console.log('delete country api');
             dispatch(fetchStart());
             let token = JSON.parse(localStorage.getItem('user')).key;
 
@@ -194,7 +194,7 @@ const provinceService = {
                 try {
                     let token = JSON.parse(localStorage.getItem('user')).key;
                     axios.defaults.headers.common['AuthorizationKey'] = token;
-                console.log('calling country api');
+                //console.log('calling country api');
 
                 let results = await axios
                     .post('/get', {
@@ -204,7 +204,7 @@ const provinceService = {
                         "sort-direction": sortOrder,
                         "search-text": searchText
                     })
-                if (results) console.log(results);
+                if (results) //console.log(results);
                 if (results.data && results.data.countries) {
                     res([]);
 

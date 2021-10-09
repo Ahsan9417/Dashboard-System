@@ -47,9 +47,6 @@ const AddRow = props => {
   const [expanded, setExpanded] = useState([]);
   let menuHash = {};
   let nodes = [];
-
-  console.log(props.selectedUserPrivilege);
-
   const classes = useStyles();
   let menuList = useSelector(({ userRole }) => userRole.menusList);
   const [menuName, setMenuName] = useState(
@@ -65,7 +62,6 @@ const AddRow = props => {
     key: '',
   });
   const handleChange = event => {
-    console.log(event.target.selectedOptions[0]);
     setUserPrivilege({
       name: event.target.selectedOptions[0].text,
       key: event.target.selectedOptions[0].value,
@@ -94,7 +90,6 @@ const AddRow = props => {
   };
 
   if (menuList.length) nodes = parseMenu(menuList);
-  console.log(checked);
   return (
     <>
       <CmtCardContent className={classes.cardContentRoot}>

@@ -40,6 +40,7 @@ const userService = {
     },
 
     registerUser: (obj) => {
+
         return dispatch => {
 
             let user = {

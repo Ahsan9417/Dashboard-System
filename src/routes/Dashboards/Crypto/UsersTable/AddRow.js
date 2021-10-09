@@ -17,6 +17,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { DataMethods } from 'services/dataServices';
 import MultiSelect from './MultiSelect';
+import AddRemoveFields from './AddRemoveFields';
 
 const useStyles = makeStyles(theme => ({
   backgroundDeleteColorChange: {
@@ -41,48 +42,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = props => {
-  console.log(props);
+
+  let addObject = {
+    'company-key': '',
+    'company-branch-key': '',
+    'menu-rights-mas-key': '',
+  }
   const classes = useStyles();
   const [branches, setBranchesDropDown] = useState([]);
   const [menus, setMenusDropDown] = useState([]);
+  const [branchList, setbranchList] = useState((props.selectedUser && props.selectedUser["user-branches"] && props.selectedUser["user-branches"].length) ? props.selectedUser["user-branches"] : [addObject]);
 
   const [userName, setUserName] = useState(props.selectedUser ? props.selectedUser['user-name'] : '');
   const [password, setPassword] = useState(props.selectedUser ? props.selectedUser['password'] : '');
   const [confirmPassword, setConfirmPassword] = useState(props.selectedUser ? props.selectedUser['confirm-password'] : '');
-
-  const [company, setCompany] = React.useState('');
-  const [companyBranch, setCompanyBranch] = React.useState({
-    name: '',
-    key: '',
-  });
-  const [menuRights, setMenuRights] = React.useState({
-    name: '',
-    key: '',
-  });
-
-  const handleChange = event => {
-    console.log(event.target.name);
-    console.log(event.target.selectedOptions[0].text);
-    console.log(event.target.selectedOptions[0].value);
-    switch (event.target.name.toLowerCase()) {
-      case 'menu':
-        setMenuRights({
-          name: event.target.selectedOptions[0].text,
-          key: event.target.selectedOptions[0].value,
-        });
-        break;
-      case 'branch':
-        setCompanyBranch({
-          name: event.target.selectedOptions[0].text,
-          key: event.target.selectedOptions[0].value,
-        });
-        setCompany(branches.filter(x => x['company-branch-key'] == event.target.selectedOptions[0].value)[0]['company-key']);
-        break;
-
-      default:
-        break;
-    }
-  };
 
   const getBranches = async () => {
     let data = await DataMethods['utilsService'].getBranchList('', 1, 100);
@@ -125,61 +98,9 @@ const AddRow = props => {
             />
           </Box>
           <Box sx={{ display: 'flex', margin: 10 }}>
-            <MultiSelect style={{ width: '100%' }} />
+            <AddRemoveFields branchList={branchList} setbranchList={setbranchList} style={{ width: '100%' }}  branches={branches} menus={menus} />
 
-            <FormControl variant="outlined" style={{ marginRight: 7, width: '100%' }}>
-              <InputLabel htmlFor="outlined-age-native-simple">Company Branch</InputLabel>
-              <Select
-                native
-                // value={countryName.name}
-                onChange={handleChange}
-                label="Company Branch"
-                inputProps={{
-                  name: 'Branch',
-                  id: 'outlined-age-native-simple',
-                }}>
-                <option aria-label="None" value="" />
-                {branches.map((x, index) => {
-                  return (
-                    <option
-                      selected={
-                        props.selectedUser &&
-                        props.selectedUser['user-branches']?.length &&
-                        x['company-branch-key'] == props.selectedUser['user-branches'][0]['company-branch-key']
-                      }
-                      name={x['country-name']}
-                      value={x['company-branch-key']}>
-                      {x['company-branch-name']}
-                    </option>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            <FormControl variant="outlined" style={{ marginRight: 7, width: '100%' }}>
-              <InputLabel htmlFor="outlined-age-native-simple">Menu Rights</InputLabel>
-              <Select
-                native
-                // value={countryName.name}
-                onChange={handleChange}
-                label="Menu Rights"
-                inputProps={{
-                  name: 'Menu',
-                  id: 'outlined-age-native-simple',
-                }}>
-                <option aria-label="None" value="" />
-                {menus.map((x, index) => {
-                  // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}
-                  return (
-                    <option
-                      selected={props.selectedUser && x['menu-rights-mas-key'] == props.selectedUser}
-                      name={x['menu-rights-mas-name']}
-                      value={x['menu-rights-mas-key']}>
-                      {x['menu-rights-mas-name']}
-                    </option>
-                  );
-                })}
-              </Select>
-            </FormControl>
+        
           </Box>
         </PerfectScrollbar>
       </CmtCardContent>
@@ -191,13 +112,7 @@ const AddRow = props => {
                 userName,
                 password,
                 confirmPassword,
-                branchList: [
-                  {
-                    'company-key': company,
-                    'company-branch-key': companyBranch['key'],
-                    'menu-rights-mas-key': menuRights['key'],
-                  },
-                ],
+                branchList: branchList,
               })
             }
             style={{ marginRight: 10 }}

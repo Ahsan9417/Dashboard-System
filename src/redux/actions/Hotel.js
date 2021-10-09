@@ -34,7 +34,7 @@ export const setSelectedHotel = data => {
 
 export const addHotel = data => {
     return dispatch => {
-        console.log('AddHotel', data);
+        //console.log('AddHotel', data);
         dispatch({
             type: 'ADD_HOTEL',
             payload: data,
@@ -43,7 +43,7 @@ export const addHotel = data => {
 };
 export const getHotelByKey = data => {
     return dispatch => {
-        console.log('getHotelByKey', data);
+        //console.log('getHotelByKey', data);
         dispatch({
             type: 'GET_HOTEL_BY_KEY',
             payload: data,
@@ -61,7 +61,7 @@ export const setRowsCount = data => {
 };
 export const deleteHotelByKey = data => {
     return dispatch => {
-        console.log('deleteHotelByKey', data);
+        //console.log('deleteHotelByKey', data);
         dispatch({
             type: 'DELETE_HOTEL_BY_KEY',
             payload: data,
@@ -70,7 +70,7 @@ export const deleteHotelByKey = data => {
 };
 export const updateHotelByKey = data => {
     return dispatch => {
-        console.log('updateHotelByKey', data);
+        //console.log('updateHotelByKey', data);
         dispatch({
             type: 'UPDATE_HOTEL_BY_KEY',
             payload: data,

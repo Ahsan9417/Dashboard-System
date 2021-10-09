@@ -40,12 +40,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddRow = props => {
-  console.log(props);
   const classes = useStyles();
   const [hotelName, setHotelName] = useState(props.selectedHotel ? props.selectedHotel['hotel-type-desc'] : '');
 
   useEffect(() => {
-    console.log('hotel Table');
   }, []);
 
   return (

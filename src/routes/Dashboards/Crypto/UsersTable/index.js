@@ -113,7 +113,7 @@ const UserTable = () => {
     update ? setUpdate(false) : setAdd(false);
   };
   const changeUpdateStatusToTrue = user => {
-    console.log(user);
+    //console.log(user);
     setselectedUser(user);
     setUpdate(true);
   };
@@ -123,12 +123,12 @@ const UserTable = () => {
   };
 
   const addUser = user => {
-    console.log(user);
+    //console.log(user);
     changeHandlerFalse();
     dispatch(DataMethods['userService'].registerUser(user));
   };
   const updateUser = user => {
-    console.log('update', user);
+    //console.log('update', user);
     changeHandlerFalse();
 
     dispatch(DataMethods['userService'].updateUser(selectedUser['user-key'], user));
@@ -154,8 +154,8 @@ const UserTable = () => {
   }
 
   useEffect(() => {
-    console.log('user  Table');
-    console.log('use Effect user');
+    //console.log('user  Table');
+    //console.log('use Effect user');
     LoadTable();
   }, []);
   return (

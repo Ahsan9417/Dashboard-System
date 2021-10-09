@@ -8,7 +8,7 @@ const countryMaster = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             console.log('calling country api');
 
@@ -43,7 +43,7 @@ const countryMaster = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
         
             axios
@@ -81,7 +81,7 @@ const countryMaster = {
             }
 
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/save', obj)
@@ -105,7 +105,7 @@ const countryMaster = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
                 "country-iso": updatedCountry.countryISO,
@@ -138,7 +138,7 @@ const countryMaster = {
         return dispatch => {
             console.log('delete country api');
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {

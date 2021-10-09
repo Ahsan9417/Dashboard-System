@@ -8,7 +8,7 @@ const userService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/get', {
@@ -50,7 +50,8 @@ const userService = {
 
             }
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
+
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('save', user)
@@ -82,7 +83,7 @@ const userService = {
                 "user-key":key
 
             }
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('update', user)
@@ -108,7 +109,8 @@ const userService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
+
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {
@@ -133,7 +135,7 @@ const userService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
 
             axios

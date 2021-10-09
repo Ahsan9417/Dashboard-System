@@ -8,7 +8,7 @@ const hotelService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
 
             axios
@@ -43,7 +43,7 @@ const hotelService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
 
             axios
@@ -81,7 +81,7 @@ const hotelService = {
             }
 
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/save', obj)
@@ -105,7 +105,7 @@ const hotelService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
                 "hotel-type-key": key,
@@ -135,7 +135,7 @@ const hotelService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {

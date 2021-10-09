@@ -8,7 +8,7 @@ const cityMaster = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
 
             axios
@@ -43,7 +43,7 @@ const cityMaster = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
 
             axios
@@ -73,7 +73,7 @@ const cityMaster = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
 
             axios
@@ -111,7 +111,7 @@ const cityMaster = {
             }
 
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/save', obj)
@@ -135,7 +135,7 @@ const cityMaster = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
                 "city-iso": updatedCity.cityISO,
@@ -168,7 +168,7 @@ const cityMaster = {
         return dispatch => {
             console.log('delete city api');
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {

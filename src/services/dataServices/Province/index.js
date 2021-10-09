@@ -10,7 +10,7 @@ const provinceService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/get', {
@@ -44,7 +44,8 @@ const provinceService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
+
             axios.defaults.headers.common['AuthorizationKey'] = token;
 
             axios
@@ -75,7 +76,7 @@ const provinceService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
 
             axios
@@ -109,7 +110,8 @@ const provinceService = {
             }
 
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
+
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/save', obj)
@@ -132,7 +134,7 @@ const provinceService = {
 
         return dispatch => {
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
             axios.defaults.headers.common['AuthorizationKey'] = token;
             let obj = {
                 "province-name": updatedProvince.provinceName,
@@ -161,7 +163,8 @@ const provinceService = {
         return dispatch => {
             console.log('delete country api');
             dispatch(fetchStart());
-            const token = localStorage.getItem('token');
+            let token = JSON.parse(localStorage.getItem('user')).key;
+
             axios.defaults.headers.common['AuthorizationKey'] = token;
             axios
                 .post('/Delete', {
@@ -189,8 +192,8 @@ const provinceService = {
 
         return new Promise(async(res, rej) => {
                 try {
-                const token = localStorage.getItem('token');
-                axios.defaults.headers.common['AuthorizationKey'] = token;
+                    let token = JSON.parse(localStorage.getItem('user')).key;
+                    axios.defaults.headers.common['AuthorizationKey'] = token;
                 console.log('calling country api');
 
                 let results = await axios

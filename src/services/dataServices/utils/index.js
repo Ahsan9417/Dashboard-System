@@ -9,7 +9,8 @@ const utilsService = {
 
         return new Promise(async (res, rej) => {
             try {
-                const token = localStorage.getItem('token');
+                let token = JSON.parse(localStorage.getItem('user')).key;
+
                 axios.defaults.headers.common['AuthorizationKey'] = token;
 
                 let results = await axios
@@ -42,7 +43,8 @@ const utilsService = {
 
         return new Promise(async (res, rej) => {
             try {
-                const token = localStorage.getItem('token');
+                let token = JSON.parse(localStorage.getItem('user')).key;
+
                 axios.defaults.headers.common['AuthorizationKey'] = token;
 
                 let results = await axios
@@ -71,7 +73,8 @@ const utilsService = {
 
         return new Promise(async (res, rej) => {
             try {
-                const token = localStorage.getItem('token');
+                let token = JSON.parse(localStorage.getItem('user')).key;
+
                 axios.defaults.headers.common['AuthorizationKey'] = token;
 
                 let results = await axios

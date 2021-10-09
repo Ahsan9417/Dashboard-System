@@ -42,12 +42,10 @@ const JWTAuth = {
           .then(({ data }) => {
 
             if (data && data.dataException.err_code == 200) {
-              localStorage.setItem('token', data.data.key);
-              axios.defaults.headers.common['AuthorizationKey'] = data.data.key;
+              localStorage.setItem('user', JSON.stringify(data.data));
               dispatch(fetchSuccess(data.dataException.err_msg));
-              dispatch(setAuthMenu(data.data.userMenu?.length ? data.data.userMenu : []));
-              localStorage.setItem('user', data.data.userMenu[0]['child-key']);
-              dispatch(JWTAuth.getAuthUser(true, data.data.key));
+              dispatch(JWTAuth.getAuthUser(true), data.data.key);
+
             } else {
 
               dispatch(fetchError(data.dataException.err_msg));
@@ -72,7 +70,6 @@ const JWTAuth = {
           //   .then(({ data }) => {
           if (data.result) {
             dispatch(fetchSuccess());
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
 
             dispatch(setAuthUser(null));
@@ -91,26 +88,27 @@ const JWTAuth = {
     };
   },
 
-  getAuthUser: (loaded = false, token) => {
+  getAuthUser: (loaded = false,token) => {
     return dispatch => {
-      let user_key = localStorage.getItem('user');
-      if (!token) {
-        const token = localStorage.getItem('token');
-        axios.defaults.headers.common['AuthorizationKey'] = token;
-      }
 
-      if (user_key) {
 
+      let user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.key) {
+
+        axios.defaults.headers.common['AuthorizationKey'] = user.key;
         dispatch(fetchStart());
         dispatch(updateLoadUser(loaded));
-        axios
-          .post('admin/get-by-key', { 'user-key': user_key })
-          .then(({ data }) => {
 
+        axios
+          .post('admin/get-by-key', { 'user-key': user.userMenu[0]['child-key'] })
+          .then(({ data }) => {
+            
             if (data.data) {
-              let user = data.data;
+
+              console.log(user.userMenu);
+              dispatch(setAuthMenu(user.userMenu?.length ? user.userMenu : []));
               dispatch(fetchSuccess());
-              dispatch(setAuthUser(user));
+              dispatch(setAuthUser(data.data));
             } else {
               dispatch(JWTAuth.onLogout())
               dispatch(updateLoadUser(true));
@@ -147,7 +145,7 @@ const JWTAuth = {
   changePassword: (obj) => {
     return dispatch => {
       dispatch(fetchStart());
-      const token = localStorage.getItem('token');
+      let token = JSON.parse(localStorage.getItem('user')).key;
       axios.defaults.headers.common['AuthorizationKey'] = token;
       axios
         .post('api/admin/user/change-password', obj)

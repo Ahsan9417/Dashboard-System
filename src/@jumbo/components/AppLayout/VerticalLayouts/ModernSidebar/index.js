@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ModernSideBar = ({ children, className }) => {
+
   const classes = useStyles();
   const { drawerBreakPoint, sidebarSize, sidebarStyle } = useContext(AppContext);
   const [sidebarWidth, setSidebarWidth] = useState(sidebarSize);

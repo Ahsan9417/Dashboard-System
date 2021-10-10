@@ -71,8 +71,8 @@ function AddRemoveFields(props) {
       {props.branchList.map((x, i) => {
         return (
           <div className="box">
-            <Box sx={{ display: 'flex', margin: 10 }}>
-              <FormControl variant="outlined" style={{ marginRight: 7 }}>
+            <Box sx={{ display: 'flex', marginBottom: 7 }}>
+              <FormControl variant="outlined" style={{ minWidth: 200, marginRight: 7 }}>
                 <InputLabel htmlFor="outlined-age-native-simple">Company Branch</InputLabel>
                 <Select
                   native
@@ -99,7 +99,7 @@ function AddRemoveFields(props) {
                   })}
                 </Select>
               </FormControl>
-              <FormControl variant="outlined" style={{ marginRight: 7 }}>
+              <FormControl variant="outlined" style={{ minWidth: 200, marginRight: 7 }}>
                 <InputLabel htmlFor="outlined-age-native-simple">Menu Rights</InputLabel>
                 <Select
                   native

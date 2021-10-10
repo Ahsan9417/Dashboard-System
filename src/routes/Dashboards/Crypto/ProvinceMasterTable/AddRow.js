@@ -89,7 +89,7 @@ const AddRow = props => {
               value={provinceName}
               onChange={e => setProvinceName(e.target.value)}
             />
-            <FormControl variant="outlined">
+            <FormControl variant="outlined" style={{ minWidth: 200 }}>
               <InputLabel htmlFor="outlined-age-native-simple">Country Name</InputLabel>
               <Select
                 native

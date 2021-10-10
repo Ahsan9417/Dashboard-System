@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 }));
 function AddRemoveFields(props) {
 
+  console.log(props);
   let branches = props.branches ? props.branches : [];
   let menus = props.menus ? props.menus : [];
 

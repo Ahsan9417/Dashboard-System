@@ -98,7 +98,7 @@ const AddRow = props => {
             />
           </Box>
           <Box sx={{ display: 'flex', margin: 10 }}>
-            <AddRemoveFields branchList={branchList} setbranchList={setbranchList} style={{ width: '100%' }}  branches={branches} menus={menus} />
+            <AddRemoveFields branchList={branchList} setbranchList={setbranchList} style={{ width: '100%' }}  branches={branches} menus={menus} addObject={addObject}/>
 
         
           </Box>

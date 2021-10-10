@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 function AddRemoveFields(props) {
-
   console.log(props);
   let branches = props.branches ? props.branches : [];
   let menus = props.menus ? props.menus : [];
@@ -53,16 +52,18 @@ function AddRemoveFields(props) {
     const list = [...props.branchList];
     switch (event.target.name.toLowerCase()) {
       case 'menu':
-        list[index]["menu-rights-mas-key"] = event.target.selectedOptions[0].value;
+        list[index]['menu-rights-mas-key'] = event.target.selectedOptions[0].value;
         break;
       case 'branch':
-        list[index]["company-branch-key"] = event.target.selectedOptions[0].value;
-        list[index]["company-key"] = branches.filter(x => x['company-branch-key'] == event.target.selectedOptions[0].value)[0]['company-key'];
+        list[index]['company-branch-key'] = event.target.selectedOptions[0].value;
+        list[index]['company-key'] = branches.filter(
+          x => x['company-branch-key'] == event.target.selectedOptions[0].value,
+        )[0]['company-key'];
 
       default:
         break;
     }
-    props.setbranchList(list)
+    props.setbranchList(list);
   };
 
   return (
@@ -70,65 +71,70 @@ function AddRemoveFields(props) {
       {props.branchList.map((x, i) => {
         return (
           <div className="box">
-
-            <FormControl variant="outlined" style={{ marginRight: 7, width: '100%' }}>
-              <InputLabel htmlFor="outlined-age-native-simple">Company Branch</InputLabel>
-              <Select
-                native
-                onChange={e => handleDropdownChange(e, i)}
-                label="Company Branch"
-                inputProps={{
-                  name: 'Branch',
-                  id: 'outlined-age-native-simple',
-                }}>
-                <option aria-label="None" value="" />
-                {branches.map((x, index) => {
-                  return (
-                    <option
-                      selected={
-                        props.selectedUser &&
-                        props.selectedUser['user-branches']?.length &&
-                        x['company-branch-key'] == props.selectedUser['user-branches'][0]['company-branch-key']
-                      }
-                      name={x['country-name']}
-                      value={x['company-branch-key']}>
-                      {x['company-branch-name']}
-                    </option>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            <FormControl variant="outlined" style={{ marginRight: 7, width: '100%' }}>
-              <InputLabel htmlFor="outlined-age-native-simple">Menu Rights</InputLabel>
-              <Select
-                native
-                onChange={e => handleDropdownChange(e, i)}
-                label="Menu Rights"
-                inputProps={{
-                  name: 'Menu',
-                  id: 'outlined-age-native-simple',
-                }}>
-                <option aria-label="None" value="" />
-                {menus.map((x, index) => {
-                  return (
-                    <option
-                      selected={props.selectedUser && x['menu-rights-mas-key'] == props.selectedUser}
-                      name={x['menu-rights-mas-name']}
-                      value={x['menu-rights-mas-key']}>
-                      {x['menu-rights-mas-name']}
-                    </option>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            <div className="btn-box">
+            <Box sx={{ display: 'flex', margin: 10 }}>
+              <FormControl variant="outlined" style={{ marginRight: 7 }}>
+                <InputLabel htmlFor="outlined-age-native-simple">Company Branch</InputLabel>
+                <Select
+                  native
+                  onChange={e => handleDropdownChange(e, i)}
+                  label="Company Branch"
+                  inputProps={{
+                    name: 'Branch',
+                    id: 'outlined-age-native-simple',
+                  }}>
+                  <option aria-label="None" value="" />
+                  {branches.map((x, index) => {
+                    return (
+                      <option
+                        selected={
+                          props.selectedUser &&
+                          props.selectedUser['user-branches']?.length &&
+                          x['company-branch-key'] == props.selectedUser['user-branches'][0]['company-branch-key']
+                        }
+                        name={x['country-name']}
+                        value={x['company-branch-key']}>
+                        {x['company-branch-name']}
+                      </option>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <FormControl variant="outlined" style={{ marginRight: 7 }}>
+                <InputLabel htmlFor="outlined-age-native-simple">Menu Rights</InputLabel>
+                <Select
+                  native
+                  onChange={e => handleDropdownChange(e, i)}
+                  label="Menu Rights"
+                  inputProps={{
+                    name: 'Menu',
+                    id: 'outlined-age-native-simple',
+                  }}>
+                  <option aria-label="None" value="" />
+                  {menus.map((x, index) => {
+                    return (
+                      <option
+                        selected={props.selectedUser && x['menu-rights-mas-key'] == props.selectedUser}
+                        name={x['menu-rights-mas-name']}
+                        value={x['menu-rights-mas-key']}>
+                        {x['menu-rights-mas-name']}
+                      </option>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexBasis: '100%' }}>
               {props.branchList.length !== 1 && (
-                <button className="mr10" onClick={() => handleRemoveClick(i)}>
+                <Button onClick={() => handleRemoveClick(i)} variant="contained">
                   Remove
-                </button>
+                </Button>
               )}
-              {props.branchList.length - 1 === i && <button onClick={handleAddClick}>Add</button>}
-            </div>
+              {props.branchList.length - 1 === i && (
+                <Button onClick={handleAddClick} variant="contained" color="primary" style={{ marginLeft: 7 }}>
+                  Add
+                </Button>
+              )}
+            </Box>
           </div>
         );
       })}

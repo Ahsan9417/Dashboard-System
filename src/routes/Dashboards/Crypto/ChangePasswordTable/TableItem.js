@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import clsx from 'clsx';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Box, Button, fade } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
-import EditIcon from '@material-ui/icons/Edit';
 import { DataMethods } from 'services/dataServices';
 import { useDispatch, useSelector } from 'react-redux';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const useStyles = makeStyles(theme => ({
   backgroundDeleteColorChange: {
@@ -48,6 +51,39 @@ const TableItem = ({ row }) => {
   const [newPassword, setNewPassword] = useState('');
   const [reEnterPassword, setReEnterPassword] = useState('');
 
+  const [password, setPassword] = React.useState({
+    showPassword: false,
+  });
+
+  const [passwordNew, setPasswordNew] = React.useState({
+    showNewPassword: false,
+  });
+  const [againReEnterPassword, setAgainReEnterPassword] = React.useState({
+    showReEnterPassword: false,
+  });
+  const handleClickShowPassword = () => {
+    setPassword({
+      ...password,
+      showPassword: !password.showPassword,
+    });
+  };
+  const handleClickShowNewPassword = () => {
+    setPasswordNew({
+      ...passwordNew,
+      showNewPassword: !passwordNew.showNewPassword,
+    });
+  };
+  const handleClickShowReEnterPassword = () => {
+    setAgainReEnterPassword({
+      ...againReEnterPassword,
+      showReEnterPassword: !againReEnterPassword.showReEnterPassword,
+    });
+  };
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
+
   const handleClear = () => {
     setUserName('');
     setOldPassword('');
@@ -78,30 +114,72 @@ const TableItem = ({ row }) => {
             value={userName}
             onChange={e => setUserName(e.target.value)}
           />
-          <TextField
-            style={{ marginRight: 10, width: '25%' }}
-            id="outlined-basic"
-            label="Old Password"
-            variant="outlined"
-            value={oldPassword}
-            onChange={e => setOldPassword(e.target.value)}
-          />
-          <TextField
-            style={{ marginRight: 10, width: '25%' }}
-            id="outlined-basic"
-            label="New Password"
-            variant="outlined"
-            value={newPassword}
-            onChange={e => setNewPassword(e.target.value)}
-          />
-          <TextField
-            style={{ marginRight: 10, width: '25%' }}
-            id="outlined-basic"
-            label="Re-Enter Password"
-            variant="outlined"
-            value={reEnterPassword}
-            onChange={e => setReEnterPassword(e.target.value)}
-          />
+          <FormControl sx={{ m: 1, width: '50ch' }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+            <OutlinedInput
+              style={{ marginRight: 10 }}
+              id="outlined-adornment-password"
+              type={password.showPassword ? 'text' : 'password'}
+              value={oldPassword}
+              onChange={e => setOldPassword(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end">
+                    {password.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+          <FormControl sx={{ m: 1, width: '50ch' }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">New Password</InputLabel>
+            <OutlinedInput
+              style={{ marginRight: 10 }}
+              id="outlined-adornment-password"
+              type={passwordNew.showNewPassword ? 'text' : 'password'}
+              value={newPassword}
+              onChange={e => setNewPassword(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowNewPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end">
+                    {passwordNew.showNewPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+          <FormControl sx={{ m: 1, width: '50ch' }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">Re-Enter Password</InputLabel>
+            <OutlinedInput
+              style={{ marginRight: 10 }}
+              id="outlined-adornment-password"
+              type={againReEnterPassword.showReEnterPassword ? 'text' : 'password'}
+              value={reEnterPassword}
+              onChange={e => setReEnterPassword(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowReEnterPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end">
+                    {againReEnterPassword.showReEnterPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
         </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

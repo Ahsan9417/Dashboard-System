@@ -78,6 +78,9 @@ const UserTable = () => {
   // let selectedUser = useSelector(({ user }) => user.selectedUser)
   const [selectedUser, setselectedUser] = useState('');
 
+  const [branches, setBranchesDropDown] = useState([]);
+  const [menus, setMenusDropDown] = useState([]);
+
   let hideColumns = [
     'row-number',
     'user-key',
@@ -154,10 +157,19 @@ const UserTable = () => {
     dispatch(DataMethods['userService'].getAllUsers(searchText, page, rowsPerPage));
   }
 
+
+  const getBranches = async () => {
+    let data = await DataMethods['utilsService'].getBranchList('', 1, 100);
+    setBranchesDropDown(data && data['company-branch-infos'] ? data['company-branch-infos'] : []);
+    setMenusDropDown(data && data['web-menu-rights-masters'] ? data['web-menu-rights-masters'] : []);
+  };
+
+
   useEffect(() => {
     //console.log('user  Table');
     //console.log('use Effect user');
     LoadTable();
+    getBranches();
   }, []);
   return (
     <>
@@ -166,6 +178,8 @@ const UserTable = () => {
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar>
               <AddRow
+                branches={branches}
+                menus={menus}
                 updateState={update}
                 updateUser={updateUser}
                 addUser={addUser}

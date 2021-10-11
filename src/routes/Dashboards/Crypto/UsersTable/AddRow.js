@@ -44,8 +44,7 @@ const AddRow = props => {
     'menu-rights-mas-key': '',
   };
   const classes = useStyles();
-  const [branches, setBranchesDropDown] = useState([]);
-  const [menus, setMenusDropDown] = useState([]);
+
   const [branchList, setbranchList] = useState(
     props.selectedUser && props.selectedUser['user-branches'] && props.selectedUser['user-branches'].length
       ? props.selectedUser['user-branches']
@@ -81,14 +80,7 @@ const AddRow = props => {
     event.preventDefault();
   };
 
-  const getBranches = async () => {
-    let data = await DataMethods['utilsService'].getBranchList('', 1, 100);
-    setBranchesDropDown(data && data['company-branch-infos'] ? data['company-branch-infos'] : []);
-    setMenusDropDown(data && data['web-menu-rights-masters'] ? data['web-menu-rights-masters'] : []);
-  };
-
   useEffect(() => {
-    getBranches();
   }, []);
 
   return (
@@ -171,8 +163,8 @@ const AddRow = props => {
               branchList={branchList}
               setbranchList={setbranchList}
               style={{ width: '100%' }}
-              branches={branches}
-              menus={menus}
+              branches={props.branches}
+              menus={props.menus}
               addObject={addObject}
             />
           </Box>

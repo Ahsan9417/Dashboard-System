@@ -95,6 +95,8 @@ const ProvinceMasterTable = () => {
   let provinces = useSelector(({ province }) => province.provincesList);
   let filteredList = useSelector(({ province }) => province.filteredList);
   let rowCount = useSelector(({ province }) => province.totalRecords);
+  const [countries, SetCountriesDropdown] = useState([]);
+
 
   let hideColumns = ['row-number', 'province-key', 'country-key'];
   const [state, setState] = React.useState({
@@ -191,9 +193,13 @@ const ProvinceMasterTable = () => {
   function LoadTable(searchText = '') {
     dispatch(DataMethods['provinceService'].getAllProvinces(searchText, page, rowsPerPage));
   }
+  const getCountries = async () => {
+    SetCountriesDropdown(await DataMethods['utilsService'].getAllCountries('', 1, 100));
+  };
 
   useEffect(() => {
     LoadTable();
+    getCountries();
   }, []);
   return (
     <>
@@ -202,6 +208,7 @@ const ProvinceMasterTable = () => {
           <CmtCardContent className={classes.cardContentRoot}>
             <PerfectScrollbar>
               <AddRow
+                countries={countries}
                 updateState={update}
                 updateProvince={updateProvince}
                 addProvince={addProvince}

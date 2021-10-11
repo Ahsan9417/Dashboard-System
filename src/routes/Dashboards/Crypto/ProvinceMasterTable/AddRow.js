@@ -46,7 +46,6 @@ const useStyles = makeStyles(theme => ({
 const AddRow = props => {
   //console.log(props);
   const classes = useStyles();
-  const [countries, SetCountriesDropdown] = useState([]);
 
   // const [countryKey, setCountryKey] = useState(props.selectedProvince ? props.selectedProvince["country-key"] : "")
   const [provinceName, setProvinceName] = useState(props.selectedProvince ? props.selectedProvince['province-name'] : '');
@@ -62,17 +61,7 @@ const AddRow = props => {
     });
   };
 
-  const getCountries = async () => {
-    SetCountriesDropdown(await DataMethods['utilsService'].getAllCountries('', 1, 100));
-  };
-
   useEffect(() => {
-    //console.log('Province Table');
-    //console.log('use Effect country');
-    // let a  =await DataMethods['utilsService'].getAllCountries("", 1, 100)
-    // //console.log(a);
-    //console.log(countries);
-    getCountries();
   }, []);
 
   return (
@@ -101,7 +90,7 @@ const AddRow = props => {
                   id: 'outlined-age-native-simple',
                 }}>
                 <option aria-label="None" value="" />
-                {countries.map((x, index) => {
+                {props.countries.map((x, index) => {
                   // selected={(props.selectedProvince && (x["country-key"] == props.selectedProvince["country-key"]))}
                   return (
                     <option

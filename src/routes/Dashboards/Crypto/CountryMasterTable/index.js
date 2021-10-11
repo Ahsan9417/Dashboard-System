@@ -112,6 +112,8 @@ const CountryMasterTable = props => {
 
   const changeHandlerFalse = () => {
     update ? setUpdate(false) : setAdd(false);
+    setSelectedCountry('');
+
   };
 
   const changeUpdateStatusToTrue = countryToUpdate => {

@@ -102,6 +102,8 @@ const UserPrivilegeTable = () => {
 
   const changeHandlerFalse = () => {
     update ? setUpdate(false) : setAdd(false);
+    setSelectedUserPrivilege('');
+
   };
   const changeUpdateStatusToTrue = privilege => {
     setSelectedUserPrivilege(privilege);

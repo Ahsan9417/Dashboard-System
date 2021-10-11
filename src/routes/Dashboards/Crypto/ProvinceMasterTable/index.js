@@ -149,6 +149,8 @@ const ProvinceMasterTable = () => {
 
   const changeHandlerFalse = () => {
     update ? setUpdate(false) : setAdd(false);
+    setSelectedProvince('');
+
   };
   const changeUpdateStatusToTrue = province => {
     setSelectedProvince(province);

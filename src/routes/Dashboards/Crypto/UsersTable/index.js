@@ -111,6 +111,8 @@ const UserTable = () => {
 
   const changeHandlerFalse = () => {
     update ? setUpdate(false) : setAdd(false);
+    setselectedUser("")
+
   };
   const changeUpdateStatusToTrue = user => {
     //console.log(user);
@@ -130,9 +132,8 @@ const UserTable = () => {
   const updateUser = user => {
     //console.log('update', user);
     changeHandlerFalse();
-
     dispatch(DataMethods['userService'].updateUser(selectedUser['user-key'], user));
-    // setselectedUser("")
+    setselectedUser("")
   };
   function debounce(func, wait) {
     let timeout;

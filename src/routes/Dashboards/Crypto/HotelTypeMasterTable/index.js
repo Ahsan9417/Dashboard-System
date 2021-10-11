@@ -125,6 +125,8 @@ const HotelTypeMasterTable = () => {
 
   const changeHandlerFalse = () => {
     update ? setUpdate(false) : setAdd(false);
+    setSelectedHotel('');
+
   };
   const changeUpdateStatusToTrue = hotel => {
     setSelectedHotel(hotel);

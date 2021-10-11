@@ -117,6 +117,8 @@ const CityMasterTable = () => {
 
   const changeHandlerFalse = () => {
     update ? setUpdate(false) : setAdd(false);
+    setSelectedCity('');
+
   };
   const changeUpdateStatusToTrue = city => {
     setSelectedCity(city);
